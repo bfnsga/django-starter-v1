@@ -23,8 +23,7 @@ jobs:
 
       - name: Tag image 
         run:
-          docker tag my-image \
-          registry.digitalocean.com/bfnsga/django-starter-v1:latest
+          docker tag my-image registry.digitalocean.com/bfnsga/django-starter-v1:latest
 
       - name: Push image to DO Container Registry 
         run: docker push registry.digitalocean.com/bfnsga/django-starter-v1:latest
