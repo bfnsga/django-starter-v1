@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "tailwindcss": "^3.2.4"
+  },
+  "scripts": {
+    "start": "npx tailwindcss -i ./input.css -o ./static/css/styles.css --watch",
+    "docker-clean": "docker system prune -f",
+    "docker-build": "docker build -t my-image .",
+    "docker-run": "docker run -p 8000:8000 my-image",
+    "docker-scan": "docker scan --file Dockerfile --exclude-base my-image"
+  }
+}

@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Django App{% endblock %}
+
+{% block content %}
+<div class="h-screen flex">
+    {% include 'modules/nav.html' %}
+    <main class="h-full w-full overflow-y-scroll bg-primary-50">
+        <section class="max-w-screen-md mx-auto pt-[4.5rem] pb-20 px-2 relative">
+            {% if messages %}
+            {% for message in messages %}
+            {% if message.level == 25 %}
+            <div id="message-notification" class="absolute top-0 left-0 mt-3.5 px-2">
+                <p class="bg-teal-50 text-teal-700 font-base border-l-4 border-teal-500 px-4 py-3 shadow text-[0.95rem] inline-flex items-center space-x-2 tracking-[0.01rem]">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-teal-500 w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M9 12l2 2l4 -4"></path>
+                    </svg>
+                    <span class="pr-20">
+                        {{ message }}
+                    </span>
+                    <button onclick="closeMessageNotification()">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-[1.125rem] w-[1.125rem] text-teal-600 hover:text-teal-800" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </p>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            <div class="pb-5">
+                <h1 class="text-4xl font-bold text-slate-800 tracking-tight">
+                    Account
+                </h1>
+            </div>
+            <div class="border-b-2 border-primary-100 mb-6 pb-2 space-x-10">
+                <a href="{% url 'dashboard' %}"
+                    class="decoration-2 underline underline-offset-[14px] decoration-emerald-500 text-emerald-500">
+                    Profile
+                </a>
+                <a href="{% url 'password_change' %}" class="hover:text-emerald-500 text-slate-600">
+                    Password
+                </a>
+                <a href="#" class="hover:text-emerald-500 text-slate-600">
+                    Billing
+                </a>
+            </div>
+            <div class="container-box">
+                <form method="post" id="update_profile-form" class="form-box" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="col-span-1">
+                        <div class="flex flex-col input-spacing">
+                            <label for="{{ form.first_name.id_for_label }}" class="input-label">
+                                First Name
+                            </label>
+                            <input type="text" name="first_name" id="first_name" value="{{ form.first_name.value }}" class="input-box {% if form.first_name.errors %}border-red-500{% else %}border-primary-100{% endif %}" required>
+                        </div>
+                    </div>
+                    <div class="col-span-1">
+                        <div class="flex flex-col input-spacing">
+                            <label for="{{ form.last_name.id_for_label }}" class="input-label">
+                                Last Name
+                            </label>
+                            <input type="text" name="last_name" id="last_name" value="{{ form.last_name.value }}" class="input-box {% if form.last_name.errors %}border-red-500{% else %}border-primary-100{% endif %}" required>
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="flex flex-col input-spacing">
+                            <label for="{{ form.email.id_for_label }}" class="input-label">
+                                Email
+                            </label>
+                            <input type="text" name="email" value="{{ form.email.value }}" class="input-box {% if form.email.errors %}border-red-500{% else %}border-primary-100{% endif %}" required>
+                            {% if form.email.errors %}
+                            {% for error in form.email.errors %}
+                            <p class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 9v2m0 4v.01"></path>
+                                    <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path>
+                                </svg>
+                                <span>
+                                    {{ error }}
+                                </span>
+                            </p>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="flex flex-col input-spacing">
+                            <label for="{{ form.password.id_for_label }}" class="input-label">
+                                Password
+                            </label>
+                            <input type="password" name="password" id="password" value="" class="input-box {% if form.password.errors %}border-red-500{% else %}border-primary-100{% endif %}" required>
+                            {% if form.password.errors %}
+                            {% for error in form.password.errors %}
+                            <p class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 9v2m0 4v.01"></path>
+                                    <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path>
+                                </svg>
+                                <span>
+                                    {{ error }}
+                                </span>
+                            </p>
+                            {% endfor %}
+                            {% endif %}
+                            <p class="text-sm text-[#9Fb3c8]">
+                                Your account password is required when making changes to your profile.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-span-2 my-2 flex items-center">
+                        <button type="submit" id="update_profile-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="update_profile-loading_svg" class="bg-transparent text-white h-5 w-5 -ml-2 mr-2 hidden" style="shape-rendering: auto;" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                    <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                </circle>
+                            </svg>
+                            <span>Update Profile</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+</div>
+{% if form.errors %}
+<script>
+    window.onload = () => {
+        const button = document.getElementById('my-button');
+        button.classList.remove('opacity-50');
+    };
+</script>
+{% else %}
+<script>
+    /** Message Notification **/
+    function closeMessageNotification() {
+        document.getElementById('message-notification').classList.add('hidden');
+    };
+
+    /** Set variables **/
+    const form = document.getElementById('update_profile-form');
+    const button = document.getElementById('update_profile-submit');
+    const firstName = document.getElementById('first_name');
+    const lastName = document.getElementById('last_name');
+    const password = document.getElementById('password');
+    let isFormSubmited = false;
+
+    /** Form actions **/
+    form.addEventListener('submit', submitFunction);
+    form.addEventListener('keyup', keyupFunction);
+
+    function keyupFunction(event) {
+        if (!isFormSubmited) {
+
+            if ((firstName.value !== firstName.defaultValue || lastName.value !== lastName.defaultValue) && password.value) {
+                button.disabled = false;
+                button.classList.remove('btn-disabled');
+            } else {
+                button.disabled = true;
+                button.classList.add('btn-disabled');
+            };
+        };
+    };
+
+    function submitFunction() {
+        isFormSubmited = true;
+
+        document.getElementById('update_profile-loading_svg').classList.remove('hidden');
+        document.getElementById('update_profile-submit').classList.add('btn-disabled');
+        document.getElementById('update_profile-submit').disabled = true;
+    };
+</script>
+{% endif %}
+{% endblock %}

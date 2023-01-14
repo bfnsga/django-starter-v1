@@ -1,0 +1,110 @@
+<aside class="sticky w-[16rem] bg-[#102a43]">
+    <div class="flex flex-col justify-between h-full">
+        <div class="py-4 px-2">
+            <p class="text-white px-2 mb-14">Logo</p>
+            <nav>
+                <div class="space-y-4 mb-6">
+                    <a href="{% url 'logout' %}"
+                        class="flex items-center space-x-3 px-4 py-1 text-slate-200 font-medium hover:text-white group text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="text-slate-200 w-[1.35rem] h-[1.35rem] group-hover:text-emerald-500" width="24"
+                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <ellipse cx="12" cy="6" rx="8" ry="3"></ellipse>
+                            <path d="M4 6v6a8 3 0 0 0 16 0v-6"></path>
+                            <path d="M4 12v6a8 3 0 0 0 16 0v-6"></path>
+                        </svg>
+                        <span>Records</span>
+                    </a>
+                    <a href="{% url 'logout' %}"
+                        class="flex items-center space-x-3 px-4 py-1 text-slate-200 font-medium hover:text-white group text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="text-slate-200 w-[1.35rem] h-[1.35rem] group-hover:text-emerald-500" width="24"
+                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path
+                                d="M16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1 -4.069 0l-.301 -.301l-6.558 6.558a2 2 0 0 1 -1.239 .578l-.175 .008h-1.172a1 1 0 0 1 -.993 -.883l-.007 -.117v-1.172a2 2 0 0 1 .467 -1.284l.119 -.13l.414 -.414h2v-2h2v-2l2.144 -2.144l-.301 -.301a2.877 2.877 0 0 1 0 -4.069l2.643 -2.643a2.877 2.877 0 0 1 4.069 0z">
+                            </path>
+                            <path d="M15 9h.01"></path>
+                        </svg>
+                        <span>API Keys</span>
+                    </a>
+                    <a href="{% url 'logout' %}"
+                        class="flex items-center space-x-3 px-4 py-1 text-slate-200 font-medium hover:text-white group text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="text-slate-200 w-[1.35rem] h-[1.35rem] group-hover:text-emerald-500" width="24"
+                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                        </svg>
+                        <span>Users</span>
+                    </a>
+                    <a href="{% url 'logout' %}"
+                        class="flex items-center space-x-3 px-4 py-1 text-slate-200 font-medium hover:text-white group text-base">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="text-slate-200 w-[1.35rem] h-[1.35rem] group-hover:text-emerald-500" width="24"
+                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M9 12l2 2l4 -4"></path>
+                            <path
+                                d="M12 3a12 12 0 0 0 8.5 3a12 12 0 0 1 -8.5 15a12 12 0 0 1 -8.5 -15a12 12 0 0 0 8.5 -3">
+                            </path>
+                        </svg>
+                        <span>Audit Logs</span>
+                    </a>
+                </div>
+                <div class="border-b border-[#486581]"></div>
+                <div class="space-y-3 mt-6">
+                    <a href="{% url 'dashboard' %}"
+                        class="nav-link {% if 'account' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon {% if 'account' in request.path %}nav-icon-active{% else %}nav-icon-inactive{% endif %}" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <circle cx="12" cy="10" r="3"></circle>
+                            <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855"></path>
+                         </svg>
+                        <span>Account</span>
+                    </a>
+                    <a href="{% url 'users' %}"
+                        class="nav-link {% if 'users' in request.path %}nav-link-active{% else %}nav-link-inactive group{% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="nav-icon {% if 'users' in request.path %}nav-icon-active{% else %}nav-icon-inactive{% endif %}" width="24"
+                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                        </svg>
+                        <span>Users</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+        <nav class="pb-4 px-2">
+            <a href="{% url 'logout' %}"
+                class="flex items-center space-x-3 px-4 py-1 text-slate-200 font-medium hover:text-white group text-base">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="text-slate-200 w-[1.35rem] h-[1.35rem] group-hover:text-emerald-500" viewBox="0 0 24 24"
+                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor" fill="none">
+                    <g transform="matrix(-1,0,0,1,24,0)">
+                        <path
+                            d="M14,8L14,6C14,4.903 13.097,4 12,4L5,4C3.903,4 3,4.903 3,6L3,18C3,19.097 3.903,20 5,20L12,20C13.097,20 14,19.097 14,18L14,16" />
+                    </g>
+                    <g transform="matrix(-1,0,0,1,24,0)">
+                        <path d="M7,12L21,12L18,9M18,15L21,12" />
+                    </g>
+                </svg>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+</aside>

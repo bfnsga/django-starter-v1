@@ -1,0 +1,7 @@
+.venv/
+node_modules/
+_local/
+.env
+db.sqlite3
+__pycache__
+.DS_Store

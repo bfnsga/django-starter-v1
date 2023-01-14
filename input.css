@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+
+/* Primary Components */
+
+.container-box {
+    @apply py-6 px-8 bg-white drop-shadow-md border border-primary-100;
+}
+
+/* Form Components */
+
+.form-box {
+    @apply grid grid-cols-2 gap-x-6 gap-y-4;
+}
+
+.input-box {
+    @apply text-slate-800 border-[1.5px] bg-white placeholder-slate-400 p-3 w-full text-base rounded-none focus:outline-none focus:border-[1.5px] focus:border-emerald-500 drop-shadow-sm;
+}
+
+.input-label {
+    @apply font-semibold tracking-wide text-base text-[0.90rem] text-slate-700;
+}
+
+.input-spacing {
+    @apply space-y-1;
+}
+
+.btn-base {
+    @apply inline-flex items-center justify-center font-medium;
+}
+
+/* Primary Navigation Bar */
+
+.nav-link {
+    @apply flex items-center space-x-3 px-4 py-1 font-medium text-base;
+}
+
+.nav-link-active {
+    @apply text-white bg-primary-700;
+}
+
+.nav-link-inactive {
+    @apply text-[#d9e2ec] hover:text-white;
+}
+
+.nav-icon {
+    @apply w-[1.35rem] h-[1.35rem];
+}
+
+.nav-icon-active {
+    @apply text-emerald-500;
+}
+
+.nav-icon-inactive {
+    @apply text-primary-100 group-hover:text-white;
+}
+
+/* Button */
+.btn {
+    @apply inline-flex items-center justify-center;
+}
+
+.btn-color-primary {
+    @apply border-emerald-500 bg-emerald-500 text-white;
+}
+
+.btn-size-base {
+    @apply px-8 py-2 border-2 font-medium;
+}
+
+.btn-disabled {
+    @apply opacity-60;
+}
+
+@tailwind utilities;
