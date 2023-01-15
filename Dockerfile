@@ -16,12 +16,9 @@ RUN apk update \
 # Run TailwindCSS
 RUN npx tailwindcss -i ./input.css -o ./static/css/styles.css --minify
 
-# Collect static files
-RUN python manage.py collectstatic
-
 # Expose the port 8000
 EXPOSE 8000
 
 # Start Gunicorn
 # Default worker nodes is 2 for a 1-core VM, set to number of cores + 1
-CMD ["gunicorn", "main.wsgi", "--bind", "0.0.0.0:8000", "--workers", "2"]
+CMD ["python","manage.py","collectstatic","--noinput","&&","gunicorn", "main.wsgi", "--bind", "0.0.0.0:8000", "--workers", "2"]
