@@ -45,13 +45,13 @@ if MY_ENVIRONMENT == 'DEV':
 else:
     # Security settings
     SECRET_KEY = os.environ['SECRET_KEY'] # Ensure Secret Key is at least 52 digits in length
-    DEBUG = False
-    CSRF_COOKIE_SECURE = True
-    SESSION_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
+    DEBUG = True
+    CSRF_COOKIE_SECURE = False
+    SESSION_COOKIE_SECURE = False
+    SECURE_SSL_REDIRECT = False
     SECURE_HSTS_SECONDS = 60 # Change to 31536000 seconds (1 year) once confirmed in production
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
 
     # Set hosts
     ASSIGNED_DOMAIN_NAME = os.environ['ASSIGNED_DOMAIN_NAME']
