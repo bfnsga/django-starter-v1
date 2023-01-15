@@ -1,7 +1,7 @@
 FROM alpine:3.17.1
 
 ## Create and set working directory
-WORKDIR /workdir
+WORKDIR /app
 
 # Copy project files
 COPY . .
@@ -21,4 +21,4 @@ EXPOSE 8000
 
 # Start Gunicorn
 # Default worker nodes is 2 for a 1-core VM, set to number of cores + 1
-CMD python manage.py migrate && python manage.py collectstatic --noinput && gunicorn main.wsgi --worker-tmp-dir /dev/shm --bind 0.0.0.0:8000
+CMD python manage.py collectstatic && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn main.wsgi --worker-tmp-dir /dev/shm --bind 0.0.0.0:8000
