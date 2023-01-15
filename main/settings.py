@@ -27,7 +27,7 @@ else:
 
 if MY_ENVIRONMENT == 'DEV':
     # Security settings for local development, NEVER use in production
-    SECRET_KEY = 'django-insecure-j7mj5#owo&p)m*l0$0+0#)_bt*9-czraf1&o(!&rih!(^o4wx#'
+    SECRET_KEY = os.environ.get['SECRET_KEY']
     DEBUG = True
     ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
 
@@ -49,12 +49,12 @@ else:
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
-    SECURE_HSTS_SECONDS = 3600 # Change to 31536000 seconds (1 year) once confirmed in production
+    SECURE_HSTS_SECONDS = 60 # Change to 31536000 seconds (1 year) once confirmed in production
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
 
     # Set hosts
-    ASSIGNED_DOMAIN_NAME = os.environ['ASSIGNED_DOMAIN_HOST']
+    ASSIGNED_DOMAIN_NAME = os.environ['ASSIGNED_DOMAIN_NAME']
     try:
         APPLICATION_DOMAIN_NAME = os.environ['APPLICATION_DOMAIN_NAME']
         ALLOWED_HOSTS = [ASSIGNED_DOMAIN_NAME,APPLICATION_DOMAIN_NAME]

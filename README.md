@@ -1,7 +1,42 @@
-# Boilerplate starting point for Django projects
+# Starter Kit V1 for Django SaaS projects
+The Starter Kit is designed to provide a solid foundation for SaaS projects based on the Django framework, with a focus on scalability, security, and maintainability, so you can focus on building your product's features.
 
 ## To Do
 - Add logger to main project
+- Billing page
+- Move Users page to Settings area
+
+
+## Includes
+- Auth0 for user management
+- Profile page
+    - Update name
+    - Update email
+- Password page
+    - Update password
+- Billing page
+    - Update primary credit card
+    - Display past invoices
+- Users page
+    - Add & remove additional users
+
+## Prerequisites
+- Auth0 account
+    - 2 tenants
+        - Development
+        - Production
+- Stripe account
+    - Test API keys
+    - Development API keys
+- DigitalOcean account
+    - Read/Write API key for Github Actions
+- Docker account with Docker Desktop installed locally
+
+## Initial setup
+- Fork/create new repository from template
+- Setup a new python virtual environment
+    - Run 'pip install -r requirements.txt'
+- Run 'npm install'
 
 ## Environment Variables in Production
 - Database (NAME, USER, PASSWORD, HOST, PORT)
