@@ -27,7 +27,7 @@ else:
 
 if MY_ENVIRONMENT == 'DEV':
     # Security settings for local development, NEVER use in production
-    SECRET_KEY = os.environ.get['SECRET_KEY']
+    SECRET_KEY = 'django-insecure-j7mj5#owo&p)m*l0$0+0#)_bt*9-czraf1&o(!&rih!(^o4wx#'
     DEBUG = True
     ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
 
@@ -179,7 +179,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'app/staticfiles')
 STATICFILES_DIRS = [
    os.path.join(BASE_DIR, 'static')
 ]
