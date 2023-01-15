@@ -1,6 +1,7 @@
 .venv/
 node_modules/
 _local/
+staticfiles/
 .env
 db.sqlite3
 __pycache__

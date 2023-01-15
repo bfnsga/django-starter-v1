@@ -16,6 +16,9 @@ RUN apk update \
 # Run TailwindCSS
 RUN npx tailwindcss -i ./input.css -o ./static/css/styles.css --minify
 
+# Collect static files
+RUN python manage.py collectstatic
+
 # Expose the port 8000
 EXPOSE 8000
 
