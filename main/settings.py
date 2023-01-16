@@ -45,7 +45,7 @@ if MY_ENVIRONMENT == 'DEV':
 else:
     # Security settings
     SECRET_KEY = os.environ['SECRET_KEY'] # Ensure Secret Key is at least 52 digits in length
-    DEBUG = True
+    DEBUG = False
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True
