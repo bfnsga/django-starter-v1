@@ -55,7 +55,8 @@ else:
 
     # Set hosts
     ASSIGNED_DOMAIN_NAME = os.environ['ASSIGNED_DOMAIN_NAME']
-    ALLOWED_HOSTS = ['plankton-app-aa2wa.ondigitalocean.app']        
+    ALLOWED_HOSTS = ['plankton-app-aa2wa.ondigitalocean.app']
+    CSRF_TRUSTED_ORIGINS = ['https://plankton-app-aa2wa.ondigitalocean.app']     
     
     # Variables
     DATABASE_NAME = os.environ['DATABASE_NAME']
