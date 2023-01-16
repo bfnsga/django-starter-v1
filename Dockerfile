@@ -1,6 +1,6 @@
 FROM alpine:3.17.1
 
-## Create and set working directory
+# Create and set working directory
 WORKDIR /app
 
 # Copy project files
