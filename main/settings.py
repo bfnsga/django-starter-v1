@@ -55,11 +55,7 @@ else:
 
     # Set hosts
     ASSIGNED_DOMAIN_NAME = os.environ['ASSIGNED_DOMAIN_NAME']
-    try:
-        APPLICATION_DOMAIN_NAME = os.environ['APPLICATION_DOMAIN_NAME']
-        ALLOWED_HOSTS = [ASSIGNED_DOMAIN_NAME,APPLICATION_DOMAIN_NAME]
-    except:
-        ALLOWED_HOSTS = [ASSIGNED_DOMAIN_NAME]
+    ALLOWED_HOSTS = ['plankton-app-aa2wa.ondigitalocean.app']        
     
     # Variables
     DATABASE_NAME = os.environ['DATABASE_NAME']
