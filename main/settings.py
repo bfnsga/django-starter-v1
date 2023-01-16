@@ -48,11 +48,10 @@ else:
     DEBUG = True
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ('x-forwarded-proto', 'https')
+    SECURE_SSL_REDIRECT = False
     SECURE_HSTS_SECONDS = 60 # Change to 31536000 seconds (1 year) once confirmed in production
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
-    SECURE_HSTS_PRELOAD = False
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
     # Set hosts
     ASSIGNED_DOMAIN_NAME = os.environ['ASSIGNED_DOMAIN_NAME']
