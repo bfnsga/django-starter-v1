@@ -1,16 +1,26 @@
-terraform {
-  required_providers {
-    digitalocean = {
-      source = "digitalocean/digitalocean"
-      version = "~> 2.0"
-    }
-  }
+module "vpc" {
+  source = "./modules/vpc"
+}
 
-# Set the variable value in *.tfvars file
-# or using -var="do_token=..." CLI option
-variable "do_token" {}
+module "rds" {
+  source = "./modules/rds"
 
-# Configure the DigitalOcean Provider
-provider "digitalocean" {
-  token = var.do_token
+  ## Security Groups
+  security_group-database = module.vpc.security_group-database
+
+  ## Database Credentials
+  db_username = var.db_username
+  db_password = var.db_password
+
+  ## Subnets
+  subnet_private_1 = module.vpc.subnet_private_1
+  subnet_private_2 = module.vpc.subnet_private_2
+
+  ## AWS Metadata
+  aws_account_id = var.aws_account_id
+  aws_region = var.aws_region
+
+  depends_on = [
+    module.vpc
+  ]
 }

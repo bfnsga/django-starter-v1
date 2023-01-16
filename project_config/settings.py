@@ -84,7 +84,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app'
+    'app_settings'
 ]
 
 MIDDLEWARE = [
@@ -98,7 +98,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'main.urls'
+ROOT_URLCONF = 'project_config.urls'
 
 TEMPLATES = [
     {
@@ -116,7 +116,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'main.wsgi.application'
+WSGI_APPLICATION = 'project_config.wsgi.application'
 
 
 # Database
@@ -190,4 +190,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ###################################
 ## Custom settings
 ###################################
-AUTH_USER_MODEL = 'app.CustomUser'
+AUTH_USER_MODEL = 'app_settings.CustomUser'

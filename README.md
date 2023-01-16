@@ -31,6 +31,7 @@ The Starter Kit is designed to provide a solid foundation for SaaS projects base
 - DigitalOcean account
     - Read/Write API key for Github Actions
 - Docker account with Docker Desktop installed locally
+- Terraform Cloud Workspace
 
 ## Initial setup
 - Fork/create new repository from template
