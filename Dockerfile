@@ -8,7 +8,7 @@ COPY . .
 
 # Install dependencies
 RUN apk update \
-    && apk add python3 python3-dev py3-pip libffi-dev build-base nodejs npm \
+    && apk add python3 python3-dev py3-pip libffi-dev build-base nodejs npm tzdata \
     && pip install --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt \
     && npm install
@@ -21,4 +21,4 @@ EXPOSE 8000
 
 # Start Gunicorn
 # Default worker nodes is 2 for a 1-core VM, set to number of cores + 1
-CMD python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn project_config.wsgi --bind 0.0.0.0:8000 --workers 2 --worker-tmp-dir /dev/shm --log-file -
+CMD python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn project_config.wsgi --bind 0.0.0.0:8000 --workers 2

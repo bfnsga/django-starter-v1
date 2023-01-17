@@ -6,6 +6,12 @@ The Starter Kit is designed to provide a solid foundation for SaaS projects base
 - Billing page
 - Move Users page to Settings area
 
+##
+- Create AWS Account
+    - Set a secret in "AWS Secrets Manager"
+        - Database username (DATABASE_USER)
+        - Database password (DATABASE_PASSWORD)
+        - Secret key (SECRET_KEY)
 
 ## Includes
 - Auth0 for user management
