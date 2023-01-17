@@ -147,8 +147,8 @@ resource "aws_apprunner_service" "apprunner" {
   }
 
   depends_on = [
-    aws_iam_role.apprunner-access_role.arn,
-    aws_iam_role.apprunner-instance_role.arn,
-    aws_apprunner_vpc_connector.connector.arn
+    aws_iam_role_policy_attachment.apprunner-access_role_policy,
+    aws_iam_role_policy_attachment.apprunner-instance_role_policy,
+    aws_apprunner_vpc_connector.connector
   ]
 }
