@@ -21,10 +21,6 @@ variable "aws_region" {
   type = string
 }
 
-variable "db_username" {
-  type = string
-}
-
-variable "db_password" {
+variable "database_password" {
   type = string
 }

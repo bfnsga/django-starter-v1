@@ -19,7 +19,7 @@ resource "aws_db_instance" "default" {
   engine_version       = "14.5"
   instance_class       = "db.t3.micro"
   username             = "djangoadmin"
-  password             = var.db_password
+  password             = var.database_password
   skip_final_snapshot  = true
   storage_type         = "gp2"
   vpc_security_group_ids = [var.security_group-database]
