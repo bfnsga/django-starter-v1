@@ -21,4 +21,4 @@ EXPOSE 8000
 
 # Start Gunicorn
 # Default worker nodes is 2 for a 1-core VM, set to number of cores + 1
-CMD python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn project_config.wsgi --bind 0.0.0.0:8000 --workers 2 --worker-tmp-dir /dev/shm
+CMD python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn project_config.wsgi --bind 0.0.0.0:8000 --workers 2 --worker-tmp-dir /dev/shm && tail -f /dev/stdout
