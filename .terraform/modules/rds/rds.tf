@@ -18,7 +18,7 @@ resource "aws_db_instance" "default" {
   engine               = "postgres"
   engine_version       = "14.5"
   instance_class       = "db.t3.micro"
-  username             = var.db_username
+  username             = "djangoadmin"
   password             = var.db_password
   skip_final_snapshot  = true
   storage_type         = "gp2"

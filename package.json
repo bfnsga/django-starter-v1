@@ -7,6 +7,6 @@
     "docker-clean": "docker system prune -f",
     "docker-build": "docker build -t my-image .",
     "docker-run": "docker run -p 8000:8000 my-image",
-    "docker-scan": "docker scan --file Dockerfile --exclude-base my-image"
+    "docker-scan": "docker scan --file Dockerfile my-image"
   }
 }

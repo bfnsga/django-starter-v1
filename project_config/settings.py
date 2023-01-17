@@ -55,23 +55,28 @@ else:
     SECURE_HSTS_PRELOAD = True
 
     # Set hosts
-    ASSIGNED_DOMAIN_NAME = os.environ['ASSIGNED_DOMAIN_NAME']
-    ALLOWED_HOSTS = ['plankton-app-aa2wa.ondigitalocean.app']
-    CSRF_TRUSTED_ORIGINS = ['https://plankton-app-aa2wa.ondigitalocean.app']     
+    SERVICE_DOMAIN = os.environ['APPS_DOMAIN']
+
+    try:
+        APPLICATION_DOMAIN = os.environ['APPLICATION_DOMAIN']
+    except:
+        pass
+
+    if APPLICATION_DOMAIN:
+        ALLOWED_HOSTS = [SERVICE_DOMAIN, APPLICATION_DOMAIN]
+        CSRF_TRUSTED_ORIGINS = [f'https://{SERVICE_DOMAIN}',f'https://{APPLICATION_DOMAIN}']
+    else:
+        ALLOWED_HOSTS = [SERVICE_DOMAIN]
+        CSRF_TRUSTED_ORIGINS = [f'https://{SERVICE_DOMAIN}']
+         
     
     # Variables
-    DATABASE_NAME = os.environ['DATABASE_NAME']
-    DATABASE_USER = os.environ['DATABASE_USER']
     DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
     DATABASE_HOST = os.environ['DATABASE_HOST']
-    DATABASE_PORT = os.environ['DATABASE_PORT']
 
     AUTH0_CLIENT_ID = os.environ['AUTH0_CLIENT_ID']
     AUTH0_CLIENT_SECRET = os.environ['AUTH0_CLIENT_SECRET']
     AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
-
-    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
     STRIPE_API_KEY = os.environ['STRIPE_API_KEY']
 
@@ -133,11 +138,11 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': DATABASE_NAME,
-            'USER': DATABASE_USER,
+            'NAME': 'defaultdb',
+            'USER': 'djangoadmin',
             'PASSWORD': DATABASE_PASSWORD,
             'HOST': DATABASE_HOST,
-            'PORT': DATABASE_PORT,
+            'PORT': '5432',
         }
     }
 
