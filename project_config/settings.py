@@ -55,18 +55,22 @@ else:
     SECURE_HSTS_PRELOAD = True
 
     # Set hosts
+    ALLOWED_HOSTS = []
+    CSRF_TRUSTED_ORIGINS = []
+
     try:
         SERVICE_DOMAIN = os.environ['SERVICE_DOMAIN']
+        ALLOWED_HOSTS.append(SERVICE_DOMAIN)
+        CSRF_TRUSTED_ORIGINS.append(f'https://{SERVICE_DOMAIN}')
     except:
-        SERVICE_DOMAIN = ''
+        pass
 
     try:
         APPLICATION_DOMAIN = os.environ['APPLICATION_DOMAIN']
+        ALLOWED_HOSTS.append(APPLICATION_DOMAIN)
+        CSRF_TRUSTED_ORIGINS.append(f'https://{APPLICATION_DOMAIN}')
     except:
-        APPLICATION_DOMAIN = ''
-
-    ALLOWED_HOSTS = [SERVICE_DOMAIN, APPLICATION_DOMAIN]
-    CSRF_TRUSTED_ORIGINS = [f'https://{SERVICE_DOMAIN}',f'https://{APPLICATION_DOMAIN}']         
+        pass
     
     # Variables
     DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
