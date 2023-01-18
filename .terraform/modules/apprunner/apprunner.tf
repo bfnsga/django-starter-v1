@@ -125,7 +125,6 @@ resource "aws_apprunner_service" "apprunner" {
           "AUTH0_CLIENT_SECRET" = var.auth0_client_secret
           "AUTH0_DOMAIN" = var.auth0_domain
           "STRIPE_API_KEY" = var.stripe_api_key
-          "SERVICE_DOMAIN" = "$APPS_DOMAIN"
         }
       }
       image_identifier      = "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/django-starter-v1:latest"
