@@ -117,7 +117,7 @@
                     </div>
                     <div class="col-span-2 my-2 flex items-center">
                         <button type="submit" id="update_profile-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
-                            <svg xmlns="http://www.w3.org/2000/svg" id="update_profile-loading_svg" class="bg-transparent text-white h-5 w-5 -ml-2 mr-2 hidden" style="shape-rendering: auto;" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                            <svg xmlns="http://www.w3.org/2000/svg" id="update_profile-loading_svg" class="bg-transparent text-white h-5 w-5 -ml-2 mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
                                 <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
                                     <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
                                 </circle>
@@ -131,14 +131,15 @@
     </main>
 </div>
 {% if form.errors %}
-<script>
+<script nonce="{{request.csp_nonce}}">
     window.onload = () => {
-        const button = document.getElementById('my-button');
-        button.classList.remove('opacity-50');
+        const button = document.getElementById('update_profile-submit');
+        button.classList.remove('btn-disabled');
+        button.disabled = false;
     };
 </script>
 {% else %}
-<script>
+<script nonce="{{request.csp_nonce}}">
     /** Message Notification **/
     function closeMessageNotification() {
         document.getElementById('message-notification').classList.add('hidden');

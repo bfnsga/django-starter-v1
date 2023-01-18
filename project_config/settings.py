@@ -95,6 +95,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'csp.middleware.CSPMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -198,3 +199,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ## Custom settings
 ###################################
 AUTH_USER_MODEL = 'app_settings.CustomUser'
+
+
+## CSP Scripts
+# Content Security Policy
+
+CSP_IMG_SRC = ("'self'", '*')
+
+CSP_SCRIPT_SRC = ("'self'")
+
+CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
+
+CSP_FONT_SRC = ('https://fonts.gstatic.com')
+
+CSP_INCLUDE_NONCE_IN = ['script-src']
