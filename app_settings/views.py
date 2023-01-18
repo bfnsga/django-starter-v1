@@ -13,7 +13,7 @@ from urllib.parse import quote_plus, urlencode
 import json
 from .models import Organization
 
-from .forms import ProfileForm, PasswordChangeForm, AddUserForm, DeleteUserForm
+from .forms import ProfileForm, PasswordChangeForm, AddUserForm, DeleteUserForm, NameForm
 from django.contrib import messages
 import stripe
 
@@ -240,14 +240,22 @@ def dashboard(request):
     user = request.user
     # Process request
     if request.method == 'POST':
-        form = ProfileForm(request, request.POST)
+
+        if 'first_name' in request.POST:
+            form = NameForm(request, request.POST)
+        elif 'email' in request.POST:
+            form = ProfileForm(request, request.POST)
+        elif 'password_1' in request.POST:
+            form = PasswordChangeForm(request, request.POST)
+        
         if form.is_valid():
 
             # Save form
             form.save()
+            time.sleep(1)
 
             # Return response
-            messages.add_message(request, messages.SUCCESS, 'Your account information has been updated')
+            messages.add_message(request, messages.SUCCESS, 'Your profile has been updated')
             return redirect('dashboard')
 
     else:

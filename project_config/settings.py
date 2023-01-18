@@ -206,7 +206,6 @@ AUTH_USER_MODEL = 'app_settings.CustomUser'
 
 ## CSP Scripts
 # Content Security Policy
-
 CSP_IMG_SRC = ("'self'", '*')
 
 CSP_SCRIPT_SRC = ("'self'")

@@ -5,13 +5,13 @@
 {% block content %}
 <div class="h-screen flex">
 	{% include 'modules/nav.html' %}
-	<main class="h-full w-full overflow-y-scroll bg-white">
+	<main class="h-full w-full overflow-y-scroll bg-primary-50">
 		<section class="px-4 max-w-screen-lg mx-auto pt-16 pb-20">
 			<div class="pb-4 flex items-center justify-between">
 				<h1 class="text-4xl font-bold text-slate-800 tracking-tight">
 					Users
 				</h1>
-				<button onclick="openAddUserPopup()" nonce="{{request.csp_nonce}}" class="btn btn-size-base btn-color-primary space-x-2">
+				<button onclick="openAddUserPopup()" nonce="{{request.csp_nonce}}" class="px-5 py-1.5 border-2 border-emerald-500 bg-emerald-500 text-white font-medium inline-flex items-center justify-center space-x-2">
 					<svg xmlns="http://www.w3.org/2000/svg" class="text-inherit w-5 h-5 -ml-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
 						<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
 						<line x1="12" y1="5" x2="12" y2="19"></line>
@@ -20,8 +20,8 @@
 					<span>Add User</span>
 				</button>
 			</div>
-			<div class="border-2 border-slate-100 rounded">
-				<div class="flex w-full font-medium text-[0.9rem] text-slate-500 bg-slate-50 border-b-2 border-slate-100 py-1.5 px-3">
+			<div class="container-box">
+				<div class="flex w-full font-medium text-[0.9rem] text-slate-700 border-b-2 border-slate-100 pb-1.5 mb-3">
 					<div class="w-[14%] text-left table-header-cell">
 						Status
 					</div>
@@ -39,31 +39,31 @@
 					</div>
 				</div>
 				{% for user in users %}
-				<div class="py-3.5 px-3 text-slate-600 {% cycle '' 'border-y-2 border-slate-100' %}">
-					<div class="flex items-center">
+				<div class="-mx-8 py-3.5 text-slate-700 {% cycle '' 'bg-slate-50' %}">
+					<div class="px-8 flex items-center">
 						<div class="w-[14%] text-left table-body-cell">
 							{% if user.is_active %}
-							<p class="bg-[#d1fae5] px-2 py-0.5 rounded text-[#065f46] text-[0.9rem] font-medium inline-flex">
+							<p class="bg-[#d1fae5] px-2 py-0.5 rounded-none text-[#065f46] text-[0.9rem] font-medium inline-flex">
 								Active
 							</p>
 							{% else %}
-							<p class="bg-[#fef3c7] px-2 py-0.5 rounded text-[#92400e] text-[0.9rem] font-medium inline-flex">
+							<p class="bg-[#fef3c7] px-2 py-0.5 rounded-none text-[#92400e] text-[0.9rem] font-medium inline-flex">
 								Pending
 							</p>
 							{% endif %}
 						</div>
 						<div class="w-[24%] text-left table-body-cell">
-							<p class="text-[0.975rem]">
+							<p>
 								{{ user.first_name }} {{ user.last_name }}
 							</p>
 						</div>
 						<div class="w-[32%] text-left table-body-cell">
-							<p class="text-[0.975rem]">
+							<p>
 								{{ user.email }}
 							</p>
 						</div>
 						<div class="w-[15%] text-right table-body-cell">
-							<p class="text-[0.975rem]">
+							<p>
 								Dec 13, 2022
 							</p>
 						</div>
@@ -293,3 +293,32 @@
 	};
 </script>
 {% endblock %}
+
+---------------
+
+@login_redirect
+def dashboard(request):
+    # Get user
+    user = request.user
+    # Process request
+    if request.method == 'POST':
+        form = ProfileForm(request, request.POST)
+        if form.is_valid():
+
+            # Save form
+            form.save()
+
+            # Return response
+            messages.add_message(request, messages.SUCCESS, 'Your account information has been updated')
+            return redirect('dashboard')
+
+    else:
+        initial_data = {
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'email': user.email
+        }
+
+        form = ProfileForm(request, initial=initial_data)
+
+    return render(request, 'profile.html', {'form': form})

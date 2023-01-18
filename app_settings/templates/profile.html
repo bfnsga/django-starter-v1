@@ -5,8 +5,8 @@
 {% block content %}
 <div class="h-screen flex">
     {% include 'modules/nav.html' %}
-    <main class="h-full w-full overflow-y-scroll bg-primary-50">
-        <section class="max-w-screen-md mx-auto pt-[4.5rem] pb-20 px-2 relative">
+    <main class="h-full w-full overflow-y-scroll bg-white">
+        <section class="max-w-screen-lg mx-auto pt-[4.5rem] pb-20 px-2 relative">
             {% if messages %}
             {% for message in messages %}
             {% if message.level == 25 %}
@@ -32,104 +32,195 @@
             {% endif %}
             {% endfor %}
             {% endif %}
-            <div class="pb-5">
-                <h1 class="text-4xl font-bold text-slate-800 tracking-tight">
-                    Account
+            <div class="pb-7 flex items-center space-x-3">
+                <div class="bg-slate-100 inline-flex p-2 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-bold text-slate-800">
+                    Settings
                 </h1>
             </div>
-            <div class="border-b-2 border-primary-100 mb-6 pb-2 space-x-10">
+            <div class="border-b-2 border-slate-200 pb-3 space-x-14 text-[0.95rem] tracking-[0.0125rem]">
                 <a href="{% url 'dashboard' %}"
-                    class="decoration-2 underline underline-offset-[14px] decoration-emerald-500 text-emerald-500">
+                    class="decoration-2 underline underline-offset-[18px] decoration-[#3399ff] text-[#3399ff] font-medium">
                     Profile
                 </a>
-                <a href="{% url 'password_change' %}" class="hover:text-emerald-500 text-slate-600">
-                    Password
+                <a href="{% url 'password_change' %}" class="hover:text-[#3399ff] text-slate-400 font-medium">
+                    Users
                 </a>
-                <a href="#" class="hover:text-emerald-500 text-slate-600">
+                <a href="#" class="hover:text-[#3399ff] text-slate-400 font-medium">
                     Billing
                 </a>
             </div>
-            <div class="container-box">
-                <form method="post" id="update_profile-form" class="form-box" autocomplete="off">
-                    {% csrf_token %}
-                    <div class="col-span-1">
-                        <div class="flex flex-col input-spacing">
-                            <label for="{{ form.first_name.id_for_label }}" class="input-label">
-                                First Name
-                            </label>
-                            <input type="text" name="first_name" id="first_name" value="{{ form.first_name.value }}" class="input-box {% if form.first_name.errors %}border-red-500{% else %}border-primary-100{% endif %}" required>
-                        </div>
+            <div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
+                <div class="flex items-start w-full mt-1">
+                    <p class="text-slate-700 font-semibold w-[27%]">
+                        Name
+                    </p>
+                    <div>
+                        <p class="text-slate-600 text-[0.975rem]" id="update_name-default">
+                            {{ form.first_name.value }} {{ form.last_name.value }}
+                        </p>
+                        <form method="post" id="update_name-form" class="form-box hidden" autocomplete="off">
+                            {% csrf_token %}
+                            <div class="col-span-1">
+                                <div class="flex flex-col input-spacing">
+                                    <label for="{{ form.first_name.id_for_label }}" class="input-label">
+                                        First Name
+                                    </label>
+                                    <input type="text" name="first_name" id="first_name" value="{{ form.first_name.value }}" class="input-box {% if form.first_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                </div>
+                                {% if form.first_name.errors %}
+									{% for error in form.first_name.errors %}
+									<p class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
+										<svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+											<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+											<path d="M12 9v2m0 4v.01"></path>
+											<path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+											</path>
+										</svg>
+										<span>{{ error }}</span>
+									</p>
+									{% endfor %}
+									{% endif %}
+                            </div>
+                            <div class="col-span-1">
+                                <div class="flex flex-col input-spacing">
+                                    <label for="{{ form.last_name.id_for_label }}" class="input-label">
+                                        Last Name
+                                    </label>
+                                    <input type="text" name="last_name" id="last_name" value="{{ form.last_name.value }}" class="input-box {% if form.last_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                </div>
+                            </div>
+                            <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
+                                <button type="submit" id="update_name-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
+                                    <span>UPDATE</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="update_name-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                        </circle>
+                                    </svg>
+                                </button>
+                                {% if form.errors %}
+                                <a href="{% url 'dashboard' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                                    Cancel
+                                </a>
+                                {% else %}
+                                <button type="button" id="update_name-cancel" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                                    Cancel
+                                </button>
+                                {% endif %}
+                            </div>
+                        </form>
                     </div>
-                    <div class="col-span-1">
-                        <div class="flex flex-col input-spacing">
-                            <label for="{{ form.last_name.id_for_label }}" class="input-label">
-                                Last Name
-                            </label>
-                            <input type="text" name="last_name" id="last_name" value="{{ form.last_name.value }}" class="input-box {% if form.last_name.errors %}border-red-500{% else %}border-primary-100{% endif %}" required>
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="flex flex-col input-spacing">
-                            <label for="{{ form.email.id_for_label }}" class="input-label">
-                                Email
-                            </label>
-                            <input type="text" name="email" value="{{ form.email.value }}" class="input-box {% if form.email.errors %}border-red-500{% else %}border-primary-100{% endif %}" required>
-                            {% if form.email.errors %}
-                            {% for error in form.email.errors %}
-                            <p class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M12 9v2m0 4v.01"></path>
-                                    <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path>
-                                </svg>
-                                <span>
-                                    {{ error }}
-                                </span>
-                            </p>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
-                    </div>
-                    <div class="col-span-2">
-                        <div class="flex flex-col input-spacing">
-                            <label for="{{ form.password.id_for_label }}" class="input-label">
-                                Password
-                            </label>
-                            <input type="password" name="password" id="password" value="" class="input-box {% if form.password.errors %}border-red-500{% else %}border-primary-100{% endif %}" required>
-                            {% if form.password.errors %}
-                            {% for error in form.password.errors %}
-                            <p class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                    <path d="M12 9v2m0 4v.01"></path>
-                                    <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path>
-                                </svg>
-                                <span>
-                                    {{ error }}
-                                </span>
-                            </p>
-                            {% endfor %}
-                            {% endif %}
-                            <p class="text-sm text-[#9Fb3c8]">
-                                Your account password is required when making changes to your profile.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-span-2 my-2 flex items-center">
-                        <button type="submit" id="update_profile-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
-                            <svg xmlns="http://www.w3.org/2000/svg" id="update_profile-loading_svg" class="bg-transparent text-white h-5 w-5 -ml-2 mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-                                <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
-                                    <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
-                                </circle>
-                            </svg>
-                            <span>Update Profile</span>
-                        </button>
-                    </div>
-                </form>
+                </div>
+                <div>
+                    {% if form.errors %}
+                    <a href="{% url 'dashboard' %}" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
+                        Update
+                    </a>
+                    {% else %}
+                    <button type="button" id="update_name-open" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
+                        Update
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="flex items-center justify-between py-6 border-b-2 border-slate-100">
+                <div class="flex items-center w-full">
+                    <p class="text-slate-700 font-semibold w-[27%]">
+                        Login Email
+                    </p>
+                    <p class="text-slate-600 text-[0.975rem]">
+                        {{ form.email.value }}
+                    </p>
+                </div>
+                <div>
+                    <p class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
+                        Update
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-center justify-between py-6 border-b-2 border-slate-100">
+                <div class="flex items-center w-full">
+                    <p class="text-slate-700 font-semibold w-[27%]">
+                        Password
+                    </p>
+                    <p class="text-slate-600 text-[0.975rem]">
+                        &#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;
+                    </p>
+                </div>
+                <div>
+                    <p class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
+                        Update
+                    </p>
+                </div>
             </div>
         </section>
     </main>
 </div>
+<script nonce="{{request.csp_nonce}}">
+    /** Popup - Update Name **/
+    const updateNameForm = document.getElementById('update_name-form');
+    const updateNameFormOpen = document.getElementById('update_name-open');
+    const updateNameFormCancel = document.getElementById('update_name-cancel');
+    let updateNameOpenStatus = false;
+    let isUpdateNameFormSubmitted = false;
+
+    {% if form.errors %}
+    isUpdateNameFormSubmitted = true;
+    document.getElementById('update_name-form').classList.remove('hidden');
+    document.getElementById('update_name-default').classList.add('hidden');
+    document.getElementById('update_name-submit').classList.remove('btn-disabled');
+    document.getElementById('update_name-submit').disabled = false;
+    {% endif %}
+
+    updateNameFormOpen.addEventListener('click', openUpdateNamePopup);
+    updateNameFormCancel.addEventListener('click', openUpdateNamePopup);
+
+    function openUpdateNamePopup() {
+        updateNameOpenStatus = !updateNameOpenStatus;
+
+        if (updateNameOpenStatus) {
+            document.getElementById('update_name-form').classList.remove('hidden');
+            document.getElementById('update_name-default').classList.add('hidden');
+        } else {
+            document.getElementById('update_name-form').classList.add('hidden');
+            document.getElementById('update_name-default').classList.remove('hidden');
+        };
+    };
+
+    updateNameForm.addEventListener('keyup', updateNameFormKeyup);
+    updateNameForm.addEventListener('submit', updateNameFormSubmit);
+
+    function updateNameFormKeyup(event) {
+        if (!isUpdateNameFormSubmitted) {
+            const firstName = document.getElementById('first_name');
+            const lastName = document.getElementById('last_name');
+
+            if (firstName.defaultValue !== firstName.value || lastName.defaultValue !== lastName.value) {
+                document.getElementById('update_name-submit').classList.remove('btn-disabled');
+                document.getElementById('update_name-submit').disabled = false;
+            } else {
+                document.getElementById('update_name-submit').classList.add('btn-disabled');
+                document.getElementById('update_name-submit').disabled = true;
+            };
+        };
+    };
+
+    function updateNameFormSubmit(event) {
+        isUpdateNameFormSubmitted = true;
+
+        document.getElementById('update_name-submit').classList.add('btn-disabled');
+        document.getElementById('update_name-submit').disabled = true;
+        document.getElementById('update_name-loading_svg').classList.remove('hidden');
+    };
+
+</script>
 {% if form.errors %}
 <script nonce="{{request.csp_nonce}}">
     window.onload = () => {

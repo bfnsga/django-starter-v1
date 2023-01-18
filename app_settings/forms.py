@@ -34,6 +34,74 @@ def update_auth0_user(auth0_id,email):
 ###########################################
 ## Forms
 ###########################################
+class NameForm(forms.Form):
+    first_name = forms.CharField()
+    last_name = forms.CharField()
+
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+        super().__init__(*args, **kwargs)
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data['first_name']
+        
+        if 'Ben' in first_name:
+            raise forms.ValidationError('Incorrect name')
+        
+        return first_name
+
+    def save(self):
+        first_name = self.cleaned_data['first_name']
+        last_name = self.cleaned_data['last_name']
+        current_user = self.request.user
+
+        current_user.first_name = first_name
+        current_user.last_name = last_name
+        current_user.save()
+
+        return current_user
+
+class EmailForm(forms.Form):
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput())
+
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+        super().__init__(*args, **kwargs)
+
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        current_user = self.request.user
+
+        if not verify_password(current_user.email, password):
+            raise forms.ValidationError('Incorrect password')
+
+        return password
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        current_user = self.request.user
+
+        if current_user.email == email:
+            return email
+        
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError(f'{email} is already in use')
+
+        return email
+
+    def save(self):
+        email = self.cleaned_data['email']
+        current_user = self.request.user
+
+        if current_user.email != email:
+            update_auth0_user(current_user.auth0_id, email)
+
+        current_user.email = email
+        current_user.save()
+
+        return current_user
+
 class ProfileForm(forms.Form):
     first_name = forms.CharField()
     last_name = forms.CharField()
