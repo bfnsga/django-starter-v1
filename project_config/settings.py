@@ -46,6 +46,8 @@ else:
     # Security settings
     SECRET_KEY = os.environ['SECRET_KEY'] # Ensure Secret Key is at least 52 digits in length
     DEBUG = False
+
+    # Security Headers, can check at: https://securityheaders.com
     CSRF_COOKIE_SECURE = True
     SESSION_COOKIE_SECURE = True
     SECURE_SSL_REDIRECT = True

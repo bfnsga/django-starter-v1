@@ -152,3 +152,16 @@ resource "aws_apprunner_service" "apprunner" {
     aws_apprunner_vpc_connector.connector
   ]
 }
+
+#########################
+## CLOUDWATCH LOG GROUP
+#########################
+resource "aws_cloudwatch_log_group" "apprunner-application" {
+  name              = "/aws/apprunner/${aws_apprunner_service.apprunner.service_name}/${aws_apprunner_service.apprunner.service_id}/application"
+  retention_in_days = 14
+}
+
+resource "aws_cloudwatch_log_group" "apprunner-service" {
+  name              = "/aws/apprunner/${aws_apprunner_service.apprunner.service_name}/${aws_apprunner_service.apprunner.service_id}/service"
+  retention_in_days = 14
+}
