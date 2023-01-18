@@ -2,14 +2,7 @@
 name: Build and push
 
 on: 
-  workflow_dispatch:
-    inputs:
-      awsRegion:
-        required: true
-        type: string
-      ecrImage:
-        required: true
-        type: string
+  push
 
 jobs:
   build_and_push:
@@ -25,7 +18,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v1-node16
         with:
           role-to-assume: ${{ secrets.GH_ACTION_ROLE_ARN }}
-          aws-region: ${{ inputs.awsRegion }}
+          aws-region: us-east-2
 
       - name: Get ECR Registry
         id: ecr-login
@@ -44,7 +37,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ${{ steps.ecr-login.outputs.registry }}/${{ inputs.ecrImage }}
+            ${{ steps.ecr-login.outputs.registry }}/django-starter-v1
           tags: |
             type=raw,value=latest
 
