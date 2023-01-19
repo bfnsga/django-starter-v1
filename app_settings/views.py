@@ -259,13 +259,27 @@ def dashboard(request):
             return redirect('dashboard')
 
     else:
-        form = {
-            'first_name': user.first_name,
-            'last_name': user.last_name,
-            'email': user.email
-        }
+        form = {}
 
-    return render(request, 'profile.html', {'form': form})
+    try:
+        first_name = user.first_name
+    except:
+        first_name = ''
+
+    try:
+        last_name = user.last_name
+    except:
+        last_name = ''
+
+
+    context = {
+        'first_name': first_name,
+        'last_name': last_name,
+        'email': user.email,
+        'form': form
+    }
+
+    return render(request, 'profile.html', context)
 
 ##############################################
 ## Auth0 related functions (signup, login, callback, logout)
@@ -333,7 +347,7 @@ def callback(request):
         user.is_active = True
         user.save()
     elif not is_email_verified and not user.is_active:
-        redirect_uri = 'home'
+        return render(request, 'verify-email.html')
 
     # Login Django user
     django_login(request, user)

@@ -14,14 +14,14 @@
                 <div class="bg-teal-50 text-teal-700 font-[0.975rem] border border-teal-500 p-2.5 text-[0.95rem] tracking-[0.01rem] rounded">
                     <div class="flex items-center justify-between w-full">
                         <div class="flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="text-teal-600 w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <circle cx="12" cy="12" r="9"></circle>
-                            <path d="M9 12l2 2l4 -4"></path>
-                        </svg>
-                        <span>
-                            {{ message }}
-                        </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="text-teal-600 w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M9 12l2 2l4 -4"></path>
+                            </svg>
+                            <span>
+                                {{ message }}
+                            </span>
                         </div>
                         <button id="close_message">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-[1.125rem] w-[1.125rem] text-teal-600 hover:text-teal-800" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -49,8 +49,7 @@
                 </h1>
             </div>
             <div class="border-b-2 border-slate-200 pb-3 space-x-14 text-[0.95rem] tracking-[0.0125rem]">
-                <a href="{% url 'dashboard' %}"
-                    class="decoration-2 underline underline-offset-[18px] decoration-[#3399ff] text-[#3399ff] font-medium">
+                <a href="{% url 'dashboard' %}" class="decoration-2 underline underline-offset-[18px] decoration-[#3399ff] text-[#3399ff] font-medium">
                     Profile
                 </a>
                 <a href="{% url 'password_change' %}" class="hover:text-[#3399ff] text-slate-400 font-medium">
@@ -66,21 +65,21 @@
                         Name
                     </p>
                     <div class="w-full">
-                        <p class="text-slate-600 text-[0.975rem]" id="update_name-default_value">
-                            {{ form.first_name }} {{ form.last_name }}
+                        <p class="text-slate-600 text-[0.975rem]" id="name-default_value">
+                            {{ first_name }} {{ last_name }}
                         </p>
-                        <form method="post" id="update_name-form" class="form-box hidden" autocomplete="off">
+                        <form method="post" id="name-form" class="form-box hidden" autocomplete="off">
                             {% csrf_token %}
                             <div class="col-span-1">
                                 <div class="flex flex-col input-spacing">
                                     <label for="first_name" class="input-label">
                                         First Name
                                     </label>
-                                    <input type="text" name="first_name" id="first_name" value="{% if form.first_name.errors %}{{ form.first_name.value }}{% else %}{{ form.first_name }}{% endif %}" class="input-box {% if form.first_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                    <input type="text" name="first_name" id="first_name" value="{% if form.first_name.errors %}{{ form.first_name.value }}{% else %}{{ first_name }}{% endif %}" class="input-box {% if form.first_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
                                 </div>
                                 {% if form.first_name.errors %}
                                 {% for error in form.first_name.errors %}
-                                <p class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
+                                <p id="first_name-error" class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M12 9v2m0 4v.01"></path>
@@ -99,52 +98,11 @@
                                     <label for="last_name" class="input-label">
                                         Last Name
                                     </label>
-                                    <input type="text" name="last_name" id="last_name" value="{% if form.first_name.errors %}{{ form.last_name.value }}{% else %}{{ form.last_name }}{% endif %}" class="input-box {% if form.last_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                    <input type="text" name="last_name" id="last_name" value="{% if form.last_name.errors %}{{ form.last_name.value }}{% else %}{{ last_name }}{% endif %}" class="input-box {% if form.last_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
                                 </div>
-                            </div>
-                            <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
-                                <button type="submit" id="update_name-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
-                                    <span>UPDATE</span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" id="update_name-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-                                        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
-                                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
-                                        </circle>
-                                    </svg>
-                                </button>
-                                <a href="{% url 'dashboard' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
-                                    Cancel
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="w-[20%] flex justify-end">
-                    <button type="button" id="update_name-open" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
-                        Update
-                    </button>
-                </div>
-            </div>
-            <div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
-                <div class="flex items-start w-full mt-1">
-                    <p class="text-slate-700 font-semibold w-[35%]">
-                        Login Email
-                    </p>
-                    <div class="w-full">
-                        <p class="text-slate-600 text-[0.975rem]" id="update_email-default_value">
-                            {{ form.email }}
-                        </p>
-                        <form method="post" id="update_email-form" class="form-box hidden" autocomplete="off">
-                            {% csrf_token %}
-                            <div class="col-span-1">
-                                <div class="flex flex-col input-spacing">
-                                    <label for="email" class="input-label">
-                                        Email
-                                    </label>
-                                    <input type="email" name="email" id="email" value="{% if form.email.errors %}{{ form.email.value }}{% else %}{{ form.email }}{% endif %}" class="input-box {% if form.email.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
-                                </div>
-                                {% if form.email.errors %}
-                                {% for error in form.email.errors %}
-                                <p class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
+                                {% if form.last_name.errors %}
+                                {% for error in form.last_name.errors %}
+                                <p id="first_name-error" class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M12 9v2m0 4v.01"></path>
@@ -159,11 +117,11 @@
                                 {% endif %}
                             </div>
                             <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
-                                <button type="submit" id="update_email-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
+                                <button type="submit" id="name-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
                                     <span>
-                                        UPDATE
+                                        Update
                                     </span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" id="update_email-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="name-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
                                         <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
                                             <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
                                         </circle>
@@ -177,7 +135,65 @@
                     </div>
                 </div>
                 <div class="w-[20%] flex justify-end">
-                    <button type="button" id="update_email-open" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
+                    <button type="button" id="name-open" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
+                        Update
+                    </button>
+                </div>
+            </div>
+            <div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
+                <div class="flex items-start w-full mt-1">
+                    <p class="text-slate-700 font-semibold w-[35%]">
+                        Login Email
+                    </p>
+                    <div class="w-full">
+                        <p class="text-slate-600 text-[0.975rem]" id="email-default_value">
+                            {{ email }}
+                        </p>
+                        <form method="post" id="email-form" class="form-box hidden" autocomplete="off">
+                            {% csrf_token %}
+                            <div class="col-span-1">
+                                <div class="flex flex-col input-spacing">
+                                    <label for="email" class="input-label">
+                                        Email
+                                    </label>
+                                    <input type="email" name="email" id="email" value="{% if form.email.errors %}{{ form.email.value }}{% else %}{{ email }}{% endif %}" class="input-box {% if form.email.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                </div>
+                                {% if form.email.errors %}
+                                {% for error in form.email.errors %}
+                                <p id="email-error" class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 9v2m0 4v.01"></path>
+                                        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                                        </path>
+                                    </svg>
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                </p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
+                                <button type="submit" id="email-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
+                                    <span>
+                                        Update
+                                    </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="email-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                        </circle>
+                                    </svg>
+                                </button>
+                                <a href="{% url 'dashboard' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="w-[20%] flex justify-end">
+                    <button type="button" id="email-open" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
                         Update
                     </button>
                 </div>
@@ -188,15 +204,106 @@
                         Password
                     </p>
                     <div class="w-full">
-                        <p class="text-slate-600 text-[0.975rem]">
+                        <p id="password-default_value" class="text-slate-600 text-[0.975rem]">
                             &#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;
                         </p>
+                        <form method="post" id="password-form" class="form-box hidden" autocomplete="off">
+                            {% csrf_token %}
+                            <div class="col-span-1">
+                                <div class="flex flex-col input-spacing">
+                                    <label for="password" class="input-label">
+                                        Current Password
+                                    </label>
+                                    <input type="password" name="password" id="password" value="" class="input-box {% if form.password.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                </div>
+                                {% if form.password.errors %}
+                                {% for error in form.password.errors %}
+                                <p id="password-error" class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 9v2m0 4v.01"></path>
+                                        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                                        </path>
+                                    </svg>
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                </p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-span-2 form-box">
+                                <div class="col-span-1">
+                                    <div class="flex flex-col input-spacing">
+                                        <label for="password_1" class="input-label">
+                                            New Password
+                                        </label>
+                                        <input type="password" name="password_1" id="password_1" value="" class="input-box {% if form.password_1.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                    </div>
+                                    {% if form.password_1.errors %}
+                                    {% for error in form.password_1.errors %}
+                                    <p id="password_1-error" class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M12 9v2m0 4v.01"></path>
+                                            <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                                            </path>
+                                        </svg>
+                                        <span>
+                                            {{ error }}
+                                        </span>
+                                    </p>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-span-1">
+                                    <div class="flex flex-col input-spacing">
+                                        <label for="password_2" class="input-label">
+                                            New Password
+                                        </label>
+                                        <input type="password" name="password_2" id="password_2" value="" class="input-box {% if form.password_2.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="col-span-2 list-disc list-inside text-sm text-slate-500 tracking-wide">
+                                <li id="rule-lowercase">
+                                    Lower case letters (a-z)
+                                </li>
+                                <li id="rule-uppercase">
+                                    Upper case letters (A-Z)
+                                </li>
+                                <li id="rule-number">
+                                    Numbers (0-9)
+                                </li>
+                                <li id="rule-length">
+                                    At least 8 characters
+                                </li>
+                                <li id="rule-matching">
+                                    Passwords match
+                                </li>
+                            </ul>
+                            <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
+                                <button type="submit" id="password-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
+                                    <span>
+                                        Update
+                                    </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="password-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                        </circle>
+                                    </svg>
+                                </button>
+                                <a href="{% url 'dashboard' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
                     </div>
                 </div>
                 <div class="w-[20%] flex justify-end">
-                    <p class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
+                    <button type="button" id="password-open" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
                         Update
-                    </p>
+                    </button>
                 </div>
             </div>
         </section>
@@ -204,126 +311,224 @@
 </div>
 <script nonce="{{request.csp_nonce}}">
     const getEl = id => document.getElementById(id);
+    /************************/
     /** FORM - Update Name **/
-    const updateNameForm = getEl('update_name-form');
-    const updateNameFormDefaultValue = getEl('update_name-default_value');
-    const updateNameFormSubmit = getEl('update_name-submit');
-    const updateNameFormOpen = getEl('update_name-open');
+    /************************/
+    const nameForm = getEl('name-form');
+    const nameDefaultValue = getEl('name-default_value');
+    const nameSubmit = getEl('name-submit');
+    const nameOpen = getEl('name-open');
 
-    updateNameForm.addEventListener('submit', event => {
-        updateNameForm.removeEventListener('keyup', updateNameFormKeyup);
-        updateNameFormSubmit.classList.add('btn-disabled');
-        updateNameFormSubmit.disabled = true;
-        getEl('update_name-loading_svg').classList.remove('hidden');
+    nameForm.addEventListener('submit', event => {
+        nameForm.removeEventListener('keyup', nameFormKeyup);
+        nameSubmit.classList.add('btn-disabled');
+        nameSubmit.disabled = true;
+        getEl('name-loading_svg').classList.remove('hidden');
     });
+
+    {% if form.first_name.errors or form.last_name.errors %}
+    nameDefaultValue.classList.add('hidden');
+    nameForm.classList.remove('hidden');
+    nameSubmit.classList.remove('btn-disabled');
+    nameSubmit.disabled = false;
+    nameOpen.classList.add('hidden');
 
     {% if form.first_name.errors %}
-    updateNameFormDefaultValue.classList.add('hidden');
-    updateNameForm.classList.remove('hidden');
-    updateNameFormSubmit.classList.remove('btn-disabled');
-    updateNameFormSubmit.disabled = false;
+    getEl('first_name').addEventListener("focus", function () {
+        getEl('first_name-error').classList.add('hidden');
+        this.classList.remove('border-red-500');
+        this.classList.add('border-slate-200');
+    });
     {% endif %}
 
-    updateNameFormOpen.addEventListener('click', event => {
-        updateNameFormOpen.classList.add('hidden');
-        updateNameForm.classList.remove('hidden');
-        updateNameFormDefaultValue.classList.add('hidden');
+    {% if form.last_name.errors %}
+    getEl('last_name').addEventListener("focus", function () {
+        getEl('last_name-error').classList.add('hidden');
+        this.classList.remove('border-red-500');
+        this.classList.add('border-slate-200');
+    });
+    {% endif %}
+    {% endif %}
+
+    nameOpen.addEventListener('click', event => {
+        nameOpen.classList.add('hidden');
+        nameForm.classList.remove('hidden');
+        nameDefaultValue.classList.add('hidden');
     });
 
-    updateNameForm.addEventListener('keyup', updateNameFormKeyup);
-    function updateNameFormKeyup(event) {
+    nameForm.addEventListener('keyup', nameFormKeyup);
+    function nameFormKeyup(event) {
         const firstName = getEl('first_name');
         const lastName = getEl('last_name');
 
         if (firstName.defaultValue !== firstName.value || lastName.defaultValue !== lastName.value) {
-            updateNameFormSubmit.classList.remove('btn-disabled');
-            updateNameFormSubmit.disabled = false;
+            nameSubmit.classList.remove('btn-disabled');
+            nameSubmit.disabled = false;
         } else {
-            updateNameFormSubmit.classList.add('btn-disabled');
-            updateNameFormSubmit.disabled = true;
+            nameSubmit.classList.add('btn-disabled');
+            nameSubmit.disabled = true;
         };
     };
 
+    /************************/
     /** FORM - Update Email **/
-    const updateEmailForm = getEl('update_email-form');
-    const updateEmailFormOpen = getEl('update_email-open');
-    const updateEmailFormDefaultValue = getEl('update_email-default_value');
-    const updateEmailFormSubmit = getEl('update_email-submit');
+    /************************/
+    const emailForm = getEl('email-form');
+    const emailOpen = getEl('email-open');
+    const emailDefaultValue = getEl('email-default_value');
+    const emailSubmit = getEl('email-submit');
 
-    updateEmailForm.addEventListener('submit', event => {
-        updateEmailForm.removeEventListener('keyup', updateEmailFormKeyup);
-        updateEmailFormSubmit.classList.add('btn-disabled');
-        updateEmailFormSubmit.disabled = true;
-        getEl('update_email-loading_svg').classList.remove('hidden');
+    emailForm.addEventListener('submit', event => {
+        emailForm.removeEventListener('keyup', emailFormKeyup);
+        emailSubmit.classList.add('btn-disabled');
+        emailSubmit.disabled = true;
+        getEl('email-loading_svg').classList.remove('hidden');
     });
 
     {% if form.email.errors %}
-    updateEmailFormDefaultValue.classList.add('hidden');
-    updateEmailForm.classList.remove('hidden');
-    updateEmailFormSubmit.classList.remove('btn-disabled');
-    updateEmailFormSubmit.disabled = false;
+    emailDefaultValue.classList.add('hidden');
+    emailForm.classList.remove('hidden');
+    emailSubmit.classList.remove('btn-disabled');
+    emailSubmit.disabled = false;
+
+    getEl('email').addEventListener("focus", function () {
+        getEl('email-error').classList.add('hidden');
+        this.classList.remove('border-red-500');
+        this.classList.add('border-slate-200');
+    });
     {% endif %}
 
-    updateEmailFormOpen.addEventListener('click', event => {
-        updateEmailFormOpen.classList.add('hidden');
-        updateEmailForm.classList.remove('hidden');
-        updateEmailFormDefaultValue.classList.add('hidden');
+    emailOpen.addEventListener('click', event => {
+        emailOpen.classList.add('hidden');
+        emailForm.classList.remove('hidden');
+        emailDefaultValue.classList.add('hidden');
     });
 
-    updateEmailForm.addEventListener('keyup', updateEmailFormKeyup);
-    function updateEmailFormKeyup(event) {
+    emailForm.addEventListener('keyup', emailFormKeyup);
+    function emailFormKeyup(event) {
         const email = getEl('email');
         const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+$/
 
         if (emailRegex.test(email.value) && email.defaultValue !== email.value) {
-            updateEmailFormSubmit.classList.remove('btn-disabled');
-            updateEmailFormSubmit.disabled = false;
+            emailSubmit.classList.remove('btn-disabled');
+            emailSubmit.disabled = false;
         } else {
-            updateEmailFormSubmit.classList.add('btn-disabled');
-            updateEmailFormSubmit.disabled = true;
+            emailSubmit.classList.add('btn-disabled');
+            emailSubmit.disabled = true;
         };
     };
 
+    /************************/
     /** FORM - Update Password **/
-    
-    
+    /************************/
+    const passwordForm = getEl('password-form');
+    const passwordOpen = getEl('password-open');
+    const passwordDefaultValue = getEl('password-default_value');
+    const passwordSubmit = getEl('password-submit');
+
+    passwordForm.addEventListener('submit', event => {
+        passwordForm.removeEventListener('keyup', passwordFormKeyup);
+        passwordSubmit.classList.add('btn-disabled');
+        passwordSubmit.disabled = true;
+        getEl('password-loading_svg').classList.remove('hidden');
+    });
+
+    {% if form.password.errors or form.password_1.errors %}
+    passwordDefaultValue.classList.add('hidden');
+    passwordForm.classList.remove('hidden');
+    passwordSubmit.classList.remove('btn-disabled');
+    passwordSubmit.disabled = false;
+
+    {% if form.password.errors %}
+    getEl('password').addEventListener("focus", function () {
+        getEl('password-error').classList.add('hidden');
+        this.classList.remove('border-red-500');
+        this.classList.add('border-slate-200');
+    });
+    {% endif %}
+
+    {% if form.password_1.errors %}
+    getEl('password_1').addEventListener("focus", function () {
+        getEl('password_1-error').classList.add('hidden');
+        this.classList.remove('border-red-500');
+        this.classList.add('border-slate-200');
+    });
+    {% endif %}
+    {% endif %}
+
+    passwordOpen.addEventListener('click', event => {
+        passwordOpen.classList.add('hidden');
+        passwordForm.classList.remove('hidden');
+        passwordDefaultValue.classList.add('hidden');
+    });
+
+    passwordForm.addEventListener('keyup', passwordFormKeyup);
+    function passwordFormKeyup(event) {
+
+        const password = getEl('password');
+        const password1 = getEl('password_1');
+        const password2 = getEl('password_2');
+
+        const ruleLength = getEl('rule-length');
+        const ruleLowercase = getEl('rule-lowercase');
+        const ruleUppercase = getEl('rule-uppercase');
+        const ruleNumber = getEl('rule-number');
+        const ruleMatching = getEl('rule-matching');
+
+        let hasUppercase = false;
+        let hasLowercase = false;
+        let hasNumber = false;
+
+        hasUppercase = /[A-Z]/.test(password1.value);
+        hasLowercase = /[a-z]/.test(password1.value);
+        hasNumber = /\d/.test(password1.value);
+
+        if (password1.value.length >= 8) {
+            ruleLength.classList.add('text-emerald-500');
+        } else {
+            ruleLength.classList.remove('text-emerald-500');
+        };
+
+        if (hasLowercase) {
+            ruleLowercase.classList.add('text-emerald-500');
+        } else {
+            ruleLowercase.classList.remove('text-emerald-500');
+        };
+
+        if (hasUppercase) {
+            ruleUppercase.classList.add('text-emerald-500');
+        } else {
+            ruleUppercase.classList.remove('text-emerald-500');
+        };
+
+        if (hasNumber) {
+            ruleNumber.classList.add('text-emerald-500');
+        } else {
+            ruleNumber.classList.remove('text-emerald-500');
+        };
+
+        if (password1.value === password2.value && password1.value) {
+            ruleMatching.classList.add('text-emerald-500');
+        } else {
+            ruleMatching.classList.remove('text-emerald-500');
+        };
+
+        if (password1.value.length >= 8 && hasLowercase && hasUppercase && hasNumber && password1.value === password2.value && password.value.length > 0) {
+            passwordSubmit.disabled = false;
+            passwordSubmit.classList.remove('btn-disabled');
+        } else {
+            passwordSubmit.disabled = true;
+            passwordSubmit.classList.add('btn-disabled');
+        };
+    };
+
+    /************************/
     /** Message Notification **/
+    /************************/
+    {% if messages %}
     getEl('close_message').addEventListener('click', event => {
         getEl('message-notification').classList.add('hidden');
     });
-</script>
-<script nonce="{{request.csp_nonce}}">
-    /** Set variables **/
-    const form = document.getElementById('update_profile-form');
-    const button = document.getElementById('update_profile-submit');
-    const firstName = document.getElementById('first_name');
-    const lastName = document.getElementById('last_name');
-    const password = document.getElementById('password');
-    let isFormSubmited = false;
-
-    /** Form actions **/
-    form.addEventListener('submit', submitFunction);
-    form.addEventListener('keyup', keyupFunction);
-
-    function keyupFunction(event) {
-        if (!isFormSubmited) {
-
-            if ((firstName.value !== firstName.defaultValue || lastName.value !== lastName.defaultValue) && password.value) {
-                button.disabled = false;
-                button.classList.remove('btn-disabled');
-            } else {
-                button.disabled = true;
-                button.classList.add('btn-disabled');
-            };
-        };
-    };
-
-    function submitFunction() {
-        isFormSubmited = true;
-
-        document.getElementById('update_profile-loading_svg').classList.remove('hidden');
-        document.getElementById('update_profile-submit').classList.add('btn-disabled');
-        document.getElementById('update_profile-submit').disabled = true;
-    };
+    {% endif %}
 </script>
 {% endblock %}

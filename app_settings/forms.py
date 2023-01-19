@@ -42,14 +42,6 @@ class NameForm(forms.Form):
         self.request = request
         super().__init__(*args, **kwargs)
 
-    def clean_first_name(self):
-        first_name = self.cleaned_data['first_name']
-        
-        if 'Ben' in first_name:
-            raise forms.ValidationError('Incorrect name')
-        
-        return first_name
-
     def save(self):
         first_name = self.cleaned_data['first_name']
         last_name = self.cleaned_data['last_name']
@@ -73,7 +65,7 @@ class EmailForm(forms.Form):
         current_user = self.request.user
 
         if current_user.email == email:
-            return email
+            raise forms.ValidationError('This is your current email')
         
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError(f'{email} is already in use')
@@ -116,7 +108,7 @@ class ProfileForm(forms.Form):
         current_user = self.request.user
 
         if current_user.email == email:
-            return email
+            raise forms.ValidationError('This is your current email')
         
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError(f'{email} is already in use')
@@ -171,7 +163,7 @@ class PasswordChangeForm(forms.Form):
         password_2 = cleaned_data.get('password_2')
 
         if password_1 and password_2 and password_1 != password_2:
-            raise forms.ValidationError("Passwords do not match")
+            raise forms.ValidationError({'password_1': 'Passwords do not match'})
 
         return cleaned_data
 
