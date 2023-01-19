@@ -208,7 +208,7 @@ AUTH_USER_MODEL = 'app_settings.CustomUser'
 # Content Security Policy
 CSP_IMG_SRC = ("'self'", '*')
 
-CSP_SCRIPT_SRC = ("'self'")
+CSP_SCRIPT_SRC = ("'self'", 'https://unpkg.com')
 
 CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
 

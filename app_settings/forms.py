@@ -63,20 +63,10 @@ class NameForm(forms.Form):
 
 class EmailForm(forms.Form):
     email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput())
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
         super().__init__(*args, **kwargs)
-
-    def clean_password(self):
-        password = self.cleaned_data['password']
-        current_user = self.request.user
-
-        if not verify_password(current_user.email, password):
-            raise forms.ValidationError('Incorrect password')
-
-        return password
 
     def clean_email(self):
         email = self.cleaned_data['email']

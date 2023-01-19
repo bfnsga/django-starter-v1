@@ -13,7 +13,7 @@ from urllib.parse import quote_plus, urlencode
 import json
 from .models import Organization
 
-from .forms import ProfileForm, PasswordChangeForm, AddUserForm, DeleteUserForm, NameForm
+from .forms import ProfileForm, PasswordChangeForm, AddUserForm, DeleteUserForm, NameForm, EmailForm
 from django.contrib import messages
 import stripe
 
@@ -244,7 +244,7 @@ def dashboard(request):
         if 'first_name' in request.POST:
             form = NameForm(request, request.POST)
         elif 'email' in request.POST:
-            form = ProfileForm(request, request.POST)
+            form = EmailForm(request, request.POST)
         elif 'password_1' in request.POST:
             form = PasswordChangeForm(request, request.POST)
         
@@ -259,13 +259,11 @@ def dashboard(request):
             return redirect('dashboard')
 
     else:
-        initial_data = {
+        form = {
             'first_name': user.first_name,
             'last_name': user.last_name,
             'email': user.email
         }
-
-        form = ProfileForm(request, initial=initial_data)
 
     return render(request, 'profile.html', {'form': form})
 
