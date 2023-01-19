@@ -265,10 +265,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <ul class="col-span-2 list-disc list-inside text-sm text-slate-500 tracking-wide">
+                            <ul class="col-span-2 list-disc list-inside text-sm text-slate-400 tracking-[0.01rem]">
                                 <li id="rule-lowercase">
                                     Lower case letters (a-z)
-                                </li>
+                                </li>   
                                 <li id="rule-uppercase">
                                     Upper case letters (A-Z)
                                 </li>
@@ -390,6 +390,7 @@
     emailForm.classList.remove('hidden');
     emailSubmit.classList.remove('btn-disabled');
     emailSubmit.disabled = false;
+    emailOpen.classList.add('hidden');
 
     getEl('email').addEventListener("focus", function () {
         getEl('email-error').classList.add('hidden');
@@ -438,6 +439,7 @@
     passwordForm.classList.remove('hidden');
     passwordSubmit.classList.remove('btn-disabled');
     passwordSubmit.disabled = false;
+    passwordOpen.classList.add('hidden');
 
     {% if form.password.errors %}
     getEl('password').addEventListener("focus", function () {
