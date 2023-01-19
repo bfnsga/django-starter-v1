@@ -4,292 +4,533 @@
 
 {% block content %}
 <div class="h-screen flex">
-	{% include 'modules/nav.html' %}
-	<main class="h-full w-full overflow-y-scroll bg-white">
-		<section class="px-4 max-w-screen-lg mx-auto pt-16 pb-20">
-			<div class="pb-4 flex items-center justify-between">
-				<h1 class="text-4xl font-bold text-slate-800 tracking-tight">
-					Users
-				</h1>
-				<button onclick="openAddUserPopup()" nonce="{{request.csp_nonce}}" class="btn btn-size-base btn-color-primary space-x-2">
-					<svg xmlns="http://www.w3.org/2000/svg" class="text-inherit w-5 h-5 -ml-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-						<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-						<line x1="12" y1="5" x2="12" y2="19"></line>
-						<line x1="5" y1="12" x2="19" y2="12"></line>
-					</svg>
-					<span>Add User</span>
-				</button>
-			</div>
-			<div class="border-2 border-slate-100 rounded">
-				<div class="flex w-full font-medium text-[0.9rem] text-slate-500 bg-slate-50 border-b-2 border-slate-100 py-1.5 px-3">
-					<div class="w-[14%] text-left table-header-cell">
-						Status
-					</div>
-					<div class="w-[24%] text-left table-header-cell">
-						Name
-					</div>
-					<div class="w-[32%] text-left table-header-cell">
-						Email
-					</div>
-					<div class="w-[15%] text-right table-header-cell">
-						Created
-					</div>
-					<div class="w-[15%] text-right table-header-cell">
-						Actions
-					</div>
-				</div>
-				{% for user in users %}
-				<div class="py-3.5 px-3 text-slate-600 {% cycle '' 'border-y-2 border-slate-100' %}">
-					<div class="flex items-center">
-						<div class="w-[14%] text-left table-body-cell">
-							{% if user.is_active %}
-							<p class="bg-[#d1fae5] px-2 py-0.5 rounded text-[#065f46] text-[0.9rem] font-medium inline-flex">
-								Active
-							</p>
-							{% else %}
-							<p class="bg-[#fef3c7] px-2 py-0.5 rounded text-[#92400e] text-[0.9rem] font-medium inline-flex">
-								Pending
-							</p>
-							{% endif %}
-						</div>
-						<div class="w-[24%] text-left table-body-cell">
-							<p class="text-[0.975rem]">
-								{{ user.first_name }} {{ user.last_name }}
-							</p>
-						</div>
-						<div class="w-[32%] text-left table-body-cell">
-							<p class="text-[0.975rem]">
-								{{ user.email }}
-							</p>
-						</div>
-						<div class="w-[15%] text-right table-body-cell">
-							<p class="text-[0.975rem]">
-								Dec 13, 2022
-							</p>
-						</div>
-						<div class="w-[15%] text-right table-body-cell">
-							<button {% if user.pk != request.user.pk %}onclick="openDeleteUserPopup(event)" nonce="{{request.csp_nonce}}"{% endif %} id="{% if user.pk != request.user.pk %}{{ user.pk }}_{{ user.email }}{% endif %}" class="px-2.5 py-1 text-[0.9rem] border-[1.5px] {% if user.pk != request.user.pk %}border-primary-300 text-primary-600 hover:bg-slate-100 hover:text-primary-800{% else %}border-slate-300 bg-slate-50 text-slate-300 cursor-default{% endif %}">
-								Delete
-							</button>
-						</div>
-					</div>
-				</div>
-				{% endfor %}
-			</div>
-		</section>
-		<!----------------------------------->
-		<!-- Modals -->
-		<!----------------------------------->
-		<div class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="popup-bg">
-		</div>
-		<!-- Add User Modal -->
-		<div id="add_user-popup" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-3/4 z-50">
-			<div class="relative max-w-screen-md h-auto">
-				<div class="relative container-box">
-					<div class="absolute right-0 top-0 p-3">
-						<button onclick="closeAddUserPopup()">
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-300 hover:text-primary-600" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-								<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-								<line x1="18" y1="6" x2="6" y2="18"></line>
-								<line x1="6" y1="6" x2="18" y2="18"></line>
-							</svg>
-						</button>
-					</div>
-					<div>
-						<h3 class="text-2xl font-semibold text-slate-700 text-center tracking-tight">
-							Add User
-						</h3>
-						<p class="text-slate-600 mt-2 px-24 text-center">
-							Allow other users access to this account.
-						</p>
-					</div>
-					<form method="post" id="add_user-form" class="form-box mt-6" autocomplete="off">
-						{% csrf_token %}
-						<div class="col-span-1">
-							<div class="flex flex-col input-spacing">
-								<label for="{{ form.first_name.id_for_label }}" class="input-label">
-									First Name
-								</label>
-								<input type="text" name="first_name" id="first-name" value="" class="input-box {% if form.first_name.errors %}border-red-500{% else %}border-primary-200{% endif %}" required>
-							</div>
-						</div>
-						<div class="col-span-1">
-							<div class="flex flex-col input-spacing">
-								<label for="{{ form.last_name.id_for_label }}" class="input-label">
-									Last Name
-								</label>
-								<input type="text" name="last_name" id="last-name" value="" class="input-box {% if form.last_name.errors %}border-red-500{% else %}border-primary-200{% endif %}" required>
-							</div>
-						</div>
-						<div class="col-span-2">
-							<div class="flex flex-col input-spacing">
-								<label for="{{ form.email.id_for_label }}" class="input-label">
-									Email
-								</label>
-								<input type="text" name="email" id="email" value="" class="input-box {% if form.email.errors %}border-red-500{% else %}border-primary-200{% endif %}" required>
-								<div id="form-errors">
-									{% if form.email.errors %}
-									{% for error in form.email.errors %}
-									<p class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2">
-										<svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-											<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-											<path d="M12 9v2m0 4v.01"></path>
-											<path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
-											</path>
-										</svg>
-										<span>{{ error }}</span>
-									</p>
-									{% endfor %}
-									{% endif %}
-								</div>
-							</div>
-						</div>
-						<div class="col-span-2 my-2 flex items-center justify-center">
-							<button type="submit" id="add_user-submit" disabled="true" class="w-48 py-2 border-2 border-emerald-500 bg-emerald-500 text-white font-medium inline-flex items-center justify-center opacity-60">
-								<svg xmlns="http://www.w3.org/2000/svg" id="add_user-loading_svg" class="bg-transparent text-white h-5 w-5 -ml-2 mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-									<circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
-										<animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
-									</circle>
-								</svg>
-								<span>Add User</span>
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-		<!-- Delete User Modal -->
-		<div id="delete_user-popup" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-3/4 z-50">
-			<div class="relative max-w-screen-md h-auto">
-				<div class="relative container-box">
-					<div class="absolute right-0 top-0 p-3">
-						<button onclick="closeDeleteUserPopup()">
-							<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-300 hover:text-primary-600" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-								<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-								<line x1="18" y1="6" x2="6" y2="18"></line>
-								<line x1="6" y1="6" x2="18" y2="18"></line>
-							</svg>
-						</button>
-					</div>
-					<div class="text-center">
-						<h3 class="text-2xl font-semibold text-slate-700 tracking-tight">
-							Delete User
-						</h3>
-						<p class="mt-4 text-slate-600">
-							<span>Are you sure you would like to delete&nbsp;</span><span class="font-semibold" id="delete_user_email"></span><span>?</span>
-						</p>
-						<p class="mt-1.5 text-slate-600">
-							Deleted user data cannot be recovered.
-						</p>
-					</div>
-					<form method="post" id="delete_user-form" action="/users/delete" class="form-box mt-6" autocomplete="off">
-						{% csrf_token %}
-						<div class="hidden">
-							<input type="text" name="delete_user_id" id="delete_user_id" value="" required>
-						</div>
-						<div class="col-span-2 my-2 flex items-center justify-center">
-							<button onclick="submitDeleteUserForm()" type="submit" id="delete_user-submit" class="w-48 py-2 border-2 border-red-500 bg-red-500 text-white font-medium inline-flex items-center justify-center">
-								<svg xmlns="http://www.w3.org/2000/svg" id="delete_user-loading_svg" class="bg-transparent text-white h-5 w-5 -ml-2 mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-									<circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
-										<animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
-									</circle>
-								</svg>
-								<span>Delete User</span>
-							</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</main>
+    {% include 'modules/nav.html' %}
+    <main class="h-full w-full overflow-y-scroll bg-white">
+        <section class="max-w-screen-lg mx-auto pt-[4.5rem] pb-20 px-6 relative">
+            {% if messages %}
+            {% for message in messages %}
+            {% if message.level == 25 %}
+            <div id="message-notification" class="absolute top-0 left-0 mt-3 px-6 w-1/2">
+                <div class="bg-teal-50 text-teal-700 font-[0.975rem] border border-teal-500 p-2.5 text-[0.95rem] tracking-[0.01rem] rounded">
+                    <div class="flex items-center justify-between w-full">
+                        <div class="flex items-center space-x-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="text-teal-600 w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M9 12l2 2l4 -4"></path>
+                            </svg>
+                            <span>
+                                {{ message }}
+                            </span>
+                        </div>
+                        <button id="close_message">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-[1.125rem] w-[1.125rem] text-teal-600 hover:text-teal-800" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            <div class="pb-7 flex items-center space-x-3">
+                <div class="bg-slate-100 inline-flex p-2 rounded-full">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-slate-800 h-6 w-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </div>
+                <h1>
+                    Settings
+                </h1>
+            </div>
+            <div class="nav-secondary-bar">
+                <a href="{% url 'dashboard' %}" class="nav-secondary-link {% if 'profile' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
+                    Profile
+                </a>
+                <a href="{% url 'users' %}" class="nav-secondary-link {% if 'users' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
+                    Users
+                </a>
+                <a href="#" class="nav-secondary-link {% if 'billing' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
+                    Billing
+                </a>
+            </div>
+            <div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
+                <div class="flex items-start w-full mt-1">
+                    <p class="text-slate-700 font-semibold w-[35%]">
+                        Name
+                    </p>
+                    <div class="w-full">
+                        <p class="text-slate-600 text-[0.975rem]" id="name-default_value">
+                            {{ first_name }} {{ last_name }}
+                        </p>
+                        <form method="post" id="name-form" class="form-box hidden" autocomplete="off">
+                            {% csrf_token %}
+                            <div class="col-span-1">
+                                <div class="flex flex-col input-spacing">
+                                    <label for="first_name" class="input-label">
+                                        First Name
+                                    </label>
+                                    <input type="text" name="first_name" id="first_name" value="{% if form.first_name.errors %}{{ form.first_name.value }}{% else %}{{ first_name }}{% endif %}" class="input-box {% if form.first_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                </div>
+                                {% if form.first_name.errors %}
+                                {% for error in form.first_name.errors %}
+                                <p id="first_name-error" class="input-error-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 9v2m0 4v.01"></path>
+                                        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                                        </path>
+                                    </svg>
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                </p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-span-1">
+                                <div class="flex flex-col input-spacing">
+                                    <label for="last_name" class="input-label">
+                                        Last Name
+                                    </label>
+                                    <input type="text" name="last_name" id="last_name" value="{% if form.last_name.errors %}{{ form.last_name.value }}{% else %}{{ last_name }}{% endif %}" class="input-box {% if form.last_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                </div>
+                                {% if form.last_name.errors %}
+                                {% for error in form.last_name.errors %}
+                                <p id="first_name-error" class="input-error-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 9v2m0 4v.01"></path>
+                                        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                                        </path>
+                                    </svg>
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                </p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
+                                <button type="submit" id="name-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
+                                    <span>
+                                        Update
+                                    </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="name-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                        </circle>
+                                    </svg>
+                                </button>
+                                <a href="{% url 'dashboard' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="w-[20%] flex justify-end">
+                    <button type="button" id="name-open" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
+                        Update
+                    </button>
+                </div>
+            </div>
+            <div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
+                <div class="flex items-start w-full mt-1">
+                    <p class="text-slate-700 font-semibold w-[35%]">
+                        Login Email
+                    </p>
+                    <div class="w-full">
+                        <p class="text-slate-600 text-[0.975rem]" id="email-default_value">
+                            {{ email }}
+                        </p>
+                        <form method="post" id="email-form" class="form-box hidden" autocomplete="off">
+                            {% csrf_token %}
+                            <div class="col-span-1">
+                                <div class="flex flex-col input-spacing">
+                                    <label for="email" class="input-label">
+                                        Email
+                                    </label>
+                                    <input type="email" name="email" id="email" value="{% if form.email.errors %}{{ form.email.value }}{% else %}{{ email }}{% endif %}" class="input-box {% if form.email.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                </div>
+                                {% if form.email.errors %}
+                                {% for error in form.email.errors %}
+                                <p id="email-error" class="input-error-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 9v2m0 4v.01"></path>
+                                        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                                        </path>
+                                    </svg>
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                </p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
+                                <button type="submit" id="email-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
+                                    <span>
+                                        Update
+                                    </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="email-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                        </circle>
+                                    </svg>
+                                </button>
+                                <a href="{% url 'dashboard' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="w-[20%] flex justify-end">
+                    <button type="button" id="email-open" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
+                        Update
+                    </button>
+                </div>
+            </div>
+            <div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
+                <div class="flex items-start w-full mt-1">
+                    <p class="text-slate-700 font-semibold w-[35%]">
+                        Password
+                    </p>
+                    <div class="w-full">
+                        <p id="password-default_value" class="text-slate-600 text-[0.975rem]">
+                            &#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;
+                        </p>
+                        <form method="post" id="password-form" class="form-box hidden" autocomplete="off">
+                            {% csrf_token %}
+                            <div class="col-span-1">
+                                <div class="flex flex-col input-spacing">
+                                    <label for="password" class="input-label">
+                                        Current Password
+                                    </label>
+                                    <input type="password" name="password" id="password" value="" class="input-box {% if form.password.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                </div>
+                                {% if form.password.errors %}
+                                {% for error in form.password.errors %}
+                                <p id="password-error" class="input-error-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                        <path d="M12 9v2m0 4v.01"></path>
+                                        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                                        </path>
+                                    </svg>
+                                    <span>
+                                        {{ error }}
+                                    </span>
+                                </p>
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-span-2 form-box">
+                                <div class="col-span-1">
+                                    <div class="flex flex-col input-spacing">
+                                        <label for="password_1" class="input-label">
+                                            New Password
+                                        </label>
+                                        <input type="password" name="password_1" id="password_1" value="" class="input-box {% if form.password_1.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                    </div>
+                                    {% if form.password_1.errors %}
+                                    {% for error in form.password_1.errors %}
+                                    <p id="password_1-error" class="input-error-text">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M12 9v2m0 4v.01"></path>
+                                            <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                                            </path>
+                                        </svg>
+                                        <span>
+                                            {{ error }}
+                                        </span>
+                                    </p>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                <div class="col-span-1">
+                                    <div class="flex flex-col input-spacing">
+                                        <label for="password_2" class="input-label">
+                                            New Password
+                                        </label>
+                                        <input type="password" name="password_2" id="password_2" value="" class="input-box {% if form.password_2.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <ul class="col-span-2 list-disc list-inside text-sm text-slate-400 tracking-[0.0125rem]">
+                                <li id="rule-lowercase">
+                                    Lower case letters (a-z)
+                                </li>   
+                                <li id="rule-uppercase">
+                                    Upper case letters (A-Z)
+                                </li>
+                                <li id="rule-number">
+                                    Numbers (0-9)
+                                </li>
+                                <li id="rule-length">
+                                    At least 8 characters
+                                </li>
+                                <li id="rule-matching">
+                                    Passwords match
+                                </li>
+                            </ul>
+                            <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
+                                <button type="submit" id="password-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
+                                    <span>
+                                        Update
+                                    </span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" id="password-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                                        </circle>
+                                    </svg>
+                                </button>
+                                <a href="{% url 'dashboard' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="w-[20%] flex justify-end">
+                    <button type="button" id="password-open" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
+                        Update
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
 </div>
 <script nonce="{{request.csp_nonce}}">
-	/** Set global variables **/
-	const popupBackground = document.getElementById('popup-bg');
+    const getEl = id => document.getElementById(id);
+    /************************/
+    /** FORM - Update Name **/
+    /************************/
+    const nameForm = getEl('name-form');
+    const nameDefaultValue = getEl('name-default_value');
+    const nameSubmit = getEl('name-submit');
+    const nameOpen = getEl('name-open');
 
-	/** Add User Popup **/
-	const addUserPopup = document.getElementById('add_user-popup');
+    nameForm.addEventListener('submit', event => {
+        nameForm.removeEventListener('keyup', nameFormKeyup);
+        nameSubmit.classList.add('btn-disabled');
+        nameSubmit.disabled = true;
+        getEl('name-loading_svg').classList.remove('hidden');
+    });
 
-	const formErrors = document.getElementById('form-errors');
-	const emailInput = document.getElementById('email');
+    {% if form.first_name.errors or form.last_name.errors %}
+    nameDefaultValue.classList.add('hidden');
+    nameForm.classList.remove('hidden');
+    nameSubmit.classList.remove('btn-disabled');
+    nameSubmit.disabled = false;
+    nameOpen.classList.add('hidden');
 
-	{% if form.email.errors %}
-	popupBackground.classList.remove('hidden');
-	addUserPopup.classList.remove('hidden');
-	{% endif %}
+    {% if form.first_name.errors %}
+    getEl('first_name').addEventListener("focus", function () {
+        getEl('first_name-error').classList.add('hidden');
+        this.classList.remove('border-red-500');
+        this.classList.add('border-slate-200');
+    });
+    {% endif %}
 
-	function openAddUserPopup() {
-		popupBackground.classList.remove('hidden');
-		addUserPopup.classList.remove('hidden');
-	};
+    {% if form.last_name.errors %}
+    getEl('last_name').addEventListener("focus", function () {
+        getEl('last_name-error').classList.add('hidden');
+        this.classList.remove('border-red-500');
+        this.classList.add('border-slate-200');
+    });
+    {% endif %}
+    {% endif %}
 
-	function closeAddUserPopup() {
-		popupBackground.classList.add('hidden');
-		addUserPopup.classList.add('hidden');
-		formErrors.classList.add('hidden');
-		emailInput.classList.remove('border-red-500');
-		emailInput.classList.add('border-primary-200');
-	};
+    nameOpen.addEventListener('click', event => {
+        nameOpen.classList.add('hidden');
+        nameForm.classList.remove('hidden');
+        nameDefaultValue.classList.add('hidden');
+    });
 
-	/** Delete User Popup **/
-	const deleteUserPopup = document.getElementById('delete_user-popup');
+    nameForm.addEventListener('keyup', nameFormKeyup);
+    function nameFormKeyup(event) {
+        const firstName = getEl('first_name');
+        const lastName = getEl('last_name');
 
-	function openDeleteUserPopup(event) {
-		popupBackground.classList.remove('hidden');
-		deleteUserPopup.classList.remove('hidden');
+        if (firstName.defaultValue !== firstName.value || lastName.defaultValue !== lastName.value) {
+            nameSubmit.classList.remove('btn-disabled');
+            nameSubmit.disabled = false;
+        } else {
+            nameSubmit.classList.add('btn-disabled');
+            nameSubmit.disabled = true;
+        };
+    };
 
-		let str = event.target.id;
-		let parts = str.split("_", 2);
+    /************************/
+    /** FORM - Update Email **/
+    /************************/
+    const emailForm = getEl('email-form');
+    const emailOpen = getEl('email-open');
+    const emailDefaultValue = getEl('email-default_value');
+    const emailSubmit = getEl('email-submit');
 
-		let deleteUserID = parts[0];
-		let deleteUserEmail = parts[1];
+    emailForm.addEventListener('submit', event => {
+        emailForm.removeEventListener('keyup', emailFormKeyup);
+        emailSubmit.classList.add('btn-disabled');
+        emailSubmit.disabled = true;
+        getEl('email-loading_svg').classList.remove('hidden');
+    });
 
-		document.getElementById('delete_user_id').value = deleteUserID;
-		document.getElementById('delete_user_email').innerHTML = deleteUserEmail;
-	};
+    {% if form.email.errors %}
+    emailDefaultValue.classList.add('hidden');
+    emailForm.classList.remove('hidden');
+    emailSubmit.classList.remove('btn-disabled');
+    emailSubmit.disabled = false;
+    emailOpen.classList.add('hidden');
 
-	function closeDeleteUserPopup() {
-		popupBackground.classList.add('hidden');
-		deleteUserPopup.classList.add('hidden');
-	};
+    getEl('email').addEventListener("focus", function () {
+        getEl('email-error').classList.add('hidden');
+        this.classList.remove('border-red-500');
+        this.classList.add('border-slate-200');
+    });
+    {% endif %}
 
-	function submitDeleteUserForm() {
-		document.getElementById('delete_user-loading_svg').classList.remove("hidden");
-		document.getElementById('delete_user-submit').classList.add('opacity-60');
-		document.getElementById('delete_user-submit').disabled = true;
-	};
+    emailOpen.addEventListener('click', event => {
+        emailOpen.classList.add('hidden');
+        emailForm.classList.remove('hidden');
+        emailDefaultValue.classList.add('hidden');
+    });
 
-	const form = document.getElementById('add_user-form');
-	const button = document.getElementById('add_user-submit');
-	let isFormSubmited = false;
+    emailForm.addEventListener('keyup', emailFormKeyup);
+    function emailFormKeyup(event) {
+        const email = getEl('email');
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+$/
 
-	const firstName = document.getElementById('first-name');
-	const lastName = document.getElementById('last-name');
-	const email = document.getElementById('email');
-	const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+[.]+[a-zA-Z0-9]+$/
+        if (emailRegex.test(email.value) && email.defaultValue !== email.value) {
+            emailSubmit.classList.remove('btn-disabled');
+            emailSubmit.disabled = false;
+        } else {
+            emailSubmit.classList.add('btn-disabled');
+            emailSubmit.disabled = true;
+        };
+    };
 
-	form.addEventListener('submit', submitFunction);
-	form.addEventListener('keyup', keyupFunction);
+    /************************/
+    /** FORM - Update Password **/
+    /************************/
+    const passwordForm = getEl('password-form');
+    const passwordOpen = getEl('password-open');
+    const passwordDefaultValue = getEl('password-default_value');
+    const passwordSubmit = getEl('password-submit');
 
-	function keyupFunction() {
-		if (!isFormSubmited) {
-			if (firstName.value.length > 0 && lastName.value.length > 0 && emailRegex.test(email.value)) {
-				button.disabled = false;
-				button.classList.remove('opacity-60');
-			} else {
-				button.disabled = true;
-				button.classList.add('opacity-60');
-			};
-		};
-	};
+    passwordForm.addEventListener('submit', event => {
+        passwordForm.removeEventListener('keyup', passwordFormKeyup);
+        passwordSubmit.classList.add('btn-disabled');
+        passwordSubmit.disabled = true;
+        getEl('password-loading_svg').classList.remove('hidden');
+    });
 
-	function submitFunction() {
-		isFormSubmited = true;
-		const loadingSVG = document.getElementById("add_user-loading_svg");
+    {% if form.password.errors or form.password_1.errors %}
+    passwordDefaultValue.classList.add('hidden');
+    passwordForm.classList.remove('hidden');
+    passwordSubmit.classList.remove('btn-disabled');
+    passwordSubmit.disabled = false;
+    passwordOpen.classList.add('hidden');
 
-		button.disabled = true;
-		button.classList.add("opacity-60");
-		loadingSVG.classList.remove("hidden");
-	};
+    {% if form.password.errors %}
+    getEl('password').addEventListener("focus", function () {
+        getEl('password-error').classList.add('hidden');
+        this.classList.remove('border-red-500');
+        this.classList.add('border-slate-200');
+    });
+    {% endif %}
+
+    {% if form.password_1.errors %}
+    getEl('password_1').addEventListener("focus", function () {
+        getEl('password_1-error').classList.add('hidden');
+        this.classList.remove('border-red-500');
+        this.classList.add('border-slate-200');
+    });
+    {% endif %}
+    {% endif %}
+
+    passwordOpen.addEventListener('click', event => {
+        passwordOpen.classList.add('hidden');
+        passwordForm.classList.remove('hidden');
+        passwordDefaultValue.classList.add('hidden');
+    });
+
+    passwordForm.addEventListener('keyup', passwordFormKeyup);
+    function passwordFormKeyup(event) {
+
+        const password = getEl('password');
+        const password1 = getEl('password_1');
+        const password2 = getEl('password_2');
+
+        const ruleLength = getEl('rule-length');
+        const ruleLowercase = getEl('rule-lowercase');
+        const ruleUppercase = getEl('rule-uppercase');
+        const ruleNumber = getEl('rule-number');
+        const ruleMatching = getEl('rule-matching');
+
+        let hasUppercase = false;
+        let hasLowercase = false;
+        let hasNumber = false;
+
+        hasUppercase = /[A-Z]/.test(password1.value);
+        hasLowercase = /[a-z]/.test(password1.value);
+        hasNumber = /\d/.test(password1.value);
+
+        if (password1.value.length >= 8) {
+            ruleLength.classList.add('text-emerald-500');
+        } else {
+            ruleLength.classList.remove('text-emerald-500');
+        };
+
+        if (hasLowercase) {
+            ruleLowercase.classList.add('text-emerald-500');
+        } else {
+            ruleLowercase.classList.remove('text-emerald-500');
+        };
+
+        if (hasUppercase) {
+            ruleUppercase.classList.add('text-emerald-500');
+        } else {
+            ruleUppercase.classList.remove('text-emerald-500');
+        };
+
+        if (hasNumber) {
+            ruleNumber.classList.add('text-emerald-500');
+        } else {
+            ruleNumber.classList.remove('text-emerald-500');
+        };
+
+        if (password1.value === password2.value && password1.value) {
+            ruleMatching.classList.add('text-emerald-500');
+        } else {
+            ruleMatching.classList.remove('text-emerald-500');
+        };
+
+        if (password1.value.length >= 8 && hasLowercase && hasUppercase && hasNumber && password1.value === password2.value && password.value.length > 0) {
+            passwordSubmit.disabled = false;
+            passwordSubmit.classList.remove('btn-disabled');
+        } else {
+            passwordSubmit.disabled = true;
+            passwordSubmit.classList.add('btn-disabled');
+        };
+    };
+
+    /************************/
+    /** Message Notification **/
+    /************************/
+    {% if messages %}
+    getEl('close_message').addEventListener('click', event => {
+        getEl('message-notification').classList.add('hidden');
+    });
+    {% endif %}
 </script>
 {% endblock %}

@@ -25,6 +25,14 @@
     @apply space-y-0.5;
 }
 
+.input-error-text {
+    @apply text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5;
+}
+
+.input-error-svg {
+    @apply text-red-500 h-5 w-5 mt-0.5;
+}
+
 .btn-base {
     @apply inline-flex items-center justify-center font-medium;
 }
@@ -32,11 +40,11 @@
 /* Primary Navigation Bar */
 
 .nav-link {
-    @apply flex items-center space-x-3 px-4 py-1 font-medium text-base;
+    @apply flex items-center space-x-3 px-4 py-1.5 font-medium text-base;
 }
 
 .nav-link-active {
-    @apply text-white bg-primary-700;
+    @apply text-white bg-primary-700 rounded;
 }
 
 .nav-link-inactive {
@@ -48,11 +56,28 @@
 }
 
 .nav-icon-active {
-    @apply text-emerald-500;
+    @apply text-[#3399ff];
 }
 
 .nav-icon-inactive {
     @apply text-primary-100 group-hover:text-white;
+}
+
+/* Settings Navigation */
+.nav-secondary-bar {
+    @apply border-b-2 border-slate-200 pb-3 space-x-14 text-[0.95rem] tracking-[0.0125rem];
+}
+
+.nav-secondary-link {
+    @apply font-medium;
+}
+
+.nav-secondary-link-active {
+    @apply decoration-2 underline underline-offset-[18px] decoration-[#3399ff] text-[#3399ff];
+}
+
+.nav-secondary-link-inactive {
+    @apply hover:text-[#3399ff] text-slate-400;
 }
 
 /* Button */
@@ -73,3 +98,7 @@
 }
 
 @tailwind utilities;
+
+h1 {
+    @apply text-3xl font-bold text-slate-800;
+}

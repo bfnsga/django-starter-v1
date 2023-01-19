@@ -38,24 +38,24 @@
             {% endif %}
             <div class="pb-7 flex items-center space-x-3">
                 <div class="bg-slate-100 inline-flex p-2 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-slate-800 h-6 w-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                         <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
                         <circle cx="12" cy="12" r="3"></circle>
                     </svg>
                 </div>
-                <h1 class="text-3xl font-bold text-slate-800">
+                <h1>
                     Settings
                 </h1>
             </div>
-            <div class="border-b-2 border-slate-200 pb-3 space-x-14 text-[0.95rem] tracking-[0.0125rem]">
-                <a href="{% url 'dashboard' %}" class="decoration-2 underline underline-offset-[18px] decoration-[#3399ff] text-[#3399ff] font-medium">
+            <div class="nav-secondary-bar">
+                <a href="{% url 'dashboard' %}" class="nav-secondary-link {% if 'profile' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
                     Profile
                 </a>
-                <a href="{% url 'password_change' %}" class="hover:text-[#3399ff] text-slate-400 font-medium">
+                <a href="{% url 'users' %}" class="nav-secondary-link {% if 'users' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
                     Users
                 </a>
-                <a href="#" class="hover:text-[#3399ff] text-slate-400 font-medium">
+                <a href="#" class="nav-secondary-link {% if 'billing' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
                     Billing
                 </a>
             </div>
@@ -79,8 +79,8 @@
                                 </div>
                                 {% if form.first_name.errors %}
                                 {% for error in form.first_name.errors %}
-                                <p id="first_name-error" class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <p id="first_name-error" class="input-error-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M12 9v2m0 4v.01"></path>
                                         <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
@@ -102,8 +102,8 @@
                                 </div>
                                 {% if form.last_name.errors %}
                                 {% for error in form.last_name.errors %}
-                                <p id="first_name-error" class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <p id="first_name-error" class="input-error-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M12 9v2m0 4v.01"></path>
                                         <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
@@ -160,8 +160,8 @@
                                 </div>
                                 {% if form.email.errors %}
                                 {% for error in form.email.errors %}
-                                <p id="email-error" class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <p id="email-error" class="input-error-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M12 9v2m0 4v.01"></path>
                                         <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
@@ -218,8 +218,8 @@
                                 </div>
                                 {% if form.password.errors %}
                                 {% for error in form.password.errors %}
-                                <p id="password-error" class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <p id="password-error" class="input-error-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M12 9v2m0 4v.01"></path>
                                         <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
@@ -242,8 +242,8 @@
                                     </div>
                                     {% if form.password_1.errors %}
                                     {% for error in form.password_1.errors %}
-                                    <p id="password_1-error" class="text-sm text-red-500 tracking-wide inline-flex items-center space-x-2 mt-1.5">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="text-red-500 h-5 w-5 mt-0.5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <p id="password_1-error" class="input-error-text">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                             <path d="M12 9v2m0 4v.01"></path>
                                             <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
@@ -265,7 +265,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <ul class="col-span-2 list-disc list-inside text-sm text-slate-400 tracking-[0.01rem]">
+                            <ul class="col-span-2 list-disc list-inside text-sm text-slate-400 tracking-[0.0125rem]">
                                 <li id="rule-lowercase">
                                     Lower case letters (a-z)
                                 </li>   
