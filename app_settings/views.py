@@ -252,7 +252,7 @@ def dashboard(request):
 
             # Save form
             form.save()
-            time.sleep(1)
+            time.sleep(0.5)
 
             # Return response
             messages.add_message(request, messages.SUCCESS, 'Your profile has been updated')
@@ -372,7 +372,7 @@ def logout(request):
         f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
         + urlencode(
             {
-                "returnTo": request.build_absolute_uri(reverse('home')),
+                "returnTo": request.build_absolute_uri(reverse('login')),
                 "client_id": settings.AUTH0_CLIENT_ID,
             },
             quote_via=quote_plus,

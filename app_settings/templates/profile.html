@@ -164,15 +164,26 @@
     </main>
 </div>
 <script nonce="{{request.csp_nonce}}">
+    const forms = document.querySelectorAll('form');
+
+    forms.forEach(form => {
+        form.addEventListener('submit', event => {
+            updateNameForm.removeEventListener('keyup', updateNameFormKeyup);
+            document.getElementById('update_name-submit').classList.add('btn-disabled');
+            document.getElementById('update_name-submit').disabled = true;
+            document.getElementById('update_name-loading_svg').classList.remove('hidden');
+        });
+    });
     /** Popup - Update Name **/
     const updateNameForm = document.getElementById('update_name-form');
+    const updateNameFormButton = document.getElementById('update_name-submit');
     const updateNameFormOpen = document.getElementById('update_name-open');
     const updateNameFormCancel = document.getElementById('update_name-cancel');
     let updateNameOpenStatus = false;
-    let isUpdateNameFormSubmitted = false;
+
+    updateNameForm.addEventListener('keyup', updateNameFormKeyup);
 
     {% if form.errors %}
-    isUpdateNameFormSubmitted = true;
     document.getElementById('update_name-form').classList.remove('hidden');
     document.getElementById('update_name-default').classList.add('hidden');
     document.getElementById('update_name-submit').classList.remove('btn-disabled');
@@ -194,32 +205,18 @@
         };
     };
 
-    updateNameForm.addEventListener('keyup', updateNameFormKeyup);
-    updateNameForm.addEventListener('submit', updateNameFormSubmit);
-
     function updateNameFormKeyup(event) {
-        if (!isUpdateNameFormSubmitted) {
-            const firstName = document.getElementById('first_name');
-            const lastName = document.getElementById('last_name');
+        const firstName = document.getElementById('first_name');
+        const lastName = document.getElementById('last_name');
 
-            if (firstName.defaultValue !== firstName.value || lastName.defaultValue !== lastName.value) {
-                document.getElementById('update_name-submit').classList.remove('btn-disabled');
-                document.getElementById('update_name-submit').disabled = false;
-            } else {
-                document.getElementById('update_name-submit').classList.add('btn-disabled');
-                document.getElementById('update_name-submit').disabled = true;
-            };
+        if (firstName.defaultValue !== firstName.value || lastName.defaultValue !== lastName.value) {
+            document.getElementById('update_name-submit').classList.remove('btn-disabled');
+            document.getElementById('update_name-submit').disabled = false;
+        } else {
+            document.getElementById('update_name-submit').classList.add('btn-disabled');
+            document.getElementById('update_name-submit').disabled = true;
         };
     };
-
-    function updateNameFormSubmit(event) {
-        isUpdateNameFormSubmitted = true;
-
-        document.getElementById('update_name-submit').classList.add('btn-disabled');
-        document.getElementById('update_name-submit').disabled = true;
-        document.getElementById('update_name-loading_svg').classList.remove('hidden');
-    };
-
 </script>
 {% if form.errors %}
 <script nonce="{{request.csp_nonce}}">
