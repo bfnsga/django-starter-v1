@@ -185,8 +185,6 @@ class PasswordChangeForm(forms.Form):
         return current_user
 
 class AddUserForm(forms.Form):
-    first_name = forms.CharField()
-    last_name = forms.CharField()
     email = forms.EmailField()
 
     def __init__(self, request, *args, **kwargs):
@@ -208,8 +206,6 @@ class AddUserForm(forms.Form):
     def save(self):
         current_user = self.request.user
 
-        first_name = self.cleaned_data['first_name']
-        last_name = self.cleaned_data['last_name']
         email = self.cleaned_data['email']
 
         ########################
@@ -231,8 +227,6 @@ class AddUserForm(forms.Form):
         user = User.objects.create(username=email,email=email)
         user.organization_id = current_user.organization_id
         user.auth0_id = new_user_id
-        user.first_name = first_name
-        user.last_name = last_name
         user.save()
 
         ########################

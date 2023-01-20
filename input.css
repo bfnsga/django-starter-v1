@@ -82,15 +82,23 @@
 
 /* Button */
 .btn {
-    @apply inline-flex items-center justify-center rounded-sm text-[0.975rem] uppercase;
+    @apply inline-flex items-center justify-center rounded-sm uppercase;
 }
 
 .btn-color-primary {
     @apply border-[#3399ff] bg-[#3399ff] text-white;
 }
 
+.btn-color-red {
+    @apply border-red-500 bg-red-500 text-white;
+}
+
 .btn-size-base {
-    @apply px-8 py-2 border-2 font-medium;
+    @apply px-8 py-2 border-2 font-medium text-[0.975rem];
+}
+
+.btn-size-sm {
+    @apply py-1 px-4 border-2 font-medium text-[0.85rem];
 }
 
 .btn-disabled {

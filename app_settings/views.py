@@ -82,158 +82,6 @@ def login_redirect(view_func):
 ##############################################
 ## Settings functions (update profile, change password, add/delete users, update billing, etc.)
 ##############################################
-def home(request):
-    return render(
-        request,
-        "home.html",
-        context={
-            "session": request.session.get("user"),
-            "pretty": json.dumps(request.session.get("user"), indent=4),
-        },
-    )
-
-####
-@login_redirect
-def password_change(request):
-    # Process request
-    if request.method == 'POST':
-        form = PasswordChangeForm(request, request.POST)
-        if form.is_valid():
-
-            # Save form
-            form.save()
-
-            # Return response
-            messages.success(request, 'Your password has been updated!')
-            return redirect('password_change')
-
-    else:
-        form = PasswordChangeForm(request)
-
-    return render(request, 'password.html', {'form': form})
-
-####
-@login_redirect
-def billing(request):
-    ## Get billing details from Stripe
-    organization = Organization.objects.filter(id=request.user.organization_id)
-    organization = organization[0]
-    stripe_id = organization.stripe_id
-    card_id = 'card_1MPD2FD47P4Qx7WsFd4d7iZw'
-
-    card_details = stripe.Customer.retrieve_source(
-        stripe_id,
-        card_id
-    )
-
-    card_brand = card_details['brand']
-    exp_month = str(card_details['exp_month'])
-    exp_year = str(card_details['exp_year'])
-    last_4 = card_details['last4']
-
-    ## Format expiration date
-    if len(exp_month) == 1:
-        exp_month = '0' + str(exp_month)
-
-    exp_year = exp_year[:-2]
-
-    exp_date = f'{exp_month}/{exp_year}'
-
-    ## Set context
-    context = {
-        'card': {
-            'brand': card_brand,
-            'exp_date': exp_date,
-            'last_4': last_4
-        }
-    }
-
-    print(context)
-
-    return render(request, 'billing.html', context)
-
-####
-@login_redirect
-def users(request):
-    ## Set variables
-    context = {
-        'users': User.objects.filter(organization_id=request.user.organization_id),
-    }
-
-    # Process request
-    if request.method == 'POST':
-        form = AddUserForm(request, request.POST)
-        context['form'] = form
-        if form.is_valid():
-
-            # Save form
-            auth0_invite_url = form.save()
-            ticket = auth0_invite_url['ticket'] + 'type=invite'
-
-            # Send email via SES with invite link (ticket) or, for now, just print to console
-            print(ticket)
-
-            # Return response
-            return redirect('users')
-
-    else:
-        form = AddUserForm(request)
-        context['form'] = form
-
-    return render(request, 'users.html', context)
-
-####
-@login_redirect
-def add_user(request):
-    if request.method == 'POST':
-        form = AddUserForm(request, request.POST)
-        if form.is_valid():
-
-            # Save form
-            testing = form.save()
-            ticket = testing['ticket']
-            print(f'{ticket}type=invite')
-
-            # Return response
-            time.sleep(0.5)
-            return redirect('users')
-
-    else:
-        form = AddUserForm(request)
-
-    return render(request, 'users.html', {'form': form})
-
-####
-@login_redirect
-def delete_user(request):
-    # Process request
-    if request.method == 'POST':
-        form = DeleteUserForm(request, request.POST)
-        if form.is_valid():
-
-            # Save form
-            form.save()
-
-            # Return response
-            time.sleep(0.5)
-            return redirect('users')
-
-    else:
-        delete_user = User.objects.get(pk=delete_user_id)
-        print(delete_user.email)
-        initial_data = {
-            'delete_user_id': delete_user_id
-        }
-
-        form = DeleteUserForm(request, initial=initial_data)
-
-        context = {}
-        context['form'] = form
-        context['delete_user_email'] = delete_user.email
-
-    return render(request, 'delete-user.html', context)
-
-####
 @login_redirect
 def dashboard(request):
     # Get user
@@ -280,6 +128,80 @@ def dashboard(request):
     }
 
     return render(request, 'profile.html', context)
+
+####
+@login_redirect
+def users(request):
+    ## Set variables
+    context = {
+        'users': User.objects.filter(organization_id=request.user.organization_id),
+    }
+
+    # Process request
+    if request.method == 'POST':
+        if 'email' in request.POST:
+            form = AddUserForm(request, request.POST)
+        elif 'delete_user-id' in request.POST:
+            form = DeleteUserForm(request, request.POST)
+        context['form'] = form
+
+        if form.is_valid():
+            # Save form
+            if 'email' in request.POST:
+                auth0_invite_url = form.save()
+                ticket = auth0_invite_url['ticket'] + 'type=invite'
+                print(ticket)
+            else:
+                form.save()
+
+            # Return response
+            return redirect('users')
+
+    else:
+        form = AddUserForm(request)
+        context['form'] = form
+
+    return render(request, 'users.html', context)
+
+###
+@login_redirect
+def billing(request):
+    ## Get billing details from Stripe
+    organization = Organization.objects.filter(id=request.user.organization_id)
+    organization = organization[0]
+    stripe_id = organization.stripe_id
+    card_id = 'card_1MPD2FD47P4Qx7WsFd4d7iZw'
+
+    card_details = stripe.Customer.retrieve_source(
+        stripe_id,
+        card_id
+    )
+
+    card_brand = card_details['brand']
+    exp_month = str(card_details['exp_month'])
+    exp_year = str(card_details['exp_year'])
+    last_4 = card_details['last4']
+
+    ## Format expiration date
+    if len(exp_month) == 1:
+        exp_month = '0' + str(exp_month)
+
+    exp_year = exp_year[:-2]
+
+    exp_date = f'{exp_month}/{exp_year}'
+
+    ## Set context
+    context = {
+        'card': {
+            'brand': card_brand,
+            'exp_date': exp_date,
+            'last_4': last_4
+        }
+    }
+
+    print(context)
+
+    return render(request, 'billing.html', context)
 
 ##############################################
 ## Auth0 related functions (signup, login, callback, logout)
