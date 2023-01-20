@@ -224,7 +224,7 @@
                                 Deleted user data cannot be recovered.
                             </p>
                         </div>
-                        <form method="post" id="delete_user-form" action="/users/delete" class="form-box mt-6" autocomplete="off">
+                        <form method="post" id="delete_user-form" class="form-box mt-6" autocomplete="off">
                             {% csrf_token %}
                             <div class="hidden">
                                 <input type="text" name="delete_user_id" id="delete_user_id" value="" required>

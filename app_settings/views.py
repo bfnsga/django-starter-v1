@@ -141,7 +141,7 @@ def users(request):
     if request.method == 'POST':
         if 'email' in request.POST:
             form = AddUserForm(request, request.POST)
-        elif 'delete_user-id' in request.POST:
+        elif 'delete_user_id' in request.POST:
             form = DeleteUserForm(request, request.POST)
         context['form'] = form
 
