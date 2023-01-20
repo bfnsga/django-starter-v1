@@ -133,8 +133,12 @@ def dashboard(request):
 @login_redirect
 def users(request):
     ## Set variables
+    users = []
+    for x in User.objects.filter(organization_id=request.user.organization_id).exclude(pk=request.user.pk):
+        users.append(x)
+
     context = {
-        'users': User.objects.filter(organization_id=request.user.organization_id),
+        'users': [request.user] + users
     }
 
     # Process request
