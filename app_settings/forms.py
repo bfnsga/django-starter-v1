@@ -79,53 +79,7 @@ class EmailForm(forms.Form):
         if current_user.email != email:
             update_auth0_user(current_user.auth0_id, email)
 
-        current_user.email = email
-        current_user.save()
-
-        return current_user
-
-class ProfileForm(forms.Form):
-    first_name = forms.CharField()
-    last_name = forms.CharField()
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput())
-
-    def __init__(self, request, *args, **kwargs):
-        self.request = request
-        super().__init__(*args, **kwargs)
-
-    def clean_password(self):
-        password = self.cleaned_data['password']
-        current_user = self.request.user
-
-        if not verify_password(current_user.email, password):
-            raise forms.ValidationError('Incorrect password')
-
-        return password
-
-    def clean_email(self):
-        email = self.cleaned_data['email']
-        current_user = self.request.user
-
-        if current_user.email == email:
-            raise forms.ValidationError('This is your current email')
-        
-        if User.objects.filter(email=email).exists():
-            raise forms.ValidationError(f'{email} is already in use')
-
-        return email
-
-    def save(self):
-        first_name = self.cleaned_data['first_name']
-        last_name = self.cleaned_data['last_name']
-        email = self.cleaned_data['email']
-        current_user = self.request.user
-
-        if current_user.email != email:
-            update_auth0_user(current_user.auth0_id, email)
-
-        current_user.first_name = first_name
-        current_user.last_name = last_name
+        current_user.username = email
         current_user.email = email
         current_user.save()
 
@@ -264,7 +218,7 @@ class DeleteUserForm(forms.Form):
             raise forms.ValidationError('To delete your account, please visit your Account page')
 
         ## Ensure current user has permission to delete user
-        if not current_user.is_root or current_user.organization_id != delete_user_organization_id:
+        if not current_user.is_rootuser or current_user.organization_id != delete_user_organization_id:
             raise forms.ValidationError('You do not have permission to delete this account')
 
         ## Check that user exists in Auth0
@@ -290,5 +244,3 @@ class DeleteUserForm(forms.Form):
         delete_user.delete()
 
         return True
-
-        

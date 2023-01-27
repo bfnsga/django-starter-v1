@@ -93,13 +93,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app_settings'
+    'app_settings',
+    'app_dashboard',
+    'app_images',
+    'app_uploaders'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'csp.middleware.CSPMiddleware',
-    "django_permissions_policy.PermissionsPolicyMiddleware",
+    #'csp.middleware.CSPMiddleware',
+    'django_permissions_policy.PermissionsPolicyMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -208,7 +211,7 @@ AUTH_USER_MODEL = 'app_settings.CustomUser'
 # Content Security Policy
 CSP_IMG_SRC = ("'self'", '*')
 
-CSP_SCRIPT_SRC = ("'self'", 'https://unpkg.com')
+CSP_SCRIPT_SRC = ("'self'", 'https://*.stripe.com', "'unsafe-inline'")
 
 CSP_STYLE_SRC = ("'self'", 'https://fonts.googleapis.com')
 
@@ -217,20 +220,20 @@ CSP_FONT_SRC = ('https://fonts.gstatic.com')
 CSP_INCLUDE_NONCE_IN = ['script-src']
 
 PERMISSIONS_POLICY = {
-    "accelerometer": [],
-    "ambient-light-sensor": [],
-    "autoplay": [],
-    "camera": [],
-    "display-capture": [],
-    "document-domain": [],
-    "encrypted-media": [],
-    "fullscreen": [],
-    "geolocation": [],
-    "gyroscope": [],
-    "interest-cohort": [],
-    "magnetometer": [],
-    "microphone": [],
-    "midi": [],
-    "payment": [],
-    "usb": [],
+    'accelerometer': [],
+    'ambient-light-sensor': [],
+    'autoplay': [],
+    'camera': [],
+    'display-capture': [],
+    'document-domain': [],
+    'encrypted-media': [],
+    'fullscreen': [],
+    'geolocation': [],
+    'gyroscope': [],
+    'interest-cohort': [],
+    'magnetometer': [],
+    'microphone': [],
+    'midi': [],
+    'payment': [],
+    'usb': [],
 }

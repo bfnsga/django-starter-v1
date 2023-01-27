@@ -14,7 +14,7 @@
 }
 
 .input-box {
-    @apply text-slate-700 border-[1.5px] bg-white placeholder-slate-400 p-3 w-full text-base rounded-none focus:outline-none focus:border-[1.5px] focus:border-slate-300 drop-shadow-sm;
+    @apply text-slate-700 border-[1.5px] bg-white placeholder-slate-300 p-3 w-full text-base rounded-none focus:outline-none focus:border-[1.5px] focus:border-slate-300 drop-shadow-sm;
 }
 
 .input-label {
@@ -82,7 +82,7 @@
 
 /* Button */
 .btn {
-    @apply inline-flex items-center justify-center rounded-sm uppercase;
+    @apply inline-flex items-center justify-center rounded-sm;
 }
 
 .btn-color-primary {
@@ -94,7 +94,11 @@
 }
 
 .btn-size-base {
-    @apply px-8 py-2 border-2 font-medium text-[0.975rem];
+    @apply px-6 py-1 border-2 font-medium text-[1rem];
+}
+
+.btn-size-large {
+    @apply px-8 py-2 border-2 font-medium text-[1rem];
 }
 
 .btn-size-sm {
@@ -109,4 +113,8 @@
 
 h1 {
     @apply text-3xl font-bold text-slate-800;
+}
+
+[x-cloak] {
+    display: none !important;
 }

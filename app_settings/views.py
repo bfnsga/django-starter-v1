@@ -13,9 +13,14 @@ from urllib.parse import quote_plus, urlencode
 import json
 from .models import Organization
 
-from .forms import ProfileForm, PasswordChangeForm, AddUserForm, DeleteUserForm, NameForm, EmailForm
+from .forms import NameForm, EmailForm, PasswordChangeForm, AddUserForm, DeleteUserForm
 from django.contrib import messages
 import stripe
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+
+from .decorators import login_redirect
 
 ##############################################
 ## Set User model, initial clients, variables, etc. for use in functions
@@ -36,54 +41,38 @@ oauth.register(
 )
 
 ##############################################
-## Custom wrapper to determine if user is logged and if session is valid
-##############################################
-def login_redirect(view_func):
-    def wrapper(request, *args, **kwargs):
-
-        # Set default redirect page for unauthenticated users
-        default_redirect = 'login'
-
-        # Check for session variables            
-        if 'is_authorized' in request.session and request.session['is_authorized'] == True:
-            # Checks if Auth0 access_token is expired
-            expires_at = arrow.get(request.session.get('expires_at'))
-            utc_now = arrow.utcnow()
-
-            # Only applies to GET requests, if POST then allow request to go through
-            if request.method == 'GET':
-                if expires_at > utc_now:
-                    return view_func(request, *args, **kwargs)
-
-                # If expired, reauthorize through Auth0 endpoint
-                # Redirect to requested page using 'state'
-                else:
-                    # Clear session
-                    django_logout(request)
-                    request.session.clear()
-
-                    # Set state session variable for page redirect
-                    state_id = str(uuid.uuid4())
-                    request.session['state_id'] = {
-                        "id": state_id,
-                        "view_name": request.resolver_match.view_name
-                    }
-
-                    # Send back to login page to re-authenticate
-                    return login(request, signup=False, state=state_id)
-            else:
-                return view_func(request, *args, **kwargs)
-
-        # Redirects to default if user is not authenticated
-        return redirect(default_redirect)
-
-    return wrapper
-
-##############################################
 ## Settings functions (update profile, change password, add/delete users, update billing, etc.)
 ##############################################
+@csrf_exempt
+def stripe_callback(request):
+    payload = request.body
+    event = None
+
+    try:
+        event = stripe.Event.construct_from(
+        json.loads(payload), stripe.api_key
+        )
+    except ValueError as e:
+        # Invalid payload
+        return HttpResponse(status=400)
+
+    # Handle the event
+    if event.type == 'payment_intent.succeeded':
+        payment_intent = event.data.object # contains a stripe.PaymentIntent
+        # Then define and call a method to handle the successful payment intent.
+        # handle_payment_intent_succeeded(payment_intent)
+    elif event.type == 'payment_method.attached':
+        payment_method = event.data.object # contains a stripe.PaymentMethod
+        # Then define and call a method to handle the successful attachment of a PaymentMethod.
+        # handle_payment_method_attached(payment_method)
+    # ... handle other event types
+    else:
+        print('Unhandled event type {}'.format(event.type))
+
+    return HttpResponse(status=200)
+
 @login_redirect
-def dashboard(request):
+def profile(request):
     # Get user
     user = request.user
     # Process request
@@ -104,7 +93,7 @@ def dashboard(request):
 
             # Return response
             messages.add_message(request, messages.SUCCESS, 'Your profile has been updated')
-            return redirect('dashboard')
+            return redirect('profile')
 
     else:
         form = {}
@@ -171,28 +160,52 @@ def users(request):
 @login_redirect
 def billing(request):
     ## Get billing details from Stripe
-    organization = Organization.objects.filter(id=request.user.organization_id)
-    organization = organization[0]
-    stripe_id = organization.stripe_id
-    card_id = 'card_1MPD2FD47P4Qx7WsFd4d7iZw'
+    try:
+        previous_page = request.META.get('HTTP_REFERER')
+    except:
+        prevous_page = 'http://127.0.0.1:8000/settings/profile'
 
-    card_details = stripe.Customer.retrieve_source(
-        stripe_id,
-        card_id
+    organization = Organization.objects.get(id=request.user.organization_id)
+
+    session = stripe.billing_portal.Session.create(
+        customer=organization.stripe_id,
+        return_url=previous_page,
     )
 
-    card_brand = card_details['brand']
-    exp_month = str(card_details['exp_month'])
-    exp_year = str(card_details['exp_year'])
-    last_4 = card_details['last4']
+    return redirect(session.url)
+    organization = Organization.objects.get(id=request.user.organization_id)
 
-    ## Format expiration date
-    if len(exp_month) == 1:
-        exp_month = '0' + str(exp_month)
+    credit_card = stripe.Customer.list_sources(
+        organization.stripe_id,
+        object="card",
+        limit=1,
+    )
 
-    exp_year = exp_year[:-2]
+    intent = stripe.SetupIntent.create(
+        customer=organization.stripe_id
+    )
 
-    exp_date = f'{exp_month}/{exp_year}'
+    print(intent.client_secret)
+
+    if len(credit_card['data']) > 0:
+        # Parse card details
+        card_details = credit_card['data'][0]
+
+        card_brand = card_details['brand']
+        exp_month = str(card_details['exp_month'])
+        exp_year = str(card_details['exp_year'])
+        last_4 = card_details['last4']
+
+        ## Format expiration date
+        if len(exp_month) == 1:
+            exp_month = '0' + str(exp_month)
+
+        exp_year = exp_year[2:]
+        exp_date = f'{exp_month}/{exp_year}'
+    else:
+        card_brand = ''
+        exp_date = ''
+        last_4 = ''
 
     ## Set context
     context = {
@@ -200,16 +213,114 @@ def billing(request):
             'brand': card_brand,
             'exp_date': exp_date,
             'last_4': last_4
-        }
+        },
+        'client_secret': intent.client_secret
     }
-
-    print(context)
 
     return render(request, 'billing.html', context)
 
 ##############################################
 ## Auth0 related functions (signup, login, callback, logout)
 ##############################################
+def subscribe(request):
+    organization = Organization.objects.get(id=request.user.organization_id)
+    subscription_status = organization.subscription_status
+
+    tier1_price_id = 'price_1MU9WZD47P4Qx7WskZSLlXoo'
+    tier2_price_id = 'price_1MU9WtD47P4Qx7WsUBhA0PIS'
+    tier3_price_id = 'price_1MU9X7D47P4Qx7WsEh6WX57S'
+
+    context = {
+        'subscription_status': subscription_status,
+        'tiers': {
+            'tier1': {
+                'price': '$29',
+                'url': f'http://127.0.0.1:8000/checkout?price_id={tier1_price_id}'
+            },
+            'tier2': {
+                'price': '$79',
+                'url': f'http://127.0.0.1:8000/checkout?price_id={tier2_price_id}'
+            },
+            'tier3': {
+                'price': '$149',
+                'url': f'http://127.0.0.1:8000/checkout?price_id={tier3_price_id}'
+            }
+        }
+    }
+
+    return render(request, 'subscribe.html', context)
+
+def checkout(request):
+    ## Set variables
+    price_id = request.GET.get('price_id')
+
+    ## Get Stripe Customer ID based on Organization
+    organization_id = request.user.organization_id
+    organization = Organization.objects.get(id=organization_id)
+    stripe_id = organization.stripe_id
+
+    ## If Stripe Customer does not exist, then create one
+    if not stripe_id:
+        metadata = {
+            'organization_id': organization_id
+        }
+
+        stripe_customer = stripe.Customer.create(
+            email=request.user.email,
+            metadata=metadata
+        )
+
+        stripe_id = stripe_customer['id']
+
+        organization.stripe_id = stripe_id
+        organization.save()
+
+    ## Create a Stripe Checkout Session
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            customer=stripe_id,
+            success_url='http://127.0.0.1:8000/checkout/success?session_id={CHECKOUT_SESSION_ID}',
+            cancel_url='http://127.0.0.1:8000/subscribe',
+            line_items=[
+                {
+                    'price': price_id,
+                    'quantity': 1,
+                },
+            ],
+            mode='subscription'
+        )
+
+        return redirect(checkout_session.url)
+    except:
+        return redirect('subscribe')
+
+def checkout_success(request):
+    ## Set variables
+    checkout_session_id = request.GET.get('session_id')
+    organization = Organization.objects.get(id=request.user.organization_id)
+
+    ## Get Stripe Checkout Session Customer
+    session = stripe.checkout.Session.retrieve(
+        checkout_session_id,
+        expand=['line_items']
+    )
+    product_id = session['line_items']['data'][0]['price']['product']
+    payment_status = session['payment_status']
+
+    ## Update organization subscription
+    if product_id == 'prod_NEcm1sUlocuPNG':
+        subscription_status = '1' # Good tier
+    elif product_id == 'prod_NEcmoYQn6zzwvU':
+        subscription_status = '2' # Better tier
+    elif product_id == 'prod_NEcmA5JKzU0VnP':
+        subscription_status = '3' # Best tier
+
+    ## Update organization
+    organization.subscription_status = subscription_status
+    organization.save()
+
+    return redirect('dashboard')
+
 def signup(request):
     return login(request, signup=True)
 
@@ -242,36 +353,30 @@ def callback(request):
     # Check if user exists, if not then create a new user
     user, created = User.objects.get_or_create(email=email)
     if created:
-        # Create new organization
+        # Create new organization & set free trial expiration
+        utc_now = arrow.utcnow()
+        #trial_expires_at=str(utc_now.shift(days=+14).ceil('day'))
+        trial_end=str(utc_now)
+
         organization_id = str(uuid.uuid4())
+        organization = Organization.objects.create(
+            id=organization_id,
+            trial_end=trial_end
+        )
+        organization.save()
 
         # Save Django user
         user.username = email
-        user.is_root = True
+        user.is_rootuser = True
         user.organization_id = organization_id
         user.auth0_id = auth0_id
         user.save()
 
-        # Create Stripe customer account
-        metadata = {
-            'organization_id': organization_id
-        }
-
-        stripe_customer = stripe.Customer.create(
-            description='Programmatic Customer',
-            metadata=metadata
-        )
-
-        stripe_id = stripe_customer['id']
-
-        # Save organization
-        organization = Organization.objects.create(id=organization_id,stripe_id=stripe_id)
-        organization.save()
-
-    # Ensure new users verify their email address before they can access the dashboard
+    # New users must verify their email before accessing the application
     if is_email_verified and not user.is_active:
         user.is_active = True
-        user.save()
+        user.save()        
+
     elif not is_email_verified and not user.is_active:
         return render(request, 'verify-email.html')
 
@@ -279,12 +384,9 @@ def callback(request):
     django_login(request, user)
 
     # Set session variables
-    request.session['user_id'] = token['userinfo']['email']
     request.session['expires_at'] = token['expires_at']
-    request.session['access_token'] = token['access_token']
     request.session['is_authorized'] = True
 
-    # Redirect
     # Set default redirect page
     redirect_uri = 'dashboard'
 

@@ -19,16 +19,17 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     ## Custom fields
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    username = models.CharField(max_length=32, unique=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    username = models.CharField(max_length=128, unique=True)
     email = models.EmailField(unique=True)
-    auth0_id = models.CharField(max_length=32, blank=True, null=True)
-    organization_id = models.UUIDField(blank=True, null=True, editable=True)
-    is_root = models.BooleanField(default=False)
+    auth0_id = models.CharField(max_length=128, blank=True, null=True)
+    organization_id = models.UUIDField(blank=True, null=True)
+    is_rootuser = models.BooleanField(default=False)
 
     ## Django defaults
     is_active = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
 
     objects = CustomUserManager()
 
@@ -36,5 +37,8 @@ class CustomUser(AbstractUser):
     REQUIRED_FIELDS = ['email']
 
 class Organization(models.Model):
-    id = models.UUIDField(primary_key=True, editable=False)
-    stripe_id = models.CharField(max_length=96, unique=True)
+    id = models.UUIDField(primary_key=True)
+    stripe_id = models.CharField(max_length=96, blank=True, null=True, default=None)
+    subscription_status = models.CharField(max_length=96, default='trial')
+    trial_end = models.CharField(max_length=96, blank=True, null=True, default=None)
+    is_lapsed = models.BooleanField(default=False)

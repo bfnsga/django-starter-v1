@@ -49,13 +49,13 @@
                 </h1>
             </div>
             <div class="nav-secondary-bar">
-                <a href="{% url 'dashboard' %}" class="nav-secondary-link {% if 'profile' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
+                <a href="{% url 'profile' %}" class="nav-secondary-link {% if 'profile' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
                     Profile
                 </a>
                 <a href="{% url 'users' %}" class="nav-secondary-link {% if 'users' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
                     Users
                 </a>
-                <a href="#" class="nav-secondary-link {% if 'billing' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
+                <a href="{% url 'billing' %}" class="nav-secondary-link {% if 'billing' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
                     Billing
                 </a>
             </div>
@@ -127,7 +127,7 @@
                                         </circle>
                                     </svg>
                                 </button>
-                                <a href="{% url 'dashboard' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                                <a href="{% url 'profile' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
                                     Cancel
                                 </a>
                             </div>
@@ -185,7 +185,7 @@
                                         </circle>
                                     </svg>
                                 </button>
-                                <a href="{% url 'dashboard' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                                <a href="{% url 'profile' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
                                     Cancel
                                 </a>
                             </div>
@@ -293,7 +293,7 @@
                                         </circle>
                                     </svg>
                                 </button>
-                                <a href="{% url 'dashboard' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                                <a href="{% url 'profile' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
                                     Cancel
                                 </a>
                             </div>

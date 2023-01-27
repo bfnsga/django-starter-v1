@@ -12,7 +12,7 @@
             </p>
             <nav class="space-y-4">
                 <div class="space-y-4">
-                    <a href="{% url 'logout' %}" class="nav-link {% if 'dashboard' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
+                    <a href="{% url 'dashboard' %}" class="nav-link {% if 'dashboard' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon {% if 'dashboard' in request.path %}nav-icon-active{% else %}nav-icon-inactive{% endif %}" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M4 4h6v8h-6z"></path>
@@ -25,9 +25,22 @@
                         </span>
                     </a>
                 </div>
+                <div class="space-y-4">
+                    <a href="{% url 'uploaders' %}" class="nav-link {% if 'uploaders' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon {% if 'uploaders' in request.path %}nav-icon-active{% else %}nav-icon-inactive{% endif %}" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1"></path>
+                            <path d="M9 15l3 -3l3 3"></path>
+                            <path d="M12 12l0 9"></path>
+                         </svg>
+                        <span>
+                            Uploaders
+                        </span>
+                    </a>
+                </div>
                 <div class="border-b border-[#486581]"></div>
                 <div class="space-y-4">
-                    <a href="{% url 'dashboard' %}" class="nav-link {% if 'settings' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
+                    <a href="{% url 'profile' %}" class="nav-link {% if 'settings' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon {% if 'settings' in request.path %}nav-icon-active{% else %}nav-icon-inactive{% endif %}" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>

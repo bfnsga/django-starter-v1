@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Subscribe - Django App{% endblock %}
+
+{% block content %}
+<div class="h-screen flex">
+    {% include 'modules/nav.html' %}
+    <main class="h-full w-full overflow-y-scroll bg-white">
+        <section class="max-w-screen-lg mx-auto pt-[4.5rem] pb-20 relative">
+            <div class="bg-slate-100 rounded">
+                <div class="pt-12 sm:pt-16 lg:pt-12">
+                    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                        <div class="text-center">
+                            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">Simple pricing</h2>
+                            <p class="mt-4 text-xl text-gray-600">
+                                Everything your contracting business needs in one easy plan.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 bg-white pb-16 sm:mt-12 sm:pb-20 lg:pb-28">
+                    <div class="relative">
+                        <div class="absolute inset-0 h-1/2 bg-gray-100"></div>
+                        <div class="relative mx-auto max-w-7xl px-6 lg:px-8">
+                            <div class="mx-auto max-w-lg overflow-hidden rounded-lg shadow-lg lg:flex lg:max-w-none">
+                                <div class="flex-1 bg-white px-6 py-8 lg:p-12">
+                                    <div class="mt-0">
+                                        <div class="flex items-center">
+                                            <h4 class="flex-shrink-0 bg-white pr-4 text-base font-semibold text-[#3399ff]">
+                                                What's included
+                                            </h4>
+                                            <div class="flex-1 border-t-2 border-slate-100"></div>
+                                        </div>
+                                        <ul role="list" class="mt-8 space-y-5 lg:grid lg:grid-cols-2 lg:gap-x-8 lg:gap-y-5 lg:space-y-0">
+                                            <li class="flex items-start lg:col-span-1">
+                                                <div class="flex-shrink-0">
+                                                    <!-- Heroicon name: mini/check-circle -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M5 12l5 5l10 -10"></path>
+                                                     </svg>
+                                                </div>
+                                                <p class="ml-3 text-[0.925rem] text-gray-700">
+                                                    250 image uploads / month
+                                                </p>
+                                            </li>
+                                            <li class="flex items-start lg:col-span-1">
+                                                <div class="flex-shrink-0">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M5 12l5 5l10 -10"></path>
+                                                     </svg>
+                                                </div>
+                                                <p class="ml-3 text-sm text-gray-700">
+                                                    $0.15 per image / overage
+                                                </p>
+                                            </li>
+                                            <li class="flex items-start lg:col-span-1">
+                                                <div class="flex-shrink-0">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M5 12l5 5l10 -10"></path>
+                                                     </svg>
+                                                </div>
+                                                <p class="ml-3 text-sm text-gray-700">
+                                                    Dedicated toll-free number
+                                                </p>
+                                            </li>
+                                            <li class="flex items-start lg:col-span-1">
+                                                <div class="flex-shrink-0">
+                                                    <!-- Heroicon name: mini/check-circle -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M5 12l5 5l10 -10"></path>
+                                                     </svg>
+                                                </div>
+                                                <p class="ml-3 text-sm text-gray-700">
+                                                    Unlimited storage
+                                                </p>
+                                            </li>
+                                            <li class="flex items-start lg:col-span-1">
+                                                <div class="flex-shrink-0">
+                                                    <!-- Heroicon name: mini/check-circle -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M5 12l5 5l10 -10"></path>
+                                                     </svg>
+                                                </div>
+                                                <p class="ml-3 text-sm text-gray-700">
+                                                    Unlimited uploaders
+                                                </p>
+                                            </li>
+                                            <li class="flex items-start lg:col-span-1">
+                                                <div class="flex-shrink-0">
+                                                    <!-- Heroicon name: mini/check-circle -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M5 12l5 5l10 -10"></path>
+                                                     </svg>
+                                                </div>
+                                                <p class="ml-3 text-sm text-gray-700">
+                                                    Unlimited sharing
+                                                </p>
+                                            </li>
+                                            <li class="flex items-start lg:col-span-1">
+                                                <div class="flex-shrink-0">
+                                                    <!-- Heroicon name: mini/check-circle -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M5 12l5 5l10 -10"></path>
+                                                     </svg>
+                                                </div>
+                                                <p class="ml-3 text-sm text-gray-700">
+                                                    Unlimited categories
+                                                </p>
+                                            </li>
+                                            <li class="flex items-start lg:col-span-1">
+                                                <div class="flex-shrink-0">
+                                                    <!-- Heroicon name: mini/check-circle -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                        <path d="M5 12l5 5l10 -10"></path>
+                                                     </svg>
+                                                </div>
+                                                <p class="ml-3 text-sm text-gray-700">
+                                                    Unlimited app users
+                                                </p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-50 py-8 px-6 text-center lg:flex lg:flex-shrink-0 lg:flex-col lg:justify-center lg:py-12 lg:px-16">
+                                    <p class="text-sm font-semibold text-slate-800 uppercase">
+                                        No Contracts
+                                    </p>
+                                    <div class="mt-4 flex items-center justify-center text-5xl font-bold tracking-tight text-gray-900">
+                                        <span>
+                                            $29
+                                        </span>
+                                        <span class="ml-3 text-base font-normal tracking-normal text-slate-400">
+                                            /&nbsp;month
+                                        </span>
+                                    </div>
+                                    <div class="mt-6">
+                                        <a href="{{ tiers.tier1.url }}" class="btn btn-size-base btn-color-primary px-12">
+                                            Sign Up
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+{% endblock %}

@@ -1,18 +1,30 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>{% block title %}My Site{% endblock %}</title>
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script defer src="https://unpkg.com/alpinejs@3.10.5/dist/cdn.min.js"></script>
+  
+  <style>
+    [x-cloak] {
+      display: none !important;
+    }
+  </style>
+
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script src="//unpkg.com/alpinejs" defer></script>
 </head>
+
 <body>
-    {% block content %}{% endblock %}
+  {% block content %}{% endblock %}
 </body>
+
 </html>

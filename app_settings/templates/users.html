@@ -49,19 +49,19 @@
                 </h1>
             </div>
             <div class="nav-secondary-bar">
-                <a href="{% url 'dashboard' %}" class="nav-secondary-link {% if 'profile' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
+                <a href="{% url 'profile' %}" class="nav-secondary-link {% if 'profile' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
                     Profile
                 </a>
                 <a href="{% url 'users' %}" class="nav-secondary-link {% if 'users' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
                     Users
                 </a>
-                <a href="#" class="nav-secondary-link {% if 'billing' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
+                <a href="{% url 'billing' %}" class="nav-secondary-link {% if 'billing' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
                     Billing
                 </a>
             </div>
             <div class="pt-6">
                 <div class="pb-4 flex items-center justify-between">
-                    <h2 class="text-2xl font-bold text-slate-700 tracking-tight">
+                    <h2 class="text-[1.4rem] font-bold text-slate-700 tracking-tight">
                         Users
                     </h2>
                     <button id="add_user-open" class="whitespace-nowrap bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-600 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
@@ -110,7 +110,7 @@
                                     Dec 13, 2022
                                 </p>
                             </div>
-                            <div class="w-[20%] text-right table-body-cell">
+                            <div class="w-[20%] text-right table-body-cell flex items-center justify-end">
                                 {% if user.pk != request.user.pk %}
                                 <button id="user_{{ user.pk }}_{{ user.email }}" class="pr-1.5">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="text-slate-400 hover:text-slate-500 w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
