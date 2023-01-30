@@ -19,12 +19,12 @@ import json
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load environment definition file, if available. If available, then environment must be a DEV environment
-ENV_FILE = find_dotenv()
-if ENV_FILE:
+try:
+    MY_ENVIRONMENT = os.environ['MY_ENVIRONMENT']
+except:
+    ENV_FILE = find_dotenv()
     load_dotenv(ENV_FILE)
-    MY_ENVIRONMENT = 'DEV'
-else:
-    MY_ENVIRONMENT = 'PROD'
+    MY_ENVIRONMENT = os.environ['MY_ENVIRONMENT']
 
 if MY_ENVIRONMENT == 'DEV':
     # Security settings for local development, NEVER use in production
@@ -39,10 +39,6 @@ if MY_ENVIRONMENT == 'DEV':
     AUTH0_CLIENT_SECRET = os.environ.get('AUTH0_CLIENT_SECRET')
 
     STRIPE_API_KEY = os.environ.get('STRIPE_API_KEY')
-
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    AWS_DEFAULT_REGION = os.environ.get('AWS_DEFAULT_REGION')
 
     TWILIO_ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
     TWILIO_AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']

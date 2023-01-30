@@ -6,8 +6,6 @@ from django.conf import settings
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
 
-import os
-
 ###########################################
 ## MODELS, CLIENTS & VARIABLES
 ###########################################
@@ -53,16 +51,17 @@ class AddTeamMemberForm(forms.Form):
             raise forms.ValidationError(f'{phone} is in use')
 
         ########
-        try:
-            phone_lookup = twilio_client.lookups.v2.phone_numbers(phone_e164).fetch()
-        except TwilioRestException as err:
-            print(err)
+        if settings.MY_ENVIRONMENT == 'PROD':
+            try:
+                phone_lookup = twilio_client.lookups.v2.phone_numbers(phone_e164).fetch()
+            except TwilioRestException as err:
+                print(err)
 
-        if not phone_lookup.valid:
-            raise forms.ValidationError('Invalid phone number')
+            if not phone_lookup.valid:
+                raise forms.ValidationError('Invalid phone number')
 
-        if phone_lookup.country_code != 'US':
-            raise forms.ValidationError('Must be a US phone number')
+            if phone_lookup.country_code != 'US':
+                raise forms.ValidationError('Must be a US phone number')
 
         ########
         return phone
@@ -87,7 +86,7 @@ class AddTeamMemberForm(forms.Form):
         team_member.save()
 
         ########
-        if phone_format(phone) == '+17034240836':
+        if settings.MY_ENVIRONMENT == 'PROD':
             try:
                 twilio_client.messages.create(
                     body=f"You've been added to {organization.company_name}! Please save this phone number.",

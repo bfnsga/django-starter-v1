@@ -4,6 +4,7 @@ from .models import TeamMember
 from .forms import AddTeamMemberForm, DeleteTeamMemberForm
 import time
 from project_config.decorators import login_redirect
+from django.conf import settings
 
 ###########################################
 ## FUNCTIONS
@@ -28,8 +29,8 @@ def team(request):
         x.phone_display = phone_format(x.phone_e164)
         
         try:
-            last_uploaded_on = Image.objects.filter(uploaded_by=x.id).order_by('-uploaded_on')[0]
-            ## Add in date handling
+            image = Image.objects.filter(uploaded_by=x.id).order_by('-uploaded_on')[0]
+            x.last_uploaded_on = image.uploaded_on
         except:
             x.last_uploaded_on = '---' 
 

@@ -7,7 +7,6 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),
     path('signup', views.signup, name='signup'),
     path('callback', views.callback, name='callback'),
-    path('stripe_callback', views.stripe_callback, name='stripe_callback'),
     path('settings/profile', views.profile, name='profile'),
     path('settings/company', views.company, name='company'),
     path('settings/users', views.users, name='users'),
