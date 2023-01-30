@@ -45,7 +45,14 @@ if MY_ENVIRONMENT == 'DEV':
 
 else:
     SECRETS = os.environ['SECRETS']
-    print(SECRETS)
+    try:
+        SECRETS = json.loads(SECRETS)
+        print(SECRETS['AUTH0_DOMAIN'])
+        print('JSON loads')
+    except:
+        print(SECRETS['AUTH0_DOMAIN'])
+        print('No JSON loads')
+
     # Security settings
     SECRET_KEY = os.environ['SECRET_KEY'] # Ensure Secret Key is at least 52 digits in length
     DEBUG = False

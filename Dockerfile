@@ -25,4 +25,4 @@ EXPOSE 8000
 CMD python manage.py makemigrations \
     && python manage.py migrate \
     && python manage.py collectstatic --noinput \
-    && gunicorn project_config.wsgi --bind 0.0.0.0:8000 --workers 2 --worker-tmp-dir /dev/shm --access-logfile - --error-logfile - --log-level info
+    && gunicorn project_config.wsgi --bind 0.0.0.0:8080 --workers 2 --worker-tmp-dir /dev/shm --access-logfile - --error-logfile - --log-level info
