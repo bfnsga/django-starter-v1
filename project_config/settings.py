@@ -43,18 +43,15 @@ if MY_ENVIRONMENT == 'DEV':
     AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
     AWS_DEFAULT_REGION = os.environ.get('AWS_DEFAULT_REGION')
 
+    TWILIO_ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
+    TWILIO_AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
+
 else:
     SECRETS = os.environ['SECRETS']
-    try:
-        SECRETS = json.loads(SECRETS)
-        print(SECRETS['AUTH0_DOMAIN'])
-        print('JSON loads')
-    except:
-        print(SECRETS['AUTH0_DOMAIN'])
-        print('No JSON loads')
+    SECRETS = json.loads(SECRETS)
 
     # Security settings
-    SECRET_KEY = os.environ['SECRET_KEY'] # Ensure Secret Key is at least 52 digits in length
+    SECRET_KEY = SECRETS['SECRET_KEY'] # Ensure Secret Key is at least 52 digits in length
     DEBUG = False
 
     # Security Headers, can check at: https://securityheaders.com
@@ -71,28 +68,30 @@ else:
     CSRF_TRUSTED_ORIGINS = []
 
     try:
-        SERVICE_DOMAIN = os.environ['SERVICE_DOMAIN']
+        SERVICE_DOMAIN = SECRETS['SERVICE_DOMAIN']
         ALLOWED_HOSTS.append(SERVICE_DOMAIN)
         CSRF_TRUSTED_ORIGINS.append(f'https://{SERVICE_DOMAIN}')
     except:
         pass
 
     try:
-        APPLICATION_DOMAIN = os.environ['APPLICATION_DOMAIN']
+        APPLICATION_DOMAIN = SECRETS['APPLICATION_DOMAIN']
         ALLOWED_HOSTS.append(APPLICATION_DOMAIN)
         CSRF_TRUSTED_ORIGINS.append(f'https://{APPLICATION_DOMAIN}')
     except:
         pass
     
     # Variables
-    DATABASE_PASSWORD = os.environ['DATABASE_PASSWORD']
-    DATABASE_HOST = os.environ['DATABASE_HOST']
+    DATABASE_PASSWORD = SECRETS['DATABASE_PASSWORD']
+    DATABASE_HOST = SECRETS['DATABASE_HOST']
 
-    AUTH0_CLIENT_ID = os.environ['AUTH0_CLIENT_ID']
-    AUTH0_CLIENT_SECRET = os.environ['AUTH0_CLIENT_SECRET']
-    AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
+    AUTH0_CLIENT_ID = SECRETS['AUTH0_CLIENT_ID']
+    AUTH0_CLIENT_SECRET = SECRETS['AUTH0_CLIENT_SECRET']
+    AUTH0_DOMAIN = SECRETS['AUTH0_DOMAIN']
 
-    STRIPE_API_KEY = os.environ['STRIPE_API_KEY']
+    STRIPE_API_KEY = SECRETS['STRIPE_API_KEY']
+    TWILIO_ACCOUNT_SID = SECRETS['TWILIO_ACCOUNT_SID']
+    TWILIO_AUTH_TOKEN = SECRETS['TWILIO_AUTH_TOKEN']
 
 
 # Application definition
@@ -215,9 +214,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ## Custom settings
 ###################################
 AUTH_USER_MODEL = 'app_settings.CustomUser'
-
-TWILIO_ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
-TWILIO_AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
 
 ## CSP Scripts
 # Content Security Policy
