@@ -1,6 +1,7 @@
 from django import forms
 from .models import TeamMember
 from app_settings.models import Organization
+from django.conf import settings
 
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
@@ -10,8 +11,8 @@ import os
 ###########################################
 ## MODELS, CLIENTS & VARIABLES
 ###########################################
-twilio_account_sid = os.environ['TWILIO_ACCOUNT_SID']
-twilio_auth_token = os.environ['TWILIO_AUTH_TOKEN']
+twilio_account_sid = settings.TWILIO_ACCOUNT_SID
+twilio_auth_token = settings.TWILIO_AUTH_TOKEN
 twilio_client = Client(twilio_account_sid, twilio_auth_token)
 
 ###########################################
