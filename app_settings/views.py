@@ -10,20 +10,16 @@ from authlib.integrations.django_client import OAuth
 from django.conf import settings
 from django.urls import reverse
 from urllib.parse import quote_plus, urlencode
-import json
 from .models import Organization
 
 from .forms import NameForm, EmailForm, PasswordChangeForm, AddUserForm, DeleteUserForm, CompanyNameForm
 from django.contrib import messages
 import stripe
 
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
-
 from project_config.decorators import login_redirect
 
 ##############################################
-## Set User model, initial clients, variables, etc. for use in functions
+## MODELS, CLIENTS & VARIABLES
 ##############################################
 User = get_user_model()
 stripe.api_key = settings.STRIPE_API_KEY
@@ -41,41 +37,14 @@ oauth.register(
 )
 
 ##############################################
-## Settings functions (update profile, change password, add/delete users, update billing, etc.)
+## VIEWS
 ##############################################
-@csrf_exempt
-def stripe_callback(request):
-    payload = request.body
-    event = None
-
-    try:
-        event = stripe.Event.construct_from(
-        json.loads(payload), stripe.api_key
-        )
-    except ValueError as e:
-        # Invalid payload
-        return HttpResponse(status=400)
-
-    # Handle the event
-    if event.type == 'payment_intent.succeeded':
-        payment_intent = event.data.object # contains a stripe.PaymentIntent
-        # Then define and call a method to handle the successful payment intent.
-        # handle_payment_intent_succeeded(payment_intent)
-    elif event.type == 'payment_method.attached':
-        payment_method = event.data.object # contains a stripe.PaymentMethod
-        # Then define and call a method to handle the successful attachment of a PaymentMethod.
-        # handle_payment_method_attached(payment_method)
-    # ... handle other event types
-    else:
-        print('Unhandled event type {}'.format(event.type))
-
-    return HttpResponse(status=200)
-
 @login_redirect
 def profile(request):
-    # Get user
+    ########
     user = request.user
-    # Process request
+
+    ########
     if request.method == 'POST':
 
         if 'first_name' in request.POST:
@@ -86,12 +55,11 @@ def profile(request):
             form = PasswordChangeForm(request, request.POST)
         
         if form.is_valid():
-
-            # Save form
-            form.save()
+            ########
             time.sleep(0.5)
+            form.save()
 
-            # Return response
+            ########
             messages.add_message(request, messages.SUCCESS, 'Your profile has been updated')
             return redirect('profile')
 
@@ -118,33 +86,34 @@ def profile(request):
 
     return render(request, 'profile.html', context)
 
+##############################################
 @login_redirect
 def company(request):
-    ## Set variables
+    ########
     organization = Organization.objects.get(id=request.user.organization_id)
-
     context = {
         'company_name': organization.company_name
     }
 
-    ## Check request method
+    ########
     if request.method =='POST':
         form = CompanyNameForm(request, request.POST)
         if form.is_valid():
-            ## Save form
+            ########
             time.sleep(0.5)
             form.save()
 
-            ## Return
+            ########
             messages.add_message(request, messages.SUCCESS, 'Your company profile has been updated')
             return redirect('company')
 
+    ########
     return render(request, 'company.html', context)
 
-####
+##############################################
 @login_redirect
 def users(request):
-    ## Set variables
+    ########
     users = []
     for x in User.objects.filter(organization_id=request.user.organization_id).exclude(pk=request.user.pk).order_by('role'):
         users.append(x)
@@ -153,7 +122,7 @@ def users(request):
         'users': [request.user] + users
     }
 
-    # Process request
+    ########
     if request.method == 'POST':
         if 'email' in request.POST:
             form = AddUserForm(request, request.POST)
@@ -162,7 +131,7 @@ def users(request):
         context['form'] = form
 
         if form.is_valid():
-            # Save form
+            ########
             if 'email' in request.POST:
                 auth0_invite_url = form.save()
                 ticket = auth0_invite_url['ticket'] + 'type=invite'
@@ -170,16 +139,18 @@ def users(request):
             else:
                 form.save()
 
-            # Return response
+            ########
             return redirect('users')
 
-    else:
+    ########
+    elif request.method == 'GET':
         form = AddUserForm(request)
         context['form'] = form
 
+    ########
     return render(request, 'users.html', context)
 
-###
+##############################################
 @login_redirect
 def billing(request):
     ## Get billing details from Stripe
@@ -243,8 +214,7 @@ def billing(request):
     return render(request, 'billing.html', context)
 
 ##############################################
-## Auth0 related functions (signup, login, callback, logout)
-##############################################
+@login_redirect
 def subscribe(request):
     organization = Organization.objects.get(id=request.user.organization_id)
     subscription_status = organization.subscription_status
@@ -273,6 +243,8 @@ def subscribe(request):
 
     return render(request, 'subscribe.html', context)
 
+##############################################
+@login_redirect
 def checkout(request):
     ## Set variables
     price_id = request.GET.get('price_id')
@@ -317,6 +289,8 @@ def checkout(request):
     except:
         return redirect('subscribe')
 
+##############################################
+@login_redirect
 def checkout_success(request):
     ## Set variables
     checkout_session_id = request.GET.get('session_id')
@@ -344,10 +318,11 @@ def checkout_success(request):
 
     return redirect('dashboard')
 
+##############################################
 def signup(request):
     return login(request, signup=True)
 
-#####
+##############################################
 def login(request, signup=False, state=None):
     # Parse request variables and sets Auth0 parameters
     params = {}
@@ -365,7 +340,7 @@ def login(request, signup=False, state=None):
     oauth.auth0.authorize_params = params
     return oauth.auth0.authorize_redirect(request, request.build_absolute_uri(reverse('callback')))
 
-#####
+##############################################
 def callback(request):
     # Set variables
     token = oauth.auth0.authorize_access_token(request)
@@ -423,7 +398,7 @@ def callback(request):
     
     return redirect(request.build_absolute_uri(reverse(redirect_uri)))
 
-#####
+##############################################
 def logout(request):
 
     # Logout Django user & clear session
