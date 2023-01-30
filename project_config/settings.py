@@ -157,7 +157,7 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'defaultdb',
-            'USER': 'djangoadmin',
+            'USER': 'awsadmin',
             'PASSWORD': DATABASE_PASSWORD,
             'HOST': DATABASE_HOST,
             'PORT': '5432',
