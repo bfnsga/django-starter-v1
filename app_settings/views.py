@@ -183,10 +183,7 @@ def users(request):
 @login_redirect
 def billing(request):
     ## Get billing details from Stripe
-    try:
-        previous_page = request.META.get('HTTP_REFERER')
-    except:
-        prevous_page = 'http://127.0.0.1:8000/settings/profile'
+    previous_page = request.META.get('HTTP_REFERER')
 
     organization = Organization.objects.get(id=request.user.organization_id)
 
@@ -258,15 +255,15 @@ def subscribe(request):
         'tiers': {
             'tier1': {
                 'price': '$29',
-                'url': f'http://127.0.0.1:8000/checkout?price_id={tier1_price_id}'
+                'url': tier1_price_id
             },
             'tier2': {
                 'price': '$79',
-                'url': f'http://127.0.0.1:8000/checkout?price_id={tier2_price_id}'
+                'url': tier2_price_id
             },
             'tier3': {
                 'price': '$149',
-                'url': f'http://127.0.0.1:8000/checkout?price_id={tier3_price_id}'
+                'url': tier3_price_id
             }
         }
     }

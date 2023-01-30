@@ -1,7 +1,8 @@
 ### Pushes to ECR Repository
 name: Build and push
 
-on: workflow_dispatch
+#on: workflow_dispatch
+on: push
 
 jobs:
   build_and_push:
