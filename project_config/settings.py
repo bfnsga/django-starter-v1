@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
 import os
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +44,8 @@ if MY_ENVIRONMENT == 'DEV':
     AWS_DEFAULT_REGION = os.environ.get('AWS_DEFAULT_REGION')
 
 else:
+    SECRETS = os.environ['SECRETS']
+    print(SECRETS)
     # Security settings
     SECRET_KEY = os.environ['SECRET_KEY'] # Ensure Secret Key is at least 52 digits in length
     DEBUG = False
