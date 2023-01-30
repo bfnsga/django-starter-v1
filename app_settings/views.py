@@ -28,7 +28,7 @@ from project_config.decorators import login_redirect
 User = get_user_model()
 stripe.api_key = settings.STRIPE_API_KEY
 
-####
+########
 oauth = OAuth()
 oauth.register(
     "auth0",
@@ -183,7 +183,10 @@ def users(request):
 @login_redirect
 def billing(request):
     ## Get billing details from Stripe
-    previous_page = request.META.get('HTTP_REFERER')
+    try:
+        previous_page = request.META.get('HTTP_REFERER')
+    except:
+        previous_page = f'{settings.DEFAULT_DOMAIN}/settings/company'
 
     organization = Organization.objects.get(id=request.user.organization_id)
 
@@ -299,8 +302,8 @@ def checkout(request):
     try:
         checkout_session = stripe.checkout.Session.create(
             customer=stripe_id,
-            success_url='http://127.0.0.1:8000/checkout/success?session_id={CHECKOUT_SESSION_ID}',
-            cancel_url='http://127.0.0.1:8000/subscribe',
+            success_url=f'{settings.DEFAULT_DOMAIN}/checkout/success?session_id=' + '{CHECKOUT_SESSION_ID}',
+            cancel_url=f'{settings.DEFAULT_DOMAIN}/subscribe',
             line_items=[
                 {
                     'price': price_id,

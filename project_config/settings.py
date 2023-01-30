@@ -31,6 +31,7 @@ if MY_ENVIRONMENT == 'DEV':
     SECRET_KEY = 'django-insecure-j7mj5#owo&p)m*l0$0+0#)_bt*9-czraf1&o(!&rih!(^o4wx#'
     DEBUG = True
     ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '[::1]']
+    DEFAULT_DOMAIN = 'http://127.0.0.1:8000'
 
     # Variables
     AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
@@ -66,11 +67,13 @@ else:
     # Set hosts
     ALLOWED_HOSTS = []
     CSRF_TRUSTED_ORIGINS = []
+    DEFAULT_DOMAIN = ''
 
     try:
         SERVICE_DOMAIN = SECRETS['SERVICE_DOMAIN']
         ALLOWED_HOSTS.append(SERVICE_DOMAIN)
         CSRF_TRUSTED_ORIGINS.append(f'https://{SERVICE_DOMAIN}')
+        DEFAULT_DOMAIN = f'https://{SERVICE_DOMAIN}'
     except:
         pass
 
@@ -78,6 +81,7 @@ else:
         APPLICATION_DOMAIN = SECRETS['APPLICATION_DOMAIN']
         ALLOWED_HOSTS.append(APPLICATION_DOMAIN)
         CSRF_TRUSTED_ORIGINS.append(f'https://{APPLICATION_DOMAIN}')
+        DEFAULT_DOMAIN = f'https://{SERVICE_DOMAIN}'
     except:
         pass
     
