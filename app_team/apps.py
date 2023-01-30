@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class AppImagesConfig(AppConfig):
+class AppTeamConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'app_images'
+    name = 'app_team'

@@ -10,8 +10,8 @@
                     Django
                  </span>
             </p>
-            <nav class="space-y-4">
-                <div class="space-y-4">
+            <nav class="space-y-5">
+                <div class="space-y-1">
                     <a href="{% url 'dashboard' %}" class="nav-link {% if 'dashboard' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon {% if 'dashboard' in request.path %}nav-icon-active{% else %}nav-icon-inactive{% endif %}" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
@@ -24,23 +24,34 @@
                             Dashboard
                         </span>
                     </a>
-                </div>
-                <div class="space-y-4">
-                    <a href="{% url 'uploaders' %}" class="nav-link {% if 'uploaders' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon {% if 'uploaders' in request.path %}nav-icon-active{% else %}nav-icon-inactive{% endif %}" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <a href="{% url 'media' %}" class="nav-link {% if 'media' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon {% if 'media' in request.path %}nav-icon-active{% else %}nav-icon-inactive{% endif %}" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7h-1"></path>
-                            <path d="M9 15l3 -3l3 3"></path>
-                            <path d="M12 12l0 9"></path>
-                         </svg>
+                            <path d="M15 8l.01 0"></path>
+                            <path d="M4 4m0 3a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v10a3 3 0 0 1 -3 3h-10a3 3 0 0 1 -3 -3z"></path>
+                            <path d="M4 15l4 -4a3 5 0 0 1 3 0l5 5"></path>
+                            <path d="M14 14l1 -1a3 5 0 0 1 3 0l2 2"></path>
+                        </svg>
                         <span>
-                            Uploaders
+                            Media
+                        </span>
+                    </a>
+                    <a href="{% url 'team' %}" class="nav-link {% if 'team' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon {% if 'team' in request.path %}nav-icon-active{% else %}nav-icon-inactive{% endif %}" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                            <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+                        </svg>
+                        <span>
+                            Team
                         </span>
                     </a>
                 </div>
                 <div class="border-b border-[#486581]"></div>
-                <div class="space-y-4">
-                    <a href="{% url 'profile' %}" class="nav-link {% if 'settings' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
+                <div class="space-y-1">
+                    <a href="{% url 'company' %}" class="nav-link {% if 'settings' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon {% if 'settings' in request.path %}nav-icon-active{% else %}nav-icon-inactive{% endif %}" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                             <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                             <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
@@ -48,6 +59,17 @@
                          </svg>
                         <span>
                             Settings
+                        </span>
+                    </a>
+                    <a href="{% url 'profile' %}" class="nav-link {% if 'support' in request.path %}nav-link-active{% else %}nav-link-inactive group {% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="nav-icon {% if 'support' in request.path %}nav-icon-active{% else %}nav-icon-inactive{% endif %}" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                            <path d="M12 17l0 .01"></path>
+                            <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4"></path>
+                        </svg>
+                        <span>
+                            Support
                         </span>
                     </a>
                 </div>

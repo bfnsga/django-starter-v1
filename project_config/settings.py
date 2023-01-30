@@ -95,8 +95,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app_settings',
     'app_dashboard',
-    'app_images',
-    'app_uploaders'
+    'app_media',
+    'app_team'
 ]
 
 MIDDLEWARE = [
@@ -206,6 +206,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 ###################################
 AUTH_USER_MODEL = 'app_settings.CustomUser'
 
+TWILIO_ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
+TWILIO_AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
 
 ## CSP Scripts
 # Content Security Policy

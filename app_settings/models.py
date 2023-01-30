@@ -25,6 +25,7 @@ class CustomUser(AbstractUser):
     auth0_id = models.CharField(max_length=128, blank=True, null=True)
     organization_id = models.UUIDField(blank=True, null=True)
     is_rootuser = models.BooleanField(default=False)
+    role = models.CharField(max_length=128, default='Administrator')
 
     ## Django defaults
     is_active = models.BooleanField(default=False)
@@ -42,3 +43,4 @@ class Organization(models.Model):
     subscription_status = models.CharField(max_length=96, default='trial')
     trial_end = models.CharField(max_length=96, blank=True, null=True, default=None)
     is_lapsed = models.BooleanField(default=False)
+    company_name = models.CharField(max_length=128,default='---')

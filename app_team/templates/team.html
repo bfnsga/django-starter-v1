@@ -1,0 +1,360 @@
+{% extends "base.html" %}
+
+<!---------------------->
+<!-- Title -->
+<!---------------------->
+{% block title %}
+Team
+{% endblock %}
+
+<!---------------------->
+<!-- Main Content -->
+<!---------------------->
+{% block content %}
+{% include 'modules/messages.html' %}
+<div class="header">
+    <div class="header-title">
+        <div class="header-svg-bg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="header-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+                <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+            </svg>
+        </div>
+        <h1>
+            Team
+        </h1>
+    </div>
+    <button id="add_user-open" class="btn btn-size-base btn-color-primary">
+        ADD
+    </button>
+</div>
+<div class="custom-table">
+    <div class="custom-table-header">
+        <div class="w-[25%] text-left table-header-cell">
+            Name
+        </div>
+        <div class="w-[23%] text-left table-header-cell">
+            Phone #
+        </div>
+        <div class="w-[17%] text-left table-header-cell">
+            Language
+        </div>
+        <div class="w-[15%] text-right table-header-cell">
+            Last Uploaded
+        </div>
+        <div class="w-[20%] text-right table-header-cell"></div>
+    </div>
+    {% if team_members %}
+    {% for member in team_members %}
+    <div class="custom-table-row {% if not forloop.last %}custom-table-divider{% endif %}">
+        <div class="w-[25%] text-left table-body-cell">
+            <p class="text-[0.975rem]">
+                {{ member.name }}
+            </p>
+        </div>
+        <div class="w-[23%] text-left table-body-cell">
+            <p class="text-[0.975rem]">
+                {{ member.phone_display }}
+            </p>
+        </div>
+        <div class="w-[17%] text-left table-body-cell">
+            <p class="text-[0.975rem]">
+                {{ member.language }}
+            </p>
+        </div>
+        <div class="w-[15%] text-right table-body-cell">
+            <p class="text-[0.975rem]">
+                {{ member.last_uploaded_on }}
+            </p>
+        </div>
+        <div class="w-[20%] text-right table-body-cell relative">
+            <div class="pr-1.5 relative flex items-center justify-end">
+                <button id="team_member-delete_{{ member.pk }}" value="{{ member.name }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-slate-400 hover:text-slate-500 w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                        <line x1="4" y1="7" x2="20" y2="7"></line>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="py-8">
+        <p class="text-center text-slate-400">
+            You have no Team Members!
+        </p>
+    </div>
+    {% endif %}
+</div>
+<!---------------------->
+<!-- Popups -->
+<!---------------------->
+<div id="popup_bg" class="hidden popup-bg"></div>
+<!-- Add Team Member -->
+<div id="add_user-popup" class="hidden popup w-[34rem]">
+    <div class="popup-padding">
+        <p class="popup-title">
+            Add Team Member
+        </p>
+        <div class="popup-divider"></div>
+        <form method="post" id="add_user-form" class="form-box" autocomplete="off">
+            {% csrf_token %}
+            <div class="col-span-2">
+                <div class="flex flex-col input-spacing">
+                    <label for="{{ form.name.id_for_label }}" class="input-label">
+                        Name
+                    </label>
+                    <input type="text" name="name" id="name" class="input-box {% if form.name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                    {% if form.name.errors %}
+                    {% for error in form.name.errors %}
+                    <p id="name-error" class="input-error-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 9v2m0 4v.01"></path>
+                            <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path>
+                        </svg>
+                        <span>
+                            {{ error }}
+                        </span>
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-span-1">
+                <div class="flex flex-col input-spacing">
+                    <label for="{{ form.phone.id_for_label }}" class="input-label">
+                        Phone Number
+                    </label>
+                    <input type="text" name="phone" id="phone" class="input-box {% if form.phone.errors %}border-red-500{% else %}border-slate-200{% endif %}" placeholder="(555) 555-5555" required>
+                    {% if form.phone.errors %}
+                    {% for error in form.phone.errors %}
+                    <p id="phone-error" class="input-error-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 9v2m0 4v.01"></path>
+                            <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75"></path>
+                        </svg>
+                        <span>
+                            {{ error }}
+                        </span>
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-span-1" x-data="{ open: false }">
+                <div class="flex flex-col input-spacing relative">
+                    <label for="{{ form.language.id_for_label }}" class="input-label">
+                        Language
+                    </label>
+                    <div>
+                        <input type="text" id="language" name="language" class="hidden" value="English">
+                        <button x-on:click="open = ! open" @click.outside="open = false" type="button" id="language_button" name="language_button" class="input-box inline-flex items-center justify-between">
+                            <span id="language_value">
+                                English
+                            </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 mt-0.5 text-slate-300" width="24px" height="24px" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="3.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <div id="language_dropdown" x-show="open">
+                            <div class="absolute z-20 w-full mt-1 bg-white rounded-md ring-1 ring-slate-800 ring-opacity-5 shadow overflow-y-scroll">
+                                <div class="relative grid gap-7 bg-white p-4">
+                                    <button id="language-English" value="English" type="button" class="text-left -m-3 block rounded p-2.5 text-[0.95rem] hover:bg-slate-100 bg-slate-100">
+                                        English
+                                    </button>
+                                    <button id="language-Spanish" value="Spanish" type="button" class="text-left -m-3 block rounded p-2.5 text-[0.95rem] hover:bg-slate-100">
+                                        Spanish
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" id="add_user-submit" disabled="true" class="btn btn-size-large btn-color-primary btn-disabled">
+                    <span>
+                        Add
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" id="add_user-loading_svg" class="hidden loading-svg" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                        </circle>
+                    </svg>
+                </button>
+                <a href="{% url 'team' %}" class="form-cancel">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Delete Team Member -->
+<div id="delete_user-popup" class="hidden popup w-[28rem]">
+    <div class="popup-padding">
+        <p class="popup-title">
+            Delete Team Member
+        </p>
+        <div class="popup-divider"></div>
+        <p class="mt-4 text-slate-500">
+            <span>Are you sure you would like to delete&nbsp;</span><span class="font-semibold text-slate-600" id="delete_user_email"></span><span>?</span>
+        </p>
+        <p class="mt-1.5 text-slate-500">
+            All media this team member has uploaded will still be available.
+        </p>
+        <form method="post" id="delete_user-form" class="form-box" autocomplete="off">
+            {% csrf_token %}
+            <div>
+                <input class="hidden" type="text" name="delete_team_member_id" id="delete_team_member_id" value="" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit" id="delete_user-submit" class="btn btn-size-large btn-color-red">
+                    <span>
+                        Delete
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" id="delete_user-loading_svg" class="hidden loading-svg" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                        </circle>
+                    </svg>
+                </button>
+                <a href="{% url 'team' %}" class="form-cancel">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<!---------------------->
+<!-- Scripts -->
+<!---------------------->
+<script nonce="{{request.csp_nonce}}">
+    const getEl = id => document.getElementById(id);
+    const popupBackground = getEl('popup_bg');
+    /************************/
+    /** FORM - Add User **/
+    /************************/
+    const addUserForm = getEl('add_user-form');
+    const addUserPopup = getEl('add_user-popup');
+    const addUserOpen = getEl('add_user-open');
+    const addUserSubmit = getEl('add_user-submit');
+
+    const name = getEl('name');
+    const phone = getEl('phone');
+
+    const languages = document.querySelectorAll("[id^='language-']");
+    for (let i = 0; i < languages.length; i++) {
+        languages[i].addEventListener('click', event => {
+            const languageInput = getEl('language');
+            const languageValue = getEl('language_value');
+
+            const currentLanguageValue = languageValue.innerHTML;
+            let currentLanguageButton = getEl('language-' + currentLanguageValue.trim());
+            currentLanguageButton.classList.remove('bg-slate-100');
+
+            const selectedLanguageValue = languages[i].value;
+            let selectedLanguageButton = getEl('language-' + selectedLanguageValue);
+            selectedLanguageButton.classList.add('bg-slate-100');
+
+            languageValue.innerHTML = selectedLanguageValue;
+            languageInput.value = selectedLanguageValue;
+        });
+    };
+
+    addUserOpen.addEventListener('click', event => {
+        popupBackground.classList.remove('hidden');
+        addUserPopup.classList.remove('hidden');
+    });
+
+    addUserForm.addEventListener('submit', event => {
+        addUserForm.removeEventListener('keyup', addUserFormKeyup);
+        addUserSubmit.classList.add('btn-disabled');
+        addUserSubmit.disabled = true;
+        getEl('add_user-loading_svg').classList.remove('hidden');
+    });
+
+    {% if form.phone.errors %}
+    popupBackground.classList.remove('hidden');
+    addUserPopup.classList.remove('hidden');
+    addUserSubmit.classList.remove('btn-disabled');
+    addUserSubmit.disabled = false;
+
+    getEl('phone').addEventListener('focus', function () {
+        getEl('phone-error').classList.add('hidden');
+        this.classList.remove('border-red-500');
+        this.classList.add('border-slate-200');
+    });
+
+    {% endif %}
+
+    addUserForm.addEventListener('keyup', addUserFormKeyup);
+    function addUserFormKeyup(event) {
+        console.log(name.value);
+        if (name.value.length > 0 && phone.value.length === 14) {
+            addUserSubmit.classList.remove('btn-disabled');
+            addUserSubmit.disabled = false;
+        } else {
+            addUserSubmit.classList.add('btn-disabled');
+            addUserSubmit.disabled = true;
+        }
+    };
+
+    phone.addEventListener('input', event => {
+        let input = phone.value;
+        input = input.replace(/\D/g, '');
+        var size = input.length;
+        if (size > 0) { input = "(" + input }
+        if (size > 3) { input = input.slice(0, 4) + ") " + input.slice(4, 11) }
+        if (size > 6) { input = input.slice(0, 9) + "-" + input.slice(9) }
+        phone.value = input;
+    });
+
+    /************************/
+    /** FORM - Delete Team Member **/
+    /************************/
+    const deleteUserPopup = getEl('delete_user-popup');
+    const deleteUserForm = getEl('delete_user-form');
+    const deleteUserSubmit = getEl('delete_user-submit');
+    const teamMemberDelete = document.querySelectorAll("[id^='team_member-delete_']");
+
+    for (let i = 0; i < teamMemberDelete.length; i++) {
+        teamMemberDelete[i].addEventListener('click', event => {
+            popupBackground.classList.remove('hidden');
+            deleteUserPopup.classList.remove('hidden');
+
+            const tempStr = teamMemberDelete[i].id;
+            const tempArray = tempStr.split('_', 3);
+
+            getEl('delete_team_member_id').value = tempArray[2];
+            getEl('delete_user_email').innerHTML = teamMemberDelete[i].value;
+        });
+    };
+
+    deleteUserForm.addEventListener('submit', event => {
+        deleteUserSubmit.classList.add('btn-disabled');
+        deleteUserSubmit.disabled = true;
+        getEl('delete_user-loading_svg').classList.remove('hidden');
+    });
+
+    /************************/
+    /** Message Notification **/
+    /************************/
+    {% if messages %}
+    getEl('close_message').addEventListener('click', event => {
+        getEl('message-notification').classList.add('hidden');
+    });
+    {% endif %}
+</script>
+{% endblock %}

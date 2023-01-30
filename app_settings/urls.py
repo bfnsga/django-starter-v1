@@ -9,6 +9,7 @@ urlpatterns = [
     path('callback', views.callback, name='callback'),
     path('stripe_callback', views.stripe_callback, name='stripe_callback'),
     path('settings/profile', views.profile, name='profile'),
+    path('settings/company', views.company, name='company'),
     path('settings/users', views.users, name='users'),
     path('settings/billing', views.billing, name='billing'),
     path('subscribe', views.subscribe, name='subscribe'),

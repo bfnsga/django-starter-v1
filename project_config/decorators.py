@@ -2,7 +2,7 @@ import arrow
 from django.contrib.auth import logout as django_logout
 import uuid
 from django.shortcuts import redirect
-from .models import Organization
+from app_settings.models import Organization
 
 ##############################################
 ## Custom wrapper to determine if user is logged and if session is valid

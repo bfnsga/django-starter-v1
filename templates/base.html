@@ -3,28 +3,36 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>{% block title %}My Site{% endblock %}</title>
+	<meta charset="utf-8">
+	<title>{% block title %}My Site{% endblock %}</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  
-  <style>
-    [x-cloak] {
-      display: none !important;
-    }
-  </style>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+	<style>
+		[x-cloak] {
+			display: none !important;
+		}
+	</style>
 
-  <script src="https://js.stripe.com/v3/"></script>
-  <script src="//unpkg.com/alpinejs" defer></script>
+	<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+	<script src="//unpkg.com/alpinejs" defer></script>
 </head>
 
 <body>
-  {% block content %}{% endblock %}
+	<div class="h-screen flex">
+		{% include 'modules/navigation/primary.html' %}
+		<main class="h-full w-full overflow-y-scroll bg-white pb-20">
+			<section class="max-w-screen-lg mx-auto pt-[4.5rem] pb-20 px-6 relative">
+				{% block content %}
+				{% endblock %}
+			</section>
+		</main>
+	</div>
+	{% block scripts %}
+	{% endblock %}
 </body>
 
 </html>

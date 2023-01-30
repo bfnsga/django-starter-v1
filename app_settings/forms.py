@@ -4,6 +4,7 @@ from django.conf import settings
 from auth0.v3.authentication import GetToken
 from auth0.v3.management import Auth0
 import boto3
+from .models import Organization
 
 ###########################################
 ## Set functions and models
@@ -138,8 +139,27 @@ class PasswordChangeForm(forms.Form):
 
         return current_user
 
+class CompanyNameForm(forms.Form):
+    company_name = forms.CharField()
+
+    def __init__(self, request, *args, **kwargs):
+        self.request = request
+        super().__init__(*args, **kwargs)
+
+    def save(self):
+        company_name = self.cleaned_data['company_name']
+        current_user = self.request.user
+        organization_id = current_user.organization_id
+
+        organization = Organization.objects.get(pk=organization_id)
+        organization.company_name = company_name
+        organization.save()
+
+        return True
+
 class AddUserForm(forms.Form):
     email = forms.EmailField()
+    role = forms.CharField()
 
     def __init__(self, request, *args, **kwargs):
         self.request = request
@@ -159,8 +179,8 @@ class AddUserForm(forms.Form):
 
     def save(self):
         current_user = self.request.user
-
         email = self.cleaned_data['email']
+        role = self.cleaned_data['role']
 
         ########################
         ## Create User in Auth0
@@ -181,6 +201,7 @@ class AddUserForm(forms.Form):
         user = User.objects.create(username=email,email=email)
         user.organization_id = current_user.organization_id
         user.auth0_id = new_user_id
+        user.role = role
         user.save()
 
         ########################

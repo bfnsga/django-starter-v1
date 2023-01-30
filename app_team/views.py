@@ -1,9 +1,13 @@
 from django.shortcuts import render, redirect
-from app_images.models import Image
-from .models import Uploader
-from .forms import AddUploaderForm, DeleteUploaderForm
+from app_media.models import Image
+from .models import TeamMember
+from .forms import AddTeamMemberForm, DeleteTeamMemberForm
 import time
+from project_config.decorators import login_redirect
 
+###########################################
+## FUNCTIONS
+###########################################
 def phone_format(phone_e164):
     phone_display = phone_e164.replace("+1", "")
     phone_display = phone_display[:6] + "-" + phone_display[6:]
@@ -12,12 +16,15 @@ def phone_format(phone_e164):
 
     return phone_display
 
-# Create your views here.
-def uploaders(request):
+###########################################
+## VIEWS
+###########################################
+@login_redirect
+def team(request):
     ## Set variables
-    uploaders = Uploader.objects.filter(organization_id=request.user.organization_id).order_by('created_on')
+    team_members = TeamMember.objects.filter(organization_id=request.user.organization_id).order_by('created_on')
 
-    for x in uploaders:
+    for x in team_members:
         x.phone_display = phone_format(x.phone_e164)
         
         try:
@@ -27,14 +34,14 @@ def uploaders(request):
             x.last_uploaded_on = '---' 
 
     context = {
-        'uploaders': uploaders
+        'team_members': team_members
     }
 
     if request.method == 'POST':
         if 'phone' in request.POST:
-            form = AddUploaderForm(request, request.POST)
-        elif 'delete_uploader_id' in request.POST:
-            form = DeleteUploaderForm(request, request.POST)
+            form = AddTeamMemberForm(request, request.POST)
+        elif 'delete_team_member_id' in request.POST:
+            form = DeleteTeamMemberForm(request, request.POST)
         context['form'] = form
 
         if form.is_valid():
@@ -43,10 +50,10 @@ def uploaders(request):
             form.save()
 
             # Return response
-            return redirect('uploaders')
+            return redirect('team')
 
     else:
-        form = AddUploaderForm(request)
+        form = AddTeamMemberForm(request)
         context['form'] = form
 
-    return render(request, 'uploaders.html', context)
+    return render(request, 'team.html', context)

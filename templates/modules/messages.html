@@ -1,0 +1,29 @@
+{% if messages %}
+{% for message in messages %}
+{% if message.level == 25 %}
+<div id="message-notification" class="absolute top-0 left-0 mt-3 px-6 w-1/2">
+    <div class="bg-teal-50 text-teal-700 font-[0.975rem] border border-teal-500 p-2.5 text-[0.95rem] tracking-[0.01rem] rounded">
+        <div class="flex items-center justify-between w-full">
+            <div class="flex items-center space-x-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="text-teal-600 w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M9 12l2 2l4 -4"></path>
+                </svg>
+                <span>
+                    {{ message }}
+                </span>
+            </div>
+            <button id="close_message">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-[1.125rem] w-[1.125rem] text-teal-600 hover:text-teal-800" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}

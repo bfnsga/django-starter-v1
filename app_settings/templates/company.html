@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - Company{% endblock %}
+
+{% block content %}
+{% include 'modules/messages.html' %}
+<div class="header">
+    <div class="header-title">
+        <div class="header-svg-bg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="header-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+        </div>
+        <h1>
+            Settings
+        </h1>
+    </div>
+</div>
+{% include 'modules/navigation/settings.html' %}
+<div class="flex items-start justify-between py-6 border-b-2 border-slate-100" {% if form.company_name.errors %}x-data="{ open: true }"{% else %}x-data="{ open: false }"{% endif %}>
+    <div class="flex items-start w-full mt-1 py-0.5">
+        <p class="text-slate-700 font-semibold w-[35%]">
+            Company Name
+        </p>
+        <div class="w-full">
+            <p class="text-slate-600" x-show="!open">
+                {{ company_name }}
+            </p>
+            <form method="post" id="company_name-form" class="form-box" autocomplete="off" x-show="open" x-cloak>
+                {% csrf_token %}
+                <div class="col-span-2">
+                    <div class="flex flex-col input-spacing">
+                        <label for="company_name" class="input-label">
+                            Company
+                        </label>
+                        <input type="text" name="company_name" id="company_name" value="{% if form.company_name.errors %}{{ form.company_name.value }}{% else %}{{ company_name }}{% endif %}" class="input-box {% if form.company_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                    </div>
+                    {% if form.company_name.errors %}
+                    {% for error in form.company_name.errors %}
+                    <p id="company_name-error" class="input-error-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 9v2m0 4v.01"></path>
+                            <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                            </path>
+                        </svg>
+                        <span>
+                            {{ error }}
+                        </span>
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-actions">
+                    <button type="submit" id="company_name-submit" disabled="true" class="btn btn-size-large btn-color-primary btn-disabled">
+                        <span>
+                            Update
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" id="company_name-loading_svg" class="loading-svg hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                            <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                            </circle>
+                        </svg>
+                    </button>
+                    <a href="{% url 'company' %}" class="form-cancel">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="w-[20%] flex items-center justify-end">
+        {% if request.user.role == 'Administrator' %}
+        <button type="button" x-on:click="open = ! open" x-show="!open" class="btn btn-size-small btn-color-slate">
+            UPDATE
+        </button>
+        {% endif %}
+    </div>
+</div>
+<div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
+    <div class="flex items-start w-full mt-1 py-0.5">
+        <p class="text-slate-700 font-semibold w-[35%]">
+            Dedicated #
+        </p>
+        <div class="w-full">
+            <p class="text-slate-600">
+                (800) 555-5555
+            </p>
+        </div>
+    </div>
+    <div class="w-[20%]"></div>
+</div>
+<div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
+    <div class="flex items-start w-full mt-1 py-0.5">
+        <p class="text-slate-700 font-semibold w-[35%]">
+            Portfolio
+        </p>
+        <div class="w-full">
+            <a href="https://www.example.org/120sdfo" class="text-slate-600 hover:underline" target="_blank">
+                https://www.example.org/120sdfo
+            </a>
+        </div>
+    </div>
+    <div class="w-[20%]"></div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script nonce="{{request.csp_nonce}}">
+    const getEl = id => document.getElementById(id);
+    /************************/
+    /** FORM - Update Name **/
+    /************************/
+    const companyNameForm = getEl('company_name-form');
+    const companyNameSubmit = getEl('company_name-submit');
+
+    companyNameForm.addEventListener('submit', event => {
+        companyNameForm.removeEventListener('keyup', companyNameFormKeyup);
+        companyNameSubmit.classList.add('btn-disabled');
+        companyNameSubmit.disabled = true;
+        getEl('company_name-loading_svg').classList.remove('hidden');
+    });
+
+    {% if form.company_name.errors %}
+    companyNameSubmit.classList.remove('btn-disabled');
+    companyNameSubmit.disabled = false;
+
+    getEl('company_name').addEventListener('focus', function () {
+        getEl('company_name-error').classList.add('hidden');
+        this.classList.remove('border-red-500');
+        this.classList.add('border-slate-200');
+    });
+    {% endif %}
+
+    companyNameForm.addEventListener('keyup', companyNameFormKeyup);
+    function companyNameFormKeyup(event) {
+        const companyName = getEl('company_name');
+
+        if (companyName.defaultValue !== companyName.value && companyName.value.length > 0) {
+            companyNameSubmit.classList.remove('btn-disabled');
+            companyNameSubmit.disabled = false;
+        } else {
+            companyNameSubmit.classList.add('btn-disabled');
+            companyNameSubmit.disabled = true;
+        };
+    };
+
+    /************************/
+    /** Message Notification **/
+    /************************/
+    {% if messages %}
+    getEl('close_message').addEventListener('click', event => {
+        getEl('message-notification').classList.add('hidden');
+    });
+    {% endif %}
+</script>
+{% endblock %}

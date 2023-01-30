@@ -3,312 +3,271 @@
 {% block title %}Dashboard - Django App{% endblock %}
 
 {% block content %}
-<div class="h-screen flex">
-    {% include 'modules/nav.html' %}
-    <main class="h-full w-full overflow-y-scroll bg-white">
-        <section class="max-w-screen-lg mx-auto pt-[4.5rem] pb-20 px-6 relative">
-            {% if messages %}
-            {% for message in messages %}
-            {% if message.level == 25 %}
-            <div id="message-notification" class="absolute top-0 left-0 mt-3 px-6 w-1/2">
-                <div class="bg-teal-50 text-teal-700 font-[0.975rem] border border-teal-500 p-2.5 text-[0.95rem] tracking-[0.01rem] rounded">
-                    <div class="flex items-center justify-between w-full">
-                        <div class="flex items-center space-x-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="text-teal-600 w-5 h-5" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+{% include 'modules/messages.html' %}
+<div class="header">
+    <div class="header-title">
+        <div class="header-svg-bg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="header-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+        </div>
+        <h1>
+            Settings
+        </h1>
+    </div>
+</div>
+{% include 'modules/navigation/settings.html' %}
+<div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
+    <div class="flex items-start w-full mt-1 py-0.5">
+        <p class="text-slate-700 font-semibold w-[35%]">
+            Name
+        </p>
+        <div class="w-full">
+            <p class="text-slate-600 text-[0.975rem]" id="name-default_value">
+                {{ first_name }} {{ last_name }}
+            </p>
+            <form method="post" id="name-form" class="form-box hidden" autocomplete="off">
+                {% csrf_token %}
+                <div class="col-span-1">
+                    <div class="flex flex-col input-spacing">
+                        <label for="first_name" class="input-label">
+                            First Name
+                        </label>
+                        <input type="text" name="first_name" id="first_name" value="{% if form.first_name.errors %}{{ form.first_name.value }}{% else %}{{ first_name }}{% endif %}" class="input-box {% if form.first_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                    </div>
+                    {% if form.first_name.errors %}
+                    {% for error in form.first_name.errors %}
+                    <p id="first_name-error" class="input-error-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 9v2m0 4v.01"></path>
+                            <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                            </path>
+                        </svg>
+                        <span>
+                            {{ error }}
+                        </span>
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="col-span-1">
+                    <div class="flex flex-col input-spacing">
+                        <label for="last_name" class="input-label">
+                            Last Name
+                        </label>
+                        <input type="text" name="last_name" id="last_name" value="{% if form.last_name.errors %}{{ form.last_name.value }}{% else %}{{ last_name }}{% endif %}" class="input-box {% if form.last_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                    </div>
+                    {% if form.last_name.errors %}
+                    {% for error in form.last_name.errors %}
+                    <p id="first_name-error" class="input-error-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 9v2m0 4v.01"></path>
+                            <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                            </path>
+                        </svg>
+                        <span>
+                            {{ error }}
+                        </span>
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
+                    <button type="submit" id="name-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
+                        <span>
+                            Update
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" id="name-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                            <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                            </circle>
+                        </svg>
+                    </button>
+                    <a href="{% url 'profile' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="w-[20%] flex items-center justify-end">
+        <button type="button" id="name-open" class="btn btn-size-small btn-color-slate">
+            UPDATE
+        </button>
+    </div>
+</div>
+<div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
+    <div class="flex items-start w-full mt-1 py-0.5">
+        <p class="text-slate-700 font-semibold w-[35%]">
+            Login Email
+        </p>
+        <div class="w-full">
+            <p class="text-slate-600 text-[0.975rem]" id="email-default_value">
+                {{ email }}
+            </p>
+            <form method="post" id="email-form" class="form-box hidden" autocomplete="off">
+                {% csrf_token %}
+                <div class="col-span-1">
+                    <div class="flex flex-col input-spacing">
+                        <label for="email" class="input-label">
+                            Email
+                        </label>
+                        <input type="email" name="email" id="email" value="{% if form.email.errors %}{{ form.email.value }}{% else %}{{ email }}{% endif %}" class="input-box {% if form.email.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                    </div>
+                    {% if form.email.errors %}
+                    {% for error in form.email.errors %}
+                    <p id="email-error" class="input-error-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 9v2m0 4v.01"></path>
+                            <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                            </path>
+                        </svg>
+                        <span>
+                            {{ error }}
+                        </span>
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
+                    <button type="submit" id="email-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
+                        <span>
+                            Update
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" id="email-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                            <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                            </circle>
+                        </svg>
+                    </button>
+                    <a href="{% url 'profile' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="w-[20%] flex items-center justify-end">
+        <button type="button" id="email-open" class="btn btn-size-small btn-color-slate">
+            UPDATE
+        </button>
+    </div>
+</div>
+<div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
+    <div class="flex items-start w-full mt-1 py-0.5">
+        <p class="text-slate-700 font-semibold w-[35%]">
+            Password
+        </p>
+        <div class="w-full">
+            <p id="password-default_value" class="text-slate-600 text-[0.975rem]">
+                &#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;
+            </p>
+            <form method="post" id="password-form" class="form-box hidden" autocomplete="off">
+                {% csrf_token %}
+                <div class="col-span-1">
+                    <div class="flex flex-col input-spacing">
+                        <label for="password" class="input-label">
+                            Current Password
+                        </label>
+                        <input type="password" name="password" id="password" value="" class="input-box {% if form.password.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                    </div>
+                    {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                    <p id="password-error" class="input-error-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                            <path d="M12 9v2m0 4v.01"></path>
+                            <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                            </path>
+                        </svg>
+                        <span>
+                            {{ error }}
+                        </span>
+                    </p>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="col-span-2 form-box">
+                    <div class="col-span-1">
+                        <div class="flex flex-col input-spacing">
+                            <label for="password_1" class="input-label">
+                                New Password
+                            </label>
+                            <input type="password" name="password_1" id="password_1" value="" class="input-box {% if form.password_1.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
+                        </div>
+                        {% if form.password_1.errors %}
+                        {% for error in form.password_1.errors %}
+                        <p id="password_1-error" class="input-error-text">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <circle cx="12" cy="12" r="9"></circle>
-                                <path d="M9 12l2 2l4 -4"></path>
+                                <path d="M12 9v2m0 4v.01"></path>
+                                <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
+                                </path>
                             </svg>
                             <span>
-                                {{ message }}
+                                {{ error }}
                             </span>
+                        </p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="col-span-1">
+                        <div class="flex flex-col input-spacing">
+                            <label for="password_2" class="input-label">
+                                New Password
+                            </label>
+                            <input type="password" name="password_2" id="password_2" value="" class="input-box {% if form.password_2.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
                         </div>
-                        <button id="close_message">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-[1.125rem] w-[1.125rem] text-teal-600 hover:text-teal-800" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </button>
                     </div>
                 </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-            {% endif %}
-            <div class="pb-7 flex items-center space-x-3">
-                <div class="bg-slate-100 inline-flex p-2 rounded-full">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="text-slate-800 h-6 w-6" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                        <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
-                        <circle cx="12" cy="12" r="3"></circle>
-                    </svg>
-                </div>
-                <h1>
-                    Settings
-                </h1>
-            </div>
-            <div class="nav-secondary-bar">
-                <a href="{% url 'profile' %}" class="nav-secondary-link {% if 'profile' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
-                    Profile
-                </a>
-                <a href="{% url 'users' %}" class="nav-secondary-link {% if 'users' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
-                    Users
-                </a>
-                <a href="{% url 'billing' %}" class="nav-secondary-link {% if 'billing' in request.path %}nav-secondary-link-active{% else %}nav-secondary-link-inactive{% endif %}">
-                    Billing
-                </a>
-            </div>
-            <div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
-                <div class="flex items-start w-full mt-1">
-                    <p class="text-slate-700 font-semibold w-[35%]">
-                        Name
-                    </p>
-                    <div class="w-full">
-                        <p class="text-slate-600 text-[0.975rem]" id="name-default_value">
-                            {{ first_name }} {{ last_name }}
-                        </p>
-                        <form method="post" id="name-form" class="form-box hidden" autocomplete="off">
-                            {% csrf_token %}
-                            <div class="col-span-1">
-                                <div class="flex flex-col input-spacing">
-                                    <label for="first_name" class="input-label">
-                                        First Name
-                                    </label>
-                                    <input type="text" name="first_name" id="first_name" value="{% if form.first_name.errors %}{{ form.first_name.value }}{% else %}{{ first_name }}{% endif %}" class="input-box {% if form.first_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
-                                </div>
-                                {% if form.first_name.errors %}
-                                {% for error in form.first_name.errors %}
-                                <p id="first_name-error" class="input-error-text">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M12 9v2m0 4v.01"></path>
-                                        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
-                                        </path>
-                                    </svg>
-                                    <span>
-                                        {{ error }}
-                                    </span>
-                                </p>
-                                {% endfor %}
-                                {% endif %}
-                            </div>
-                            <div class="col-span-1">
-                                <div class="flex flex-col input-spacing">
-                                    <label for="last_name" class="input-label">
-                                        Last Name
-                                    </label>
-                                    <input type="text" name="last_name" id="last_name" value="{% if form.last_name.errors %}{{ form.last_name.value }}{% else %}{{ last_name }}{% endif %}" class="input-box {% if form.last_name.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
-                                </div>
-                                {% if form.last_name.errors %}
-                                {% for error in form.last_name.errors %}
-                                <p id="first_name-error" class="input-error-text">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M12 9v2m0 4v.01"></path>
-                                        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
-                                        </path>
-                                    </svg>
-                                    <span>
-                                        {{ error }}
-                                    </span>
-                                </p>
-                                {% endfor %}
-                                {% endif %}
-                            </div>
-                            <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
-                                <button type="submit" id="name-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
-                                    <span>
-                                        Update
-                                    </span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" id="name-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-                                        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
-                                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
-                                        </circle>
-                                    </svg>
-                                </button>
-                                <a href="{% url 'profile' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
-                                    Cancel
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="w-[20%] flex justify-end">
-                    <button type="button" id="name-open" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
-                        Update
+                <ul class="col-span-2 list-disc list-inside text-sm text-slate-400 tracking-[0.0125rem]">
+                    <li id="rule-lowercase">
+                        Lower case letters (a-z)
+                    </li>
+                    <li id="rule-uppercase">
+                        Upper case letters (A-Z)
+                    </li>
+                    <li id="rule-number">
+                        Numbers (0-9)
+                    </li>
+                    <li id="rule-length">
+                        At least 8 characters
+                    </li>
+                    <li id="rule-matching">
+                        Passwords match
+                    </li>
+                </ul>
+                <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
+                    <button type="submit" id="password-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
+                        <span>
+                            Update
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" id="password-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                            <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
+                                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
+                            </circle>
+                        </svg>
                     </button>
+                    <a href="{% url 'profile' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
+                        Cancel
+                    </a>
                 </div>
-            </div>
-            <div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
-                <div class="flex items-start w-full mt-1">
-                    <p class="text-slate-700 font-semibold w-[35%]">
-                        Login Email
-                    </p>
-                    <div class="w-full">
-                        <p class="text-slate-600 text-[0.975rem]" id="email-default_value">
-                            {{ email }}
-                        </p>
-                        <form method="post" id="email-form" class="form-box hidden" autocomplete="off">
-                            {% csrf_token %}
-                            <div class="col-span-1">
-                                <div class="flex flex-col input-spacing">
-                                    <label for="email" class="input-label">
-                                        Email
-                                    </label>
-                                    <input type="email" name="email" id="email" value="{% if form.email.errors %}{{ form.email.value }}{% else %}{{ email }}{% endif %}" class="input-box {% if form.email.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
-                                </div>
-                                {% if form.email.errors %}
-                                {% for error in form.email.errors %}
-                                <p id="email-error" class="input-error-text">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M12 9v2m0 4v.01"></path>
-                                        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
-                                        </path>
-                                    </svg>
-                                    <span>
-                                        {{ error }}
-                                    </span>
-                                </p>
-                                {% endfor %}
-                                {% endif %}
-                            </div>
-                            <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
-                                <button type="submit" id="email-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
-                                    <span>
-                                        Update
-                                    </span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" id="email-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-                                        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
-                                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
-                                        </circle>
-                                    </svg>
-                                </button>
-                                <a href="{% url 'profile' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
-                                    Cancel
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="w-[20%] flex justify-end">
-                    <button type="button" id="email-open" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
-                        Update
-                    </button>
-                </div>
-            </div>
-            <div class="flex items-start justify-between py-6 border-b-2 border-slate-100">
-                <div class="flex items-start w-full mt-1">
-                    <p class="text-slate-700 font-semibold w-[35%]">
-                        Password
-                    </p>
-                    <div class="w-full">
-                        <p id="password-default_value" class="text-slate-600 text-[0.975rem]">
-                            &#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;
-                        </p>
-                        <form method="post" id="password-form" class="form-box hidden" autocomplete="off">
-                            {% csrf_token %}
-                            <div class="col-span-1">
-                                <div class="flex flex-col input-spacing">
-                                    <label for="password" class="input-label">
-                                        Current Password
-                                    </label>
-                                    <input type="password" name="password" id="password" value="" class="input-box {% if form.password.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
-                                </div>
-                                {% if form.password.errors %}
-                                {% for error in form.password.errors %}
-                                <p id="password-error" class="input-error-text">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                        <path d="M12 9v2m0 4v.01"></path>
-                                        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
-                                        </path>
-                                    </svg>
-                                    <span>
-                                        {{ error }}
-                                    </span>
-                                </p>
-                                {% endfor %}
-                                {% endif %}
-                            </div>
-                            <div class="col-span-2 form-box">
-                                <div class="col-span-1">
-                                    <div class="flex flex-col input-spacing">
-                                        <label for="password_1" class="input-label">
-                                            New Password
-                                        </label>
-                                        <input type="password" name="password_1" id="password_1" value="" class="input-box {% if form.password_1.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
-                                    </div>
-                                    {% if form.password_1.errors %}
-                                    {% for error in form.password_1.errors %}
-                                    <p id="password_1-error" class="input-error-text">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="input-error-svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                            <path d="M12 9v2m0 4v.01"></path>
-                                            <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75">
-                                            </path>
-                                        </svg>
-                                        <span>
-                                            {{ error }}
-                                        </span>
-                                    </p>
-                                    {% endfor %}
-                                    {% endif %}
-                                </div>
-                                <div class="col-span-1">
-                                    <div class="flex flex-col input-spacing">
-                                        <label for="password_2" class="input-label">
-                                            New Password
-                                        </label>
-                                        <input type="password" name="password_2" id="password_2" value="" class="input-box {% if form.password_2.errors %}border-red-500{% else %}border-slate-200{% endif %}" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <ul class="col-span-2 list-disc list-inside text-sm text-slate-400 tracking-[0.0125rem]">
-                                <li id="rule-lowercase">
-                                    Lower case letters (a-z)
-                                </li>   
-                                <li id="rule-uppercase">
-                                    Upper case letters (A-Z)
-                                </li>
-                                <li id="rule-number">
-                                    Numbers (0-9)
-                                </li>
-                                <li id="rule-length">
-                                    At least 8 characters
-                                </li>
-                                <li id="rule-matching">
-                                    Passwords match
-                                </li>
-                            </ul>
-                            <div class="col-span-2 mt-1 flex items-center justify-start space-x-7">
-                                <button type="submit" id="password-submit" disabled="true" class="btn btn-size-base btn-color-primary btn-disabled">
-                                    <span>
-                                        Update
-                                    </span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" id="password-loading_svg" class="bg-transparent text-white h-5 w-5 ml-2 -mr-2 hidden" width="100px" height="100px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
-                                        <circle cx="50" cy="50" r="32" stroke-width="8" stroke="currentColor" stroke-dasharray="50.26548245743669 50.26548245743669" fill="none" stroke-linecap="round">
-                                            <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1.5s" keyTimes="0;1" values="0 50 50;360 50 50"></animateTransform>
-                                        </circle>
-                                    </svg>
-                                </button>
-                                <a href="{% url 'profile' %}" class="text-slate-400 text-[0.9rem] hover:text-slate-500">
-                                    Cancel
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="w-[20%] flex justify-end">
-                    <button type="button" id="password-open" class="whitespace-nowrap bg-slate-100 text-slate-500 text-[0.8rem] font-medium uppercase tracking-wide py-2 px-3">
-                        Update
-                    </button>
-                </div>
-            </div>
-        </section>
-    </main>
+            </form>
+        </div>
+    </div>
+    <div class="w-[20%] flex items-center justify-end">
+        <button type="button" id="password-open" class="btn btn-size-small btn-color-slate">
+            UPDATE
+        </button>
+    </div>
 </div>
+{% endblock %}
+{% block scripts %}
 <script nonce="{{request.csp_nonce}}">
     const getEl = id => document.getElementById(id);
     /************************/

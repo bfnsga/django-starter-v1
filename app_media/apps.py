@@ -1,6 +1,5 @@
 from django.apps import AppConfig
 
-
-class AppUploadersConfig(AppConfig):
+class AppMediaConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'app_uploaders'
+    name = 'app_media'

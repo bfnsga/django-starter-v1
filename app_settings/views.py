@@ -13,14 +13,14 @@ from urllib.parse import quote_plus, urlencode
 import json
 from .models import Organization
 
-from .forms import NameForm, EmailForm, PasswordChangeForm, AddUserForm, DeleteUserForm
+from .forms import NameForm, EmailForm, PasswordChangeForm, AddUserForm, DeleteUserForm, CompanyNameForm
 from django.contrib import messages
 import stripe
 
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
-from .decorators import login_redirect
+from project_config.decorators import login_redirect
 
 ##############################################
 ## Set User model, initial clients, variables, etc. for use in functions
@@ -118,12 +118,35 @@ def profile(request):
 
     return render(request, 'profile.html', context)
 
+@login_redirect
+def company(request):
+    ## Set variables
+    organization = Organization.objects.get(id=request.user.organization_id)
+
+    context = {
+        'company_name': organization.company_name
+    }
+
+    ## Check request method
+    if request.method =='POST':
+        form = CompanyNameForm(request, request.POST)
+        if form.is_valid():
+            ## Save form
+            time.sleep(0.5)
+            form.save()
+
+            ## Return
+            messages.add_message(request, messages.SUCCESS, 'Your company profile has been updated')
+            return redirect('company')
+
+    return render(request, 'company.html', context)
+
 ####
 @login_redirect
 def users(request):
     ## Set variables
     users = []
-    for x in User.objects.filter(organization_id=request.user.organization_id).exclude(pk=request.user.pk):
+    for x in User.objects.filter(organization_id=request.user.organization_id).exclude(pk=request.user.pk).order_by('role'):
         users.append(x)
 
     context = {
