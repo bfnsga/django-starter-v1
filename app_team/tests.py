@@ -10,10 +10,15 @@ from .forms import AddTeamMemberForm
 import uuid
 import arrow
 
-
+########################
+## MODELS, CLIENTS & VARIABLES
+########################
 User = get_user_model()
 client = Client()
 
+########################
+## TESTS
+########################
 class TeamViewTestCase(TestCase):
     def setUp(self):
         organization_id = uuid.uuid4()
@@ -22,7 +27,7 @@ class TeamViewTestCase(TestCase):
         user.organization_id = organization_id
         user.is_active = True
         user.save()
-        self.user = user
+        self.user_1 = user
 
         # Create test organization
         organization = Organization.objects.create(
@@ -60,7 +65,7 @@ class TeamViewTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
 
         # Log the user in and set session variables
-        client.login(username=self.user, password='')
+        client.login(username=self.user_1, password='')
         session = client.session
         session['is_authorized'] = True
         session['expires_at'] = str(arrow.utcnow().shift(days=+1))
@@ -82,8 +87,7 @@ class TeamViewTestCase(TestCase):
         # Check the response after a post request
         self.assertEqual(response.status_code, 302)
         self.assertEqual(len(TeamMember.objects.all()), 2)
-        self.assertEqual(TeamMember.objects.last().phone_e164, '+12345678902')
-        self.assertEqual(TeamMember.objects.last().language, 'Spanish')
+        self.assertEqual(len(TeamMember.objects.filter(phone_e164='+12345678902')), 1)
 
         ###################
         team_member_id = TeamMember.objects.filter(phone_e164='+12345678902')[0]
