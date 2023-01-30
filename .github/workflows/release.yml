@@ -19,7 +19,11 @@ jobs:
         env:
           MY_ENVIRONMENT: ${{ vars.MY_ENVIRONMENT }}
           TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
-
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+          AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+          AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
+          STRIPE_API_KEY: ${{ secrets.STRIPE_API_KEY }}
 
   build_and_push:
     runs-on: ubuntu-latest
