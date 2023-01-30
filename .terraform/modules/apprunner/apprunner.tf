@@ -92,7 +92,9 @@ resource "aws_iam_policy" "apprunner-instance_policy" {
         "Resource" : "*",
         "Action" : [
           "s3:PutObject",
-          "s3:GetObject"
+          "s3:GetObject",
+          "secretsmanager:GetSecretValue",
+          "kms:Decrypt*"
         ]
       }
     ]
@@ -102,65 +104,4 @@ resource "aws_iam_policy" "apprunner-instance_policy" {
 resource "aws_iam_role_policy_attachment" "apprunner-instance_role_policy" {
   role       = aws_iam_role.apprunner-instance_role.name
   policy_arn = aws_iam_policy.apprunner-instance_policy.arn
-}
-
-## AppRunner Service
-#########################
-resource "aws_apprunner_service" "apprunner" {
-  service_name = "django-starter-v1"
-
-  source_configuration {
-    authentication_configuration {
-      access_role_arn = aws_iam_role.apprunner-access_role.arn
-    }
-
-    image_repository {
-      image_configuration {
-        port = "8000"
-        runtime_environment_variables = {
-          "SECRET_KEY" = var.secret_key
-          "DATABASE_HOST" = var.database_host
-          "DATABASE_PASSWORD" = var.database_password
-          "AUTH0_CLIENT_ID" = var.auth0_client_id
-          "AUTH0_CLIENT_SECRET" = var.auth0_client_secret
-          "AUTH0_DOMAIN" = var.auth0_domain
-          "STRIPE_API_KEY" = var.stripe_api_key
-        }
-      }
-      image_identifier      = "${var.aws_account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/django-starter-v1:latest"
-      image_repository_type = "ECR"
-    }
-
-    auto_deployments_enabled = false
-  }
-
-  network_configuration {
-    egress_configuration {
-        egress_type = "VPC"
-        vpc_connector_arn = aws_apprunner_vpc_connector.connector.arn
-    }
-  }
-
-  instance_configuration {
-    instance_role_arn = aws_iam_role.apprunner-instance_role.arn
-  }
-
-  depends_on = [
-    aws_iam_role_policy_attachment.apprunner-access_role_policy,
-    aws_iam_role_policy_attachment.apprunner-instance_role_policy,
-    aws_apprunner_vpc_connector.connector
-  ]
-}
-
-#########################
-## CLOUDWATCH LOG GROUP
-#########################
-resource "aws_cloudwatch_log_group" "apprunner-application" {
-  name              = "/aws/apprunner/${aws_apprunner_service.apprunner.service_name}/${aws_apprunner_service.apprunner.service_id}/application"
-  retention_in_days = 14
-}
-
-resource "aws_cloudwatch_log_group" "apprunner-service" {
-  name              = "/aws/apprunner/${aws_apprunner_service.apprunner.service_name}/${aws_apprunner_service.apprunner.service_id}/service"
-  retention_in_days = 14
 }
