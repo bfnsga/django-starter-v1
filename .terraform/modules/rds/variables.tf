@@ -20,7 +20,3 @@ variable "aws_account_id" {
 variable "aws_region" {
   type = string
 }
-
-variable "database_password" {
-  type = string
-}
