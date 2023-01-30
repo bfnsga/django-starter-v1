@@ -5,6 +5,18 @@ name: Build and push
 on: push
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install -r requirements.txt
+      - run: python manage.py test
+
   build_and_push:
     runs-on: ubuntu-latest
     permissions:
