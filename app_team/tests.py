@@ -85,7 +85,7 @@ class TeamViewTestCase(TestCase):
         self.assertEqual(TeamMember.objects.last().phone_e164, '+12345678902')
         self.assertEqual(TeamMember.objects.last().language, 'Spanish')
 
-        ##################
+        ###################
         team_member_id = TeamMember.objects.filter(phone_e164='+12345678902')[0]
         team_member_id = team_member_id.id
 
