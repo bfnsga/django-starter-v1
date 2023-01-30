@@ -51,7 +51,7 @@ else:
     SECRETS = json.loads(SECRETS)
 
     # Security settings
-    SECRET_KEY = SECRETS['SECRET_KEY'] # Ensure Secret Key is at least 52 digits in length
+    SECRET_KEY = SECRETS['DJANGO_SECRET_KEY'] # Ensure Secret Key is at least 52 digits in length
     DEBUG = False
 
     # Security Headers, can check at: https://securityheaders.com
